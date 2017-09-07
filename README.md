@@ -14,13 +14,13 @@ demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.c
 ### 使用指南
 #### 1、主项目引用编译脚本
 在根目录的gradle.properties文件中，增加属性：
-```
+```ini
 mainmodulename=app
 ```
 其中mainmodulename是项目中的host工程，一般为app
 
 在根目录的build.gradle中增加配置
-```
+```gradle
 buildscript {
     repositories {
         maven {
@@ -36,7 +36,7 @@ buildscript {
 
 #### 2、拆分组件为module工程
 在每个组件的工程目录下新建文件gradle.properties文件，增加以下配置：
-```
+```ini
 isRunAlone=true
 debugComponent=sharecomponent
 compileComponent=com.mrzhang.share:sharecomponent
@@ -45,16 +45,32 @@ compileComponent=com.mrzhang.share:sharecomponent
 
 #### 3、应用组件化编译脚本
 在组件和host的build.gradle都增加配置：
-```
+```gradle
 apply plugin: 'com.dd.comgradle'
 ```
 不需要在引用com.android.application或者com.android.library
 
 同时增加以下extension配置：
-```
+```gradle
 combuild {
     applicatonName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
     isRegisterCompoAuto = false
 }
 ```
 有关isRegisterCompoAuto的解释请参见上文第二篇文章
+
+### License
+
+   Copyright 2017  luoJiSiWei
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
