@@ -19,7 +19,7 @@ public class ShareUIRouter implements IComponentRouter {
 
     private static final String SHAREHOST = "share";
 
-    private static String[] hosts = new String[]{SHAREHOST};
+    private static String[] HOSTS = new String[]{SHAREHOST};
 
     private static ShareUIRouter instance = new ShareUIRouter();
 
@@ -58,8 +58,12 @@ public class ShareUIRouter implements IComponentRouter {
     public boolean verifyUri(Uri uri) {
         String scheme = uri.getScheme();
         String host = uri.getHost();
-        if (SCHME.equals(scheme) && SHAREHOST.contains(host)) {
-            return true;
+        if (SCHME.equals(scheme)) {
+            for (String str : HOSTS) {
+                if (str.equals(host)) {
+                    return true;
+                }
+            }
         }
         return false;
     }
