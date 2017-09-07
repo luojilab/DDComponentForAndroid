@@ -1,0 +1,63 @@
+apply plugin: 'com.android.library'
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:26.+'
+}
+
+
+def sdk_appendix = "baselib"
+def sdk_baseName = "component"
+def sdk_version = "0.0.2"
+
+task buildJar(dependsOn: ['compileReleaseJavaWithJavac'], type: Jar) {
+
+    appendix = sdk_appendix
+    baseName = sdk_baseName
+    version = sdk_version
+    //classifier = "release"
+    //后缀名
+    extension = "jar"
+    //最终的Jar 包名 ， 如果没设置 ， 默认为[baseName] - [appendix] - [version] - [classifier].[extension]
+
+    // 需打包的资源所在的路径集
+    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
+    //初始化资源路径集
+    from srcClassDir
+
+    //排除这两个文件
+    include("com/mrzhang/**/*.class")
+    exclude("com/mrzhang/component/componentlib/BuildConfig.class",
+            "com/mrzhang/component/componentlib/R.class",
+            "com/mrzhang/component/componentlib/R\$*.class")
+}
+
+task buildJarAndCopy(dependsOn: "buildJar", type: Copy) {
+    from(project.buildDir.absolutePath + "/libs")
+    include(sdk_baseName + "-" + sdk_appendix + "-" + sdk_version + ".jar")
+    into("release")
+}

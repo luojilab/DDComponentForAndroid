@@ -1,0 +1,52 @@
+apply plugin: 'com.dd.comgradle'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 14
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+        }
+
+    }
+
+    resourcePrefix "readerbook_"
+
+    sourceSets {
+        main {
+            if (isRunAlone.toBoolean()) {
+                manifest.srcFile 'src/main/runalone/AndroidManifest.xml'
+                java.srcDirs = ['src/main/java', 'src/main/runalone/java']
+                res.srcDirs = ['src/main/res', 'src/main/runalone/res']
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
+        }
+    }
+
+}
+
+dependencies {
+    compile project(':componentservice')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+combuild {
+    applicatonName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
+    isRegisterCompoAuto = false
+}

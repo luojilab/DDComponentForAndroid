@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    package="com.mrzhang.reader">
+
+    <application
+        android:allowBackup="true" android:label="@string/readerbook_app_name"
+        tools:replace="android:label"
+        android:supportsRtl="true">
+
+    </application>
+
+</manifest>

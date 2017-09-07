@@ -1,0 +1,18 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    package="com.mrzhang.share">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/share_app_name"
+        tools:replace="android:label"
+        android:supportsRtl="true">
+
+        <activity android:name="com.mrzhang.share.ShareActivity">
+
+        </activity>
+
+    </application>
+
+</manifest>
