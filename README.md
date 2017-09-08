@@ -59,6 +59,8 @@ combuild {
 ```
 有关isRegisterCompoAuto的解释请参见上文第二篇文章
 
+关于如何定制化，请参看 [Wiki](https://github.com/luojilab/DDComponentForAndroid/wiki)
+
 ### License
 
    Copyright 2017  luoJiSiWei
