@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.mrzhang.andcomponent:build-gradle:0.0.1'
+        classpath 'com.mrzhang.andcomponent:build-gradle:0.0.2'
     }
 }
 
