@@ -111,7 +111,9 @@ public class ComBuild implements Plugin<Project> {
     private AssembleTask getTaskInfo(List<String> taskNames) {
         AssembleTask assembleTask = new AssembleTask();
         for (String task : taskNames) {
-            if (task.toUpperCase().contains("ASSEMBLE") || task.toUpperCase().contains("RESGUARD")) {
+            if (task.toUpperCase().contains("ASSEMBLE")
+                    || task.contains("aR")
+                    || task.toUpperCase().contains("RESGUARD")) {
                 if (task.toUpperCase().contains("DEBUG")) {
                     assembleTask.isDebug = true;
                 }
