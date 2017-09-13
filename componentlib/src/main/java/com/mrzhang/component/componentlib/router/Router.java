@@ -1,5 +1,8 @@
 package com.mrzhang.component.componentlib.router;
 
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
 import com.mrzhang.component.componentlib.applicationlike.IApplicationLike;
 
 import java.util.HashMap;
@@ -11,6 +14,8 @@ import java.util.HashMap;
 public class Router {
 
     private HashMap<String, Object> services = new HashMap<>();
+    //注册的组件的集合
+    private static HashMap<String, IApplicationLike> components = new HashMap<>();
 
     private static volatile Router instance;
 
@@ -49,23 +54,62 @@ public class Router {
         services.remove(serviceName);
     }
 
-    public static void registerComponent(String classname) {
+//    public static void registerComponent(String classname) {
+//        try {
+//            Class clazz = Class.forName(classname);
+//            IApplicationLike applicationLike = (IApplicationLike) clazz.newInstance();
+//            applicationLike.onCreate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void unregisterComponent(String classname) {
+//        try {
+//            Class clazz = Class.forName(classname);
+//            IApplicationLike applicationLike = (IApplicationLike) clazz.newInstance();
+//            applicationLike.onStop();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+    /**
+     * 注册组件
+     *
+     * @param classname 组件名
+     */
+    public static void registerComponent(@Nullable String classname) {
+        if (TextUtils.isEmpty(classname)) {
+            return;
+        }
+        if (components.keySet().contains(classname)) {
+            return;
+        }
         try {
             Class clazz = Class.forName(classname);
             IApplicationLike applicationLike = (IApplicationLike) clazz.newInstance();
             applicationLike.onCreate();
+            components.put(classname, applicationLike);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void unregisterComponent(String classname) {
-        try {
-            Class clazz = Class.forName(classname);
-            IApplicationLike applicationLike = (IApplicationLike) clazz.newInstance();
-            applicationLike.onStop();
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * 反注册组件
+     *
+     * @param classname 组件名
+     */
+    public static void unregisterComponent(@Nullable String classname) {
+        if (TextUtils.isEmpty(classname)) {
+            return;
+        }
+        if (components.keySet().contains(classname)) {
+            components.get(classname).onStop();
+            components.remove(classname);
+            return;
         }
     }
 
