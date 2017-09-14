@@ -54,27 +54,6 @@ public class Router {
         services.remove(serviceName);
     }
 
-//    public static void registerComponent(String classname) {
-//        try {
-//            Class clazz = Class.forName(classname);
-//            IApplicationLike applicationLike = (IApplicationLike) clazz.newInstance();
-//            applicationLike.onCreate();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static void unregisterComponent(String classname) {
-//        try {
-//            Class clazz = Class.forName(classname);
-//            IApplicationLike applicationLike = (IApplicationLike) clazz.newInstance();
-//            applicationLike.onStop();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
     /**
      * 注册组件
      *
@@ -110,6 +89,14 @@ public class Router {
             components.get(classname).onStop();
             components.remove(classname);
             return;
+        }
+        try {
+            Class clazz = Class.forName(classname);
+            IApplicationLike applicationLike = (IApplicationLike) clazz.newInstance();
+            applicationLike.onStop();
+            components.remove(classname);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
