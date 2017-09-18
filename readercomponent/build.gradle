@@ -31,7 +31,7 @@ android {
 
 dependencies {
     compile project(':componentservice')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 combuild {

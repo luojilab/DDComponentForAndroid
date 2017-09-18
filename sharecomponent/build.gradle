@@ -26,6 +26,9 @@ android {
 
 dependencies {
     compile project(':componentservice')
+
+    annotationProcessor project(':router-anno-compiler')
+    compile project(':router-annotation')
 }
 
 combuild {
