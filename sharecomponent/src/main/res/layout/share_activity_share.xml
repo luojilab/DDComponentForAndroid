@@ -8,7 +8,7 @@
         android:id="@+id/share_tv_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="这是分享组件"
+        android:text="这是share组件"
         android:textSize="21sp"
         android:layout_centerInParent="true" />
 

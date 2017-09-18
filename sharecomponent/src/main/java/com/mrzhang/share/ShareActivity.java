@@ -7,9 +7,7 @@ import android.widget.TextView;
 
 import com.ljsw.router.facade.annotation.Autowired;
 import com.mrzhang.component.componentlib.router.Router;
-import com.mrzhang.component.componentlib.router.ui.UIRouter;
 import com.mrzhang.componentservice.di.AutowiredService;
-import com.mrzhang.componentservice.readerbook.ReadBookService;
 
 /**
  * Created by mrzhang on 2017/6/20.
