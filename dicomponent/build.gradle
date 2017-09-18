@@ -3,32 +3,28 @@ apply plugin: 'com.dd.comgradle'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 14
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+        }
     }
-
-    resourcePrefix "share_"
-
+    resourcePrefix "di_"
 }
 
 dependencies {
     compile project(':componentservice')
-
-    annotationProcessor project(':router-anno-compiler')
-    compile project(':router-annotation')
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -37,6 +33,6 @@ dependencies {
 }
 
 combuild {
-    applicatonName = 'com.mrzhang.share.runalone.application.ShareApplication'
+    applicatonName = 'com.ljsw.component.di.runalone.application.DIApplication'
     isRegisterCompoAuto = true
 }

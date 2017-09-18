@@ -1,4 +1,4 @@
-include ':app', ':jsoncompnent',
+include ':app', ':jsoncompnent', ':dicomponent',
         ':componentlib',
         ':readercomponent',
         ':sharecomponent',
