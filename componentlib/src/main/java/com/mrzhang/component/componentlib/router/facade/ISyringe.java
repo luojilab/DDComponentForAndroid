@@ -4,10 +4,15 @@ package com.mrzhang.component.componentlib.router.facade;
  * <p><b>Package:</b> com.mrzhang.component.componentlib.router.facade </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> ISyringe </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> desc the function of Syringe, one that used to inject
+ * sth. to a container</p>
  * Created by leobert on 2017/9/18.
  */
 
 public interface ISyringe {
+    /**
+     * @param self the container itself, members to be inject into have been annotated
+     *             with one annotation called Autowired
+     */
     void inject(Object self);
 }

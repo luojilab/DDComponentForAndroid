@@ -14,7 +14,8 @@ import static com.mrzhang.component.componentlib.router.RouterConstants.SUFFIX_A
  * <p><b>Package:</b> com.ljsw.component.di.serviceimpl </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> DepInjectServiceImpl </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> implement of {@link AutowiredService},used to fetch
+ * data from bundles in the intent</p>
  * Created by leobert on 2017/9/18.
  */
 

@@ -7,7 +7,7 @@ import javax.tools.Diagnostic;
  * <p><b>Package:</b> com.ljsw.router.compiler.utils </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> Logger </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> logger for apt </p>
  * Created by leobert on 2017/9/18.
  */
 

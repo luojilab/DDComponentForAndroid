@@ -13,7 +13,7 @@ import static com.ljsw.router.compiler.utils.Constants.PARCELABLE;
  * <p><b>Package:</b> com.ljsw.router.compiler.utils </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> TypeUtils </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> utils for type inference </p>
  * Created by leobert on 2017/9/18.
  */
 

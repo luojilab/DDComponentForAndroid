@@ -4,7 +4,7 @@ package com.ljsw.router.compiler.utils;
  * <p><b>Package:</b> com.ljsw.router.compiler.utils </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> Constants </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> Constants used by apt </p>
  * Created by leobert on 2017/9/18.
  */
 
@@ -42,9 +42,11 @@ public interface Constants {
     String BOOLEAN = LANG + ".Boolean";
     String STRING = LANG + ".String";
 
-    String TEMPLATE_PACKAGE = ".template";
+//    String TEMPLATE_PACKAGE = ".template";
 
-//    "com.mrzhang.component.componentlib.router.facade.ISyringe"
+//    /**
+//     * see at {@link com.mrzhang.component.componentlib.router.facade.ISyringe}
+//     */
     String ISYRINGE = "com.mrzhang.component.componentlib.router.facade.ISyringe";
 
     String JSON_SERVICE = "com.mrzhang.componentservice.json.JsonService";
