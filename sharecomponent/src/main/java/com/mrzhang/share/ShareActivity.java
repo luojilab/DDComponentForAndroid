@@ -3,11 +3,13 @@ package com.mrzhang.share;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.ljsw.router.facade.annotation.Autowired;
 import com.mrzhang.component.componentlib.router.Router;
 import com.mrzhang.componentservice.di.AutowiredService;
+import com.mrzhang.componentservice.json.JsonService;
 
 /**
  * Created by mrzhang on 2017/6/20.
@@ -15,8 +17,25 @@ import com.mrzhang.componentservice.di.AutowiredService;
 
 public class ShareActivity extends AppCompatActivity {
 
+    private static final String TAG = ShareActivity.class.getSimpleName();
+
+    static class TestDto {
+        String s;
+
+        public String getS() {
+            return s;
+        }
+
+        public void setS(String s) {
+            this.s = s;
+        }
+    }
+
     @Autowired
     String bookName;
+
+    @Autowired
+    TestDto testDto;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +52,10 @@ public class ShareActivity extends AppCompatActivity {
 
         TextView textView = (TextView) findViewById(R.id.share_tv_tag);
         textView.setText("share: " + bookName);
+
+        Log.d(TAG,"dto:\r"+((JsonService)Router.getInstance()
+                .getService(JsonService.class.getSimpleName()))
+                .toJsonString(testDto));
 
     }
 

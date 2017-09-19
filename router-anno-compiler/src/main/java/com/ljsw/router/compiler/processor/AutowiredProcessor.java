@@ -119,8 +119,6 @@ public class AutowiredProcessor extends AbstractProcessor {
 
         TypeElement type_JsonService = elements.getTypeElement(Constants.JSON_SERVICE);
 
-//        TypeMirror iProvider = elements.getTypeElement(Constants.IPROVIDER).asType();
-
         TypeMirror activityTm = elements.getTypeElement(Constants.ACTIVITY).asType();
         TypeMirror fragmentTm = elements.getTypeElement(Constants.FRAGMENT).asType();
         TypeMirror fragmentTmV4 = elements.getTypeElement(Constants.FRAGMENT_V4).asType();
@@ -152,17 +150,46 @@ public class AutowiredProcessor extends AbstractProcessor {
                         .addModifiers(PUBLIC);
 
                 FieldSpec jsonServiceField = FieldSpec.builder(TypeName.get(type_JsonService.asType()),
-                        "JsonService", Modifier.PRIVATE).build();
+                        "jsonService", Modifier.PRIVATE).build();
                 helper.addField(jsonServiceField);
 
-                // JsonService service = (JsonService) router.getService(JsonService.class.getSimpleName());
-//
-//
+                /*
+                * Router router = Router.getInstance();
+                    if (router.getService(JsonService.class.getSimpleName()) != null) {
+                        JsonService jsonService = (JsonService) router.getService(JsonService.class.getSimpleName());
+                    } else {
+                        throw new IllegalStateException("JsonService not found in Router");
+                    }
+                * */
+
+//                String _statement =
+//                        " $T router = $T.getInstance();\n" +
+//                                " if (router.getService($T.class.getSimpleName()) != null) {\n" +
+//                                "      jsonService = ($T) router.getService($T.class.getSimpleName());\n" +
+//                                " }";
+
                 logger.info("======== inject jsonservice");
-                injectMethodBuilder.addStatement("JsonService = ($T) $T.getInstance().getService($T.class.getSimpleName())",
-                        ClassName.get(type_JsonService),
+
+                injectMethodBuilder.addStatement("$T router = $T.getInstance()",
                         RouterClass,
+                        RouterClass);
+
+                injectMethodBuilder.beginControlFlow("if (router.getService($T.class.getSimpleName()) != null)",
                         ClassName.get(type_JsonService));
+
+                injectMethodBuilder.addStatement("jsonService = ($T) router.getService($T.class.getSimpleName())",
+                        ClassName.get(type_JsonService),
+                        ClassName.get(type_JsonService));
+
+
+                injectMethodBuilder.endControlFlow();
+
+//                injectMethodBuilder.addStatement(_statement,
+//                        RouterClass,
+//                        RouterClass,
+//                        ClassName.get(type_JsonService),
+//                        ClassName.get(type_JsonService),
+//                        ClassName.get(type_JsonService));
 
                 injectMethodBuilder.addStatement("$T substitute = ($T)target", ClassName.get(parent), ClassName.get(parent));
 
@@ -170,34 +197,6 @@ public class AutowiredProcessor extends AbstractProcessor {
                 for (Element element : childs) {
                     Autowired fieldConfig = element.getAnnotation(Autowired.class);
                     String fieldName = element.getSimpleName().toString();
-//                    if (types.isSubtype(element.asType(), iProvider)) {  // It's provider
-//                        if ("".equals(fieldConfig.name())) {    // User has not set service path, then use byType.
-//
-//                            // Getter
-//                            injectMethodBuilder.addStatement(
-//                                    "substitute." + fieldName + " = $T.getInstance().navigation($T.class)",
-//                                    ARouterClass,
-//                                    ClassName.get(element.asType())
-//                            );
-//                        } else {    // use byName
-//                            // Getter
-//                            injectMethodBuilder.addStatement(
-//                                    "substitute." + fieldName + " = ($T)$T.getInstance().build($S).navigation();",
-//                                    ClassName.get(element.asType()),
-//                                    ARouterClass,
-//                                    fieldConfig.name()
-//                            );
-//                        }
-//
-//                        // Validater
-//                        if (fieldConfig.required()) {
-//                            injectMethodBuilder.beginControlFlow("if (substitute." + fieldName + " == null)");
-//                            injectMethodBuilder.addStatement(
-//                                    "throw new RuntimeException(\"The field '" + fieldName + "' is null, in class '\" + $T.class.getName() + \"!\")", ClassName.get(parent));
-//                            injectMethodBuilder.endControlFlow();
-//                        }
-//                    }
-//                    else {    // It's normal intent value
                     String originalValue = "substitute." + fieldName;
                     String statment = "substitute." + fieldName + " = substitute.";
                     boolean isActivity = false;
@@ -213,8 +212,8 @@ public class AutowiredProcessor extends AbstractProcessor {
                     }
 
                     statment = buildStatement(originalValue, statment, typeUtils.typeExchange(element), isActivity);
-                    if (statment.startsWith("serializationService.")) {   // Not mortals
-                        injectMethodBuilder.beginControlFlow("if (null != serializationService)");
+                    if (statment.startsWith("jsonService.")) {   // Not mortals
+                        injectMethodBuilder.beginControlFlow("if (null != jsonService)");
                         injectMethodBuilder.addStatement(
                                 "substitute." + fieldName + " = " + statment,
                                 (StringUtils.isEmpty(fieldConfig.name()) ? fieldName : fieldConfig.name()),
@@ -224,8 +223,7 @@ public class AutowiredProcessor extends AbstractProcessor {
                         injectMethodBuilder.addStatement(
                                 "$T.e(\"" + TAG + "\", \"You want automatic inject the field '"
                                         + fieldName + "' in class '$T' ," +
-                                        " then you should implement 'SerializationService' to support " +
-                                        "object auto inject!\")", AndroidLog, ClassName.get(parent));
+                                        " but JsonService not found in Router\")", AndroidLog, ClassName.get(parent));
 
                         injectMethodBuilder.endControlFlow();
                     } else {
@@ -240,7 +238,6 @@ public class AutowiredProcessor extends AbstractProcessor {
                         injectMethodBuilder.endControlFlow();
                     }
                 }
-//                }
 
                 helper.addMethod(injectMethodBuilder.build());
 
@@ -286,7 +283,7 @@ public class AutowiredProcessor extends AbstractProcessor {
         } else if (type == Type.PARCELABLE.ordinal()) {
             statement += (isActivity ? ("getParcelableExtra($S)") : ("getParcelable($S)"));
         } else if (type == Type.OBJECT.ordinal()) {
-            statement = "serializationService.json2Object(substitute." +
+            statement = "jsonService.parseObject(substitute." +
                     (isActivity ? "getIntent()." : "getArguments().") +
                     (isActivity ? "getStringExtra($S)" : "getString($S)") + ", $T.class)";
         }
