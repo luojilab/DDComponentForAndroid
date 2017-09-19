@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.ljsw.router.facade.annotation.Autowired;
+import com.ljsw.router.facade.annotation.RouteNode;
 import com.mrzhang.component.componentlib.router.Router;
 import com.mrzhang.componentservice.di.AutowiredService;
 import com.mrzhang.componentservice.json.JsonService;
@@ -14,7 +15,7 @@ import com.mrzhang.componentservice.json.JsonService;
 /**
  * Created by mrzhang on 2017/6/20.
  */
-
+@RouteNode(path = "share")
 public class ShareActivity extends AppCompatActivity {
 
     private static final String TAG = ShareActivity.class.getSimpleName();

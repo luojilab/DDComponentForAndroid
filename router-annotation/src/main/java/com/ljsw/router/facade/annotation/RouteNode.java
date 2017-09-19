@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
  * <p><b>Package:</b> com.ljsw.router.facade.annotation </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> RouteDef </p>
- * <p><b>Description:</b> used to decline a route </p>
+ * <p><b>Description:</b> used to decline a route node</p>
  * Created by leobert on 2017/9/18.
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.CLASS)
-public @interface RouteDef {
+public @interface RouteNode {
     /**
      * path of one route
      */
@@ -26,18 +26,15 @@ public @interface RouteDef {
      * e.g.
      * '/user/login' and '/user/register' can be merger into group 'user'
      *
+     * we have departed the whole system to different component,thus it is useless
+     * to define group for merge router
+     *
+     * it will be removed when route develop complete.
+     *
+     * emmm.... 暂时留存该设计
      */
-    String group() default "";
+    String group() default "default";
 
-    /**
-     * Name of route, used to generate javadoc.
-     */
-    String name() default "undefined";
-
-    /**
-     * Extra data, can be set by user.
-     */
-    int extras() default Integer.MIN_VALUE;
 
     /**
      * The priority of route.

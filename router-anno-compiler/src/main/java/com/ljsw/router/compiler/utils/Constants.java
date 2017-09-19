@@ -18,7 +18,8 @@ public interface Constants {
     ///////////////////////////////////////////////////////////////////////////
     String KEY_MODULE_NAME = "ModuleName";
 
-    String ANNOTATION_TYPE_ROUTE = ANNO_FACADE_PKG + ".annotation.Route";
+    String ANNOTATION_TYPE_ROUTE_NODE = ANNO_FACADE_PKG + ".annotation.RouteNode";
+    String ANNOTATION_TYPE_ROUTER = ANNO_FACADE_PKG + ".annotation.Router";
     String ANNOTATION_TYPE_AUTOWIRED = ANNO_FACADE_PKG + ".annotation.Autowired";
 
     String PREFIX_OF_LOGGER = "[Router-Anno-Compiler]-- ";
@@ -42,13 +43,12 @@ public interface Constants {
     String BOOLEAN = LANG + ".Boolean";
     String STRING = LANG + ".String";
 
-//    String TEMPLATE_PACKAGE = ".template";
-
-//    /**
-//     * see at {@link com.mrzhang.component.componentlib.router.facade.ISyringe}
-//     */
     String ISYRINGE = "com.mrzhang.component.componentlib.router.facade.ISyringe";
 
     String JSON_SERVICE = "com.mrzhang.componentservice.json.JsonService";
+
+    String ROUTER_UTIL_METHOD_ADDTO = "addTo";
+
+    String TYPE_UIROUTER_LOADER = "com.ljsw.router.facade.IUiRouterLoader";
     
 }
