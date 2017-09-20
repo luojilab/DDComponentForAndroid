@@ -10,7 +10,6 @@ import com.ljsw.component.di.AutowiredService;
 import com.ljsw.component.json.JsonService;
 import com.ljsw.router.facade.annotation.Autowired;
 import com.ljsw.router.facade.annotation.RouteNode;
-import com.mrzhang.component.componentlib.router.Router;
 
 /**
  * Created by mrzhang on 2017/6/20.
@@ -39,24 +38,19 @@ public class ShareActivity extends AppCompatActivity {
     TestDto testDto;
 
     private JsonService jsonService = JsonService.Factory.getInstance().create();
+    private AutowiredService autowiredService = AutowiredService.Factory.getInstance().create();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.share_activity_share);
-//        UIRouter.getInstance().inject
-
-        Router router = Router.getInstance();
-//        if (router.getService(AutowiredService.class.getSimpleName()) != null) {
-//            AutowiredService service = (AutowiredService) router.getService(AutowiredService.class.getSimpleName());
-//            service.autowire(this);
-//        }
+        autowiredService.autowire(this);
 
 
         TextView textView = (TextView) findViewById(R.id.share_tv_tag);
         textView.setText("share: " + bookName);
 
-        Log.d(TAG,"dto:\r"+(jsonService.toJsonString(testDto));
+        Log.d(TAG, "dto:\r" + (jsonService.toJsonString(testDto)));
 
     }
 

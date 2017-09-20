@@ -71,12 +71,14 @@ public class AutowiredProcessor extends AbstractProcessor {
      */
     private Map<TypeElement, List<Element>> parentAndChild = new HashMap<>();
 
-    //UIRouter:com.mrzhang.component.componentlib.router.ui.UIRouter
-    private static final ClassName UIRouterClass =
-            ClassName.get("com.mrzhang.component.componentlib.router.ui", "UIRouter");
+//    private static final ClassName UIRouterClass =
+//            ClassName.get("com.mrzhang.component.componentlib.router.ui", "UIRouter");
+//
+//    private static final ClassName RouterClass =
+//            ClassName.get("com.mrzhang.component.componentlib.router", "Router");
 
-    private static final ClassName RouterClass =
-            ClassName.get("com.mrzhang.component.componentlib.router", "Router");
+    private static final ClassName JsonServiceInterface =
+            ClassName.get("com.ljsw.component.json","JsonService");
 
     //    private static final ClassName ARouterClass = ClassName.get("com.alibaba.android.arouter.launcher", "ARouter");
     private static final ClassName AndroidLog = ClassName.get("android.util", "Log");
@@ -163,26 +165,18 @@ public class AutowiredProcessor extends AbstractProcessor {
 
                 logger.info("======== inject jsonservice");
 
-                injectMethodBuilder.addStatement("$T router = $T.getInstance()",
-                        RouterClass,
-                        RouterClass);
-
-                injectMethodBuilder.beginControlFlow("if (router.getService($T.class.getSimpleName()) != null)",
-                        ClassName.get(type_JsonService));
-
-                injectMethodBuilder.addStatement("jsonService = ($T) router.getService($T.class.getSimpleName())",
-                        ClassName.get(type_JsonService),
-                        ClassName.get(type_JsonService));
-
-
-                injectMethodBuilder.endControlFlow();
-
-//                injectMethodBuilder.addStatement(_statement,
+//                injectMethodBuilder.addStatement("$T router = $T.getInstance()",
 //                        RouterClass,
-//                        RouterClass,
-//                        ClassName.get(type_JsonService),
+//                        RouterClass);
+//                injectMethodBuilder.beginControlFlow("if (router.getService($T.class.getSimpleName()) != null)",
+//                        ClassName.get(type_JsonService));
+//                injectMethodBuilder.addStatement("jsonService = ($T) router.getService($T.class.getSimpleName())",
 //                        ClassName.get(type_JsonService),
 //                        ClassName.get(type_JsonService));
+//                injectMethodBuilder.endControlFlow();
+
+                injectMethodBuilder.addStatement("jsonService = $T.Factory.getInstance().create()",
+                        ClassName.get(type_JsonService));
 
                 injectMethodBuilder.addStatement("$T substitute = ($T)target", ClassName.get(parent), ClassName.get(parent));
 

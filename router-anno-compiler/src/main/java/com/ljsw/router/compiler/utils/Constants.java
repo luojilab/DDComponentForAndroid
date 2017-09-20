@@ -43,9 +43,9 @@ public interface Constants {
     String BOOLEAN = LANG + ".Boolean";
     String STRING = LANG + ".String";
 
-    String ISYRINGE = "com.mrzhang.component.componentlib.router.facade.ISyringe";
+    String ISYRINGE = "com.ljsw.component.di.route.ISyringe";
 
-    String JSON_SERVICE = "com.mrzhang.componentservice.json.JsonService";
+    String JSON_SERVICE = "com.ljsw.component.json.JsonService";
 
     String ROUTER_UTIL_METHOD_ADDTO = "addTo";
 
