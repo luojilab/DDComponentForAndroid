@@ -156,24 +156,7 @@ public class AutowiredProcessor extends AbstractProcessor {
                         "jsonService", Modifier.PRIVATE).build();
                 helper.addField(jsonServiceField);
 
-
-//                String _statement =
-//                        " $T router = $T.getInstance();\n" +
-//                                " if (router.getService($T.class.getSimpleName()) != null) {\n" +
-//                                "      jsonService = ($T) router.getService($T.class.getSimpleName());\n" +
-//                                " }";
-
                 logger.info("======== inject jsonservice");
-
-//                injectMethodBuilder.addStatement("$T router = $T.getInstance()",
-//                        RouterClass,
-//                        RouterClass);
-//                injectMethodBuilder.beginControlFlow("if (router.getService($T.class.getSimpleName()) != null)",
-//                        ClassName.get(type_JsonService));
-//                injectMethodBuilder.addStatement("jsonService = ($T) router.getService($T.class.getSimpleName())",
-//                        ClassName.get(type_JsonService),
-//                        ClassName.get(type_JsonService));
-//                injectMethodBuilder.endControlFlow();
 
                 injectMethodBuilder.addStatement("jsonService = $T.Factory.getInstance().create()",
                         ClassName.get(type_JsonService));
