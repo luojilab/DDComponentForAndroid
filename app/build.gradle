@@ -26,11 +26,6 @@ android {
 
 dependencies {
     compile project(':componentservice')
-
-    compile project(':jsonlib')
-
-    compile project(':dilib')
-
 //    annotationProcessor project(':router-anno-compiler')
 }
 

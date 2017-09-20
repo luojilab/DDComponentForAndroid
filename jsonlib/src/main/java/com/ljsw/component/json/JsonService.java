@@ -1,9 +1,11 @@
-package com.mrzhang.componentservice.json;
+package com.ljsw.component.json;
+
+import com.ljsw.component.json.serviceimpl.JsonServiceImpl;
 
 import java.util.List;
 
 /**
- * <p><b>Package:</b> com.mrzhang.componentservice.json </p>
+ * <p><b>Package:</b> com.ljsw.component.json </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> JsonService </p>
  * <p><b>Description:</b> APIs provided by the JsonComponent.
@@ -21,5 +23,20 @@ public interface JsonService {
     <T> List<T> parseArray(String text, Class<T> clazz);
 
     String toJsonString(Object instance);
+
+    class Factory {
+        private static Factory instance;
+
+        public static Factory getInstance() {
+            if (instance == null) {
+                instance = new Factory();
+            }
+            return instance;
+        }
+
+        public JsonService create() {
+            return new JsonServiceImpl();
+        }
+    }
 
 }

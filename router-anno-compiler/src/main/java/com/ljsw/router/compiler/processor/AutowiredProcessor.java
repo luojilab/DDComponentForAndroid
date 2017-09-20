@@ -81,6 +81,7 @@ public class AutowiredProcessor extends AbstractProcessor {
     //    private static final ClassName ARouterClass = ClassName.get("com.alibaba.android.arouter.launcher", "ARouter");
     private static final ClassName AndroidLog = ClassName.get("android.util", "Log");
 
+    private static final String SUFFIX_AUTOWIRED = "$$Router$$Autowired";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
@@ -140,7 +141,7 @@ public class AutowiredProcessor extends AbstractProcessor {
                 String qualifiedName = parent.getQualifiedName().toString();
                 String packageName = qualifiedName.substring(0, qualifiedName.lastIndexOf("."));
 
-                String fileName = parent.getSimpleName() + "$$Router$$" + "Autowired";
+                String fileName = parent.getSimpleName() + SUFFIX_AUTOWIRED;
 
                 logger.info(">>> Start process " + childs.size() + " field in " + parent.getSimpleName() + " ... <<<");
 
@@ -153,14 +154,6 @@ public class AutowiredProcessor extends AbstractProcessor {
                         "jsonService", Modifier.PRIVATE).build();
                 helper.addField(jsonServiceField);
 
-                /*
-                * Router router = Router.getInstance();
-                    if (router.getService(JsonService.class.getSimpleName()) != null) {
-                        JsonService jsonService = (JsonService) router.getService(JsonService.class.getSimpleName());
-                    } else {
-                        throw new IllegalStateException("JsonService not found in Router");
-                    }
-                * */
 
 //                String _statement =
 //                        " $T router = $T.getInstance();\n" +

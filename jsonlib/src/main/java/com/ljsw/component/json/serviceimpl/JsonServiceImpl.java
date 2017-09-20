@@ -1,7 +1,7 @@
 package com.ljsw.component.json.serviceimpl;
 
 import com.alibaba.fastjson.JSON;
-import com.mrzhang.componentservice.json.JsonService;
+import com.ljsw.component.json.JsonService;
 
 import java.util.List;
 

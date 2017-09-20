@@ -2,13 +2,12 @@ package com.ljsw.component.di.serviceimpl;
 
 import android.util.LruCache;
 
-import com.mrzhang.component.componentlib.router.facade.ISyringe;
-import com.mrzhang.componentservice.di.AutowiredService;
+import com.ljsw.component.di.AutowiredService;
+import com.ljsw.component.di.route.ISyringe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mrzhang.component.componentlib.router.RouterConstants.SUFFIX_AUTOWIRED;
 
 /**
  * <p><b>Package:</b> com.ljsw.component.di.serviceimpl </p>
@@ -24,6 +23,8 @@ public class AutowiredServiceImpl implements AutowiredService {
     private LruCache<String, ISyringe> classCache = new LruCache<>(50);
     private List<String> blackList = new ArrayList<>();
 
+    //attention! make sure this keeps same with the one in AutowiredProcessor
+    private static final String SUFFIX_AUTOWIRED = "$$Router$$Autowired";
 
     @Override
     public void autowire(Object instance) {

@@ -1,7 +1,7 @@
-package com.mrzhang.component.componentlib.router.facade;
+package com.ljsw.component.di.route;
 
 /**
- * <p><b>Package:</b> com.mrzhang.component.componentlib.router.facade </p>
+ * <p><b>Package:</b> com.ljsw.component.di.route </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> ISyringe </p>
  * <p><b>Description:</b> desc the function of Syringe, one that used to inject

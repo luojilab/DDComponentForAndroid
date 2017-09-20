@@ -22,7 +22,6 @@ android {
 }
 
 dependencies {
-    compile project(':componentservice')
     compile 'com.alibaba:fastjson:1.1.63.android'
 
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
