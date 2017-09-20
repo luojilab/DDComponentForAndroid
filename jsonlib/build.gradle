@@ -1,26 +1,24 @@
-apply plugin: 'com.dd.comgradle'
+apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
+
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 14
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
 
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            minifyEnabled false
-        }
     }
-    resourcePrefix "json_"
 }
 
 dependencies {
@@ -31,9 +29,4 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-}
-
-combuild {
-    applicatonName = 'com.ljsw.component.json.runalone.application.JsonApplication'
-    isRegisterCompoAuto = true
 }
