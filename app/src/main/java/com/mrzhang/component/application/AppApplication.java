@@ -2,8 +2,10 @@ package com.mrzhang.component.application;
 
 import android.app.Application;
 
+import com.ljsw.component.di.serviceimpl.AutowiredServiceImpl;
 import com.ljsw.component.json.serviceimpl.JsonServiceImpl;
 import com.mrzhang.component.componentlib.router.Router;
+import com.mrzhang.componentservice.di.AutowiredService;
 import com.mrzhang.componentservice.json.JsonService;
 
 /**
@@ -21,7 +23,12 @@ public class AppApplication extends Application {
 //        Router.registerComponent("com.mrzhang.share.applike.ShareApplike");
 
         // register jsonService
-        Router.getInstance().addService(JsonService.class.getSimpleName(), new JsonServiceImpl());
+        Router.getInstance().addService(JsonService.class.getSimpleName(),
+                new JsonServiceImpl());
+
+        // register DI-AutowiredService
+        Router.getInstance().addService(AutowiredService.class.getSimpleName(),
+                new AutowiredServiceImpl());
     }
 
 
