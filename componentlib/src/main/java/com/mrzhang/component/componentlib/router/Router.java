@@ -8,9 +8,9 @@ import com.mrzhang.component.componentlib.applicationlike.IApplicationLike;
 import java.util.HashMap;
 
 /**
+ * Center router, works for component-dynamic-load/remove and services add/remove/get
  * Created by mrzhang on 2017/6/15.
  */
-
 public class Router {
 
     private HashMap<String, Object> services = new HashMap<>();
@@ -32,6 +32,7 @@ public class Router {
         }
         return instance;
     }
+
 
     public synchronized void addService(String serviceName, Object serviceImpl) {
         if (serviceName == null || serviceImpl == null) {

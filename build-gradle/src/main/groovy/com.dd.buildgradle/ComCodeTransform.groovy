@@ -92,7 +92,7 @@ public class ComCodeTransform extends Transform {
 
 
     private void getRealApplicationName(Collection<TransformInput> inputs) {
-        applicationName = project.extensions.combuild.applicatonName
+        applicationName = project.extensions.combuild.applicationName
         if (applicationName == null || applicationName.isEmpty()) {
             throw new RuntimeException("you should set applicationName in combuild")
         }

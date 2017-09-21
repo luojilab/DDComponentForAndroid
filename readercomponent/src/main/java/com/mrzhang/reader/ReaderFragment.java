@@ -25,11 +25,18 @@ public class ReaderFragment extends Fragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.readerbook_fragment_reader, container,
                     false);
+
+
+
             rootView.findViewById(R.id.tv_content).setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    UIRouter.getInstance().openUri(getActivity(), "componentdemo://share", null);
+                    Bundle bundle = new Bundle();
+                    final String _dto = "{\"s\":\"sss\"}";
+                    bundle.putString("bookName","testBookName");
+                    bundle.putString("testDto",_dto);
+                    UIRouter.getInstance().openUri(getActivity(), "componentdemo://share", bundle);
                 }
             });
 

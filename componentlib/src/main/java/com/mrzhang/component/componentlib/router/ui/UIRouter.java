@@ -9,16 +9,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
+ * Singleton implement of {@link IUIRouter}
+ * provides services for UI-Component
+ * <p>
  * Created by mrzhang on 2017/6/20.
  */
 
 public class UIRouter implements IUIRouter {
 
-    List<IComponentRouter> uiRouters = new ArrayList<IComponentRouter>();
-    HashMap<IComponentRouter, Integer> priorities = new HashMap<IComponentRouter, Integer>();
+    private List<IComponentRouter> uiRouters = new ArrayList<>();
+    private HashMap<IComponentRouter, Integer> priorities = new HashMap<>();
 
     private static volatile UIRouter instance;
 
@@ -52,7 +54,7 @@ public class UIRouter implements IUIRouter {
             i++;
         }
         uiRouters.add(i, router);
-        priorities.put(router, Integer.valueOf(priority));
+        priorities.put(router, priority);
     }
 
     @Override
@@ -75,7 +77,10 @@ public class UIRouter implements IUIRouter {
     public boolean openUri(Context context, String url, Bundle bundle) {
         url = url.trim();
         if (!TextUtils.isEmpty(url)) {
-            if (url.indexOf("://") < 0 && (!url.startsWith("tel:") || !url.startsWith("smsto:") || !url.startsWith("file:"))) {
+            if (!url.contains("://") &&
+                    (!url.startsWith("tel:") ||
+                            !url.startsWith("smsto:") ||
+                            !url.startsWith("file:"))) {
                 url = "http://" + url;
             }
             Uri uri = Uri.parse(url);
@@ -92,7 +97,7 @@ public class UIRouter implements IUIRouter {
                     return true;
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         return false;

@@ -6,25 +6,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.ljsw.router.facade.UiRouterMapperUtils;
+import com.ljsw.router.facade.annotation.Router;
 import com.mrzhang.component.componentlib.router.ui.IComponentRouter;
-import com.mrzhang.share.ShareActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by mrzhang on 2017/6/20.
  */
-
+@Router(classPath = ShareUIRouter.class)
 public class ShareUIRouter implements IComponentRouter {
 
-    private static final String SCHME = "componentdemo";
+    private static final String SCHEME = "componentdemo";
 
-    private static final String SHAREHOST = "share";
-
-    private static String[] HOSTS = new String[]{SHAREHOST};
+    private Map<String,Class> activitiesRouterMap = new HashMap<>();
 
     private static ShareUIRouter instance = new ShareUIRouter();
 
     private ShareUIRouter() {
-
+        UiRouterMapperUtils.fetchRouteForMe(getClass(), activitiesRouterMap);
     }
 
     public static ShareUIRouter getInstance() {
@@ -45,8 +47,9 @@ public class ShareUIRouter implements IComponentRouter {
             return true;
         }
         String host = uri.getHost();
-        if (SHAREHOST.equals(host)) {
-            Intent intent = new Intent(context, ShareActivity.class);
+        if (activitiesRouterMap.containsKey(host)) {
+            Class target = activitiesRouterMap.get(host);
+            Intent intent = new Intent(context, target);
             intent.putExtras(bundle == null ? new Bundle() : bundle);
             context.startActivity(intent);
             return true;
@@ -58,12 +61,8 @@ public class ShareUIRouter implements IComponentRouter {
     public boolean verifyUri(Uri uri) {
         String scheme = uri.getScheme();
         String host = uri.getHost();
-        if (SCHME.equals(scheme)) {
-            for (String str : HOSTS) {
-                if (str.equals(host)) {
-                    return true;
-                }
-            }
+        if (SCHEME.equals(scheme)) {
+            return activitiesRouterMap.containsKey(host);
         }
         return false;
     }

@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showFragment();
     }
 
+
     private void showFragment() {
         if (fragment != null) {
             ft = getSupportFragmentManager().beginTransaction();
