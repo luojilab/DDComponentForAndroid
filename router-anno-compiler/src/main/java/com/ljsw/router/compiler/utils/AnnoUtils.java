@@ -1,13 +1,11 @@
 package com.ljsw.router.compiler.utils;
 
 import com.ljsw.router.compiler.model.MethodInfo;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.lang.model.element.Element;
@@ -48,17 +46,6 @@ public class AnnoUtils {
         return element.getSimpleName().toString();
     }
 
-//    public static ParameterSpec generateMethodParameterSpec(String clzPkg,
-//                                                            String clzSimpleName,
-//                                                            String paramName) {
-//        ClassName cn = ClassName.get(clzPkg, clzSimpleName);
-//
-//        ParameterizedTypeName ptn =
-//                ParameterizedTypeName.get(cn);
-//
-//        return ParameterSpec.builder(ptn, paramName).build();
-//    }
-
     public static ParameterSpec generateMethodParameterSpec(TypeMirror typeMirror,
                                                             String paramName) {
         TypeName tn =
@@ -67,30 +54,5 @@ public class AnnoUtils {
         return ParameterSpec.builder(tn, paramName).build();
     }
 
-//    public static ParameterSpec generateMethodParameterSpec(Class clz,
-//                                                            String paramName) {
-//        ClassName cn = ClassName.get(clz);
-//
-//        ParameterizedTypeName ptn =
-//                ParameterizedTypeName.get(cn);
-//
-//        return ParameterSpec.builder(ptn, paramName).build();
-//    }
 
-//    public static String join(Iterator iterator, String separator) {
-//        if (separator == null) {
-//            separator = "";
-//        }
-//
-//        StringBuilder buf = new StringBuilder(256);
-//
-//        while (iterator.hasNext()) {
-//            buf.append(iterator.next());
-//            if (iterator.hasNext()) {
-//                buf.append(separator);
-//            }
-//        }
-//
-//        return buf.toString();
-//    }
 }

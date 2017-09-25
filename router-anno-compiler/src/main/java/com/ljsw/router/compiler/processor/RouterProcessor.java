@@ -71,7 +71,13 @@ public class RouterProcessor extends AbstractProcessor {
     private Types types;
     private Elements elements;
 
+    /**
+     * (group,hostInfo)
+     */
     private Map<String, HostInfo> routers;
+    /**
+     * (group,List(Node))
+     */
     private Map<String, List<Node>> routerNodes;
 
     private TypeMirror type_TextUtils;
@@ -141,58 +147,6 @@ public class RouterProcessor extends AbstractProcessor {
         return false;
     }
 
-//    @Deprecated
-//    private void write2Util() {
-//        Set<String> groups = routers.keySet();
-//
-//        ClassName type_UiRouterLoader = ClassName.get(elements.getTypeElement(TYPE_UIROUTER_LOADER));
-//        for (String group : groups) {
-//            logger.info(">>> write for group:" + group);
-//
-//            TypeMirror value = routers.get(group);
-//            String path = value.toString();
-//
-//            String pkg = path.substring(0, path.lastIndexOf("."));
-//            String cn = path.substring(path.lastIndexOf(".") + 1) + "Loader";
-//
-//            ParameterizedTypeName inputMapTypeOfGroup = ParameterizedTypeName.get(
-//                    ClassName.get(Map.class),
-//                    ClassName.get(String.class),
-//                    ClassName.get(Class.class)
-//            );
-//
-//            ParameterSpec groupParamSpec =
-//                    ParameterSpec.builder(inputMapTypeOfGroup, "mapper").build();
-//
-//
-//            MethodSpec.Builder loadIntoMethodOfRootBuilder =
-//                    MethodSpec.methodBuilder(ROUTER_UTIL_METHOD_ADDTO)
-//                            .addParameter(groupParamSpec)
-//                            .addAnnotation(Override.class)
-//                            .addModifiers(PUBLIC);
-//
-//            List<Node> nodes = routerNodes.get(group);
-//            for (Node node : nodes) {
-//                loadIntoMethodOfRootBuilder.addStatement(
-//                        "mapper.put($S,$T.class)",
-//                        node.getPath(),
-//                        ClassName.get((TypeElement) node.getRawType()));
-//            }
-//
-//
-//            try {
-//                JavaFile.builder(pkg, TypeSpec.classBuilder(cn)
-//                        .addModifiers(PUBLIC)
-//                        .addSuperinterface(type_UiRouterLoader)
-//                        .addMethod(loadIntoMethodOfRootBuilder.build())
-//                        .build()
-//                ).build().writeTo(mFiler);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
     private void generateRouterImpl() {
         Set<String> groups = routers.keySet();
 
@@ -255,6 +209,8 @@ public class RouterProcessor extends AbstractProcessor {
 
         TypeMirror type_Activity = elements.getTypeElement(ACTIVITY).asType();
 
+        Map<String, List<String>> cacheForConflictCheck = new HashMap<>();
+
         for (Element element : routeElements) {
             TypeMirror tm = element.asType();
             RouteNode route = element.getAnnotation(RouteNode.class);
@@ -263,9 +219,23 @@ public class RouterProcessor extends AbstractProcessor {
                 logger.info(">>> Found activity route: " + tm.toString() + " <<<");
 
                 String group = route.group();
+                List<String> groupPaths;
+
+                if (cacheForConflictCheck.containsKey(group)) {
+                    groupPaths = cacheForConflictCheck.get(group);
+                } else {
+                    groupPaths = new ArrayList<>();
+                    cacheForConflictCheck.put(group, groupPaths);
+                }
 
                 Node node = new Node();
-                node.setPath(route.path());
+                String path = route.path();
+
+                checkPath(group, path, groupPaths);
+
+                groupPaths.add(path);
+
+                node.setPath(path);
                 node.setPriority(route.priority());
                 node.setNodeType(NodeType.ACTIVITY);
                 node.setRawType(element);
@@ -281,6 +251,21 @@ public class RouterProcessor extends AbstractProcessor {
                 throw new IllegalStateException("only activity can be annotated by RouteNode");
             }
         }
+    }
+
+    private void checkPath(String group, String path, List<String> groupPaths) {
+        if (groupPaths.contains(path))
+            throw new IllegalStateException("conflict path in group:" + group + ",path is:" + path);
+
+        if (path == null || path.isEmpty() || !path.startsWith("/"))
+            throw new IllegalArgumentException("path cannot be null or empty,and should start with /,this is:" + path);
+
+        if (path.contains("//") || path.contains("&") || path.contains("?"))
+            throw new IllegalArgumentException("path should not contain // ,& or ?,this is:" + path);
+
+        if (path.endsWith("/"))
+            throw new IllegalArgumentException("path should not endWith /,this is:" + path
+                    + ";or append a token:index");
     }
 
     private void foundRouters(Set<? extends Element> routers) {
@@ -516,5 +501,6 @@ public class RouterProcessor extends AbstractProcessor {
 
         return openUriMethodSpecBuilder.build();
     }
+
 
 }
