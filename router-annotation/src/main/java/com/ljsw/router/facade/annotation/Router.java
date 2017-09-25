@@ -15,6 +15,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.CLASS)
 public @interface Router {
+    /**
+     * will removed, it is too heavy and confusing
+     * @return the interface class annotated with Router
+     */
+    @Deprecated
     Class classPath();
     String host();
     String group() default "default";
