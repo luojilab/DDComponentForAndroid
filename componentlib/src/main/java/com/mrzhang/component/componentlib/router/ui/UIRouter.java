@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.ljsw.router.facade.Constants;
 import com.ljsw.router.facade.annotation.Router;
 
 import java.lang.annotation.Annotation;
@@ -135,11 +136,12 @@ public class UIRouter implements IUIRouter {
         if (!clz.isInterface())
             throw new IllegalArgumentException("need a interface, but this isn't a interface:" + clz.getName());
 
-        Annotation router = clz.getAnnotation(Router.class);
+        Router router = clz.getAnnotation(Router.class);
         if (router == null)
             throw new IllegalArgumentException("not annotated with Router:" + clz.getName());
 
-        String path = clz.getName() + "Impl";
+        String path = Constants.ROUTERIMPL_OUTPUT_PKG +
+                Constants.DOT + router.group() + Constants.DOT + clz.getSimpleName() + "Impl";
         if (routerInstanceCache.containsKey(path))
             return routerInstanceCache.get(path);
 

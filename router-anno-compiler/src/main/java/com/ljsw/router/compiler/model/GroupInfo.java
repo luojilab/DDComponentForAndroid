@@ -10,21 +10,26 @@ import javax.lang.model.type.TypeMirror;
  * Created by leobert on 2017/9/25.
  */
 
-public class HostInfo {
+public class GroupInfo {
     private String host;
-    private TypeMirror interfaceTypeMirror;
+    private String outPutPath;
+    private String interfacePath;
 
-    public HostInfo(String host, TypeMirror interfaceTypeMirror) {
+    public GroupInfo(String host, String outPutPath, String interfacePath) {
         this.host = host;
-        this.interfaceTypeMirror = interfaceTypeMirror;
+        this.outPutPath = outPutPath;
+        this.interfacePath = interfacePath;
     }
 
     public String getHost() {
         return host;
     }
 
+    public String getOutPutPath() {
+        return outPutPath;
+    }
 
-    public TypeMirror getInterfaceTypeMirror() {
-        return interfaceTypeMirror;
+    public String getInterfacePath() {
+        return interfacePath;
     }
 }

@@ -1,9 +1,10 @@
 package com.ljsw.router.compiler.processor;
 
 import com.google.auto.service.AutoService;
-import com.ljsw.router.compiler.model.HostInfo;
+import com.ljsw.router.compiler.model.GroupInfo;
 import com.ljsw.router.compiler.utils.AnnoUtils;
 import com.ljsw.router.compiler.utils.Logger;
+import com.ljsw.router.facade.Constants;
 import com.ljsw.router.facade.annotation.RouteNode;
 import com.ljsw.router.facade.annotation.Router;
 import com.ljsw.router.facade.enums.NodeType;
@@ -39,7 +40,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -74,7 +74,7 @@ public class RouterProcessor extends AbstractProcessor {
     /**
      * (group,hostInfo)
      */
-    private Map<String, HostInfo> routers;
+    private Map<String, GroupInfo> routers;
     /**
      * (group,List(Node))
      */
@@ -152,22 +152,21 @@ public class RouterProcessor extends AbstractProcessor {
 
         for (String group : groups) {
             logger.info(">>> write for group:" + group);
-            HostInfo hostInfo = routers.get(group);
-            String path = hostInfo.getInterfaceTypeMirror().toString();
+            GroupInfo groupInfo = routers.get(group);
 
-            String claName = path + "Impl";
+            String claName = groupInfo.getOutPutPath() ;
             //pkg
             String pkg = claName.substring(0, claName.lastIndexOf("."));
             //simpleName
             String cn = claName.substring(claName.lastIndexOf(".") + 1);
             // superInterface ClassName
-            ClassName superInterface = ClassName.get(elements.getTypeElement(path));
+            ClassName superInterface = ClassName.get(elements.getTypeElement(groupInfo.getInterfacePath()));
 
-
+            logger.info(">>> :tag:");
             // private static Map<String,Class> routeMapper = new HashMap<String.Class>();
             FieldSpec routeMapperField = generateRouteMapperFieldSpec();
             //private static final String HOST = "xxx"
-            FieldSpec hostField = generateHostFieldSpec(hostInfo.getHost());
+            FieldSpec hostField = generateHostFieldSpec(groupInfo.getHost());
 
 
             /*
@@ -180,7 +179,7 @@ public class RouterProcessor extends AbstractProcessor {
 
 
             MethodSpec openUrl = generateOpenUri1();
-            logger.info(">>> :tag:");
+
             MethodSpec openUri = generateOpenUri2();
             MethodSpec verify = generateVerify();
 
@@ -277,15 +276,11 @@ public class RouterProcessor extends AbstractProcessor {
                 throw new IllegalStateException("duplicated group at annotation," +
                         "please check group:" + group);
 
-            //use exception to get path
-            TypeMirror value = null;
-            try {
-                router.classPath();
-            } catch (MirroredTypeException mte) {
-                value = mte.getTypeMirror();
-            }
+            String outPutPath = Constants.ROUTERIMPL_OUTPUT_PKG +
+                    Constants.DOT + group + Constants.DOT + element.getSimpleName() + "Impl";
 
-            this.routers.put(group, new HostInfo(host, value));
+            String interfacePath = ((TypeElement) element).getQualifiedName().toString();
+            this.routers.put(group, new GroupInfo(host, outPutPath,interfacePath));
         }
     }
 
@@ -314,7 +309,6 @@ public class RouterProcessor extends AbstractProcessor {
                 .initializer("$S", host)
                 .build();
     }
-
 
     private CodeBlock generateInitCodeBlock(String group) {
         CodeBlock.Builder initBlockBuilder = CodeBlock.builder();
