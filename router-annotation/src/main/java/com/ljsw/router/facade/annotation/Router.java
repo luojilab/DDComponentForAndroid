@@ -16,5 +16,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface Router {
     Class classPath();
+    String host();
     String group() default "default";
 }

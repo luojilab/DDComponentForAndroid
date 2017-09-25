@@ -36,7 +36,8 @@ public class ReaderFragment extends Fragment {
                     final String _dto = "{\"s\":\"sss\"}";
                     bundle.putString("bookName","testBookName");
                     bundle.putString("testDto",_dto);
-                    UIRouter.getInstance().openUri(getActivity(), "componentdemo://share", bundle);
+                    UIRouter.getInstance().openUri(getActivity(), "dunb://shareComponent/share", bundle);
+//                    "componentdemo://share"
                 }
             });
 

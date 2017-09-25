@@ -7,9 +7,12 @@ import java.util.Map;
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> UiRouterMapperUtils </p>
  * <p><b>Description:</b> used to fetch mapper from generated XXLoader class for XX </p>
+ *
+ * will removed, because the auto generated RouterClass can fetch Route
+ *
  * Created by leobert on 2017/9/19.
  */
-
+@Deprecated
 public class UiRouterMapperUtils {
     public static void fetchRouteForMe(Class clz, Map<String, Class> mapper) {
         if (clz == null)
