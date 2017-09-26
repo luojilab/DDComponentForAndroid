@@ -50,5 +50,8 @@ public interface Constants {
     String ROUTER_UTIL_METHOD_ADDTO = "addTo";
 
     String TYPE_UIROUTER_LOADER = "com.ljsw.router.facade.IUiRouterLoader";
+
+    String TYPE_COMPO_UIROTER_INTERFACE=
+            "com.mrzhang.component.componentlib.router.ui.IComponentRouter";
     
 }

@@ -14,7 +14,7 @@ import com.ljsw.router.facade.annotation.RouteNode;
 /**
  * Created by mrzhang on 2017/6/20.
  */
-@RouteNode(path = "share")
+@RouteNode(path = "/share",group = "share")
 public class ShareActivity extends AppCompatActivity {
 
     private static final String TAG = ShareActivity.class.getSimpleName();
