@@ -3,6 +3,26 @@
 
 demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.com/p/59822a7b2fad)
 
+### 分支说明：
+常驻分支：
+
+* master
+* dev
+* release
+
+功能性分支：
+
+* feature/xxxxx
+
+其中：
+master分支作为版本主干，控制release标签
+
+**dev分支作为开发主干分支**，feature类型分支从dev迁出，相关功能开发完成后合并到dev，版本功能开发完成后，从dev迁出合并到release分支，“测试”通过后合并到master，发布标签，再从master合并到dev继续迭代。
+
+**注意：** 发现项目的bug、优化建议可以建立issue，如果提交bug的修复代码，**pull-request朝dev分支提交**，带上issue号。
+
+原则上：分支合并操作由仓库主负责人操作。
+
 ### 实现功能：
 - 组件可以单独调试
 - 组件之间通过接口+实现的方式进行数据传输
@@ -14,12 +34,14 @@ demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.c
 ### 使用指南
 #### 1、主项目引用编译脚本
 在根目录的gradle.properties文件中，增加属性：
+
 ```ini
 mainmodulename=app
 ```
 其中mainmodulename是项目中的host工程，一般为app
 
 在根目录的build.gradle中增加配置
+
 ```gradle
 buildscript {
     repositories {
@@ -36,6 +58,7 @@ buildscript {
 
 #### 2、拆分组件为module工程
 在每个组件的工程目录下新建文件gradle.properties文件，增加以下配置：
+
 ```ini
 isRunAlone=true
 debugComponent=sharecomponent
@@ -45,12 +68,15 @@ compileComponent=com.mrzhang.share:sharecomponent
 
 #### 3、应用组件化编译脚本
 在组件和host的build.gradle都增加配置：
+
 ```gradle
 apply plugin: 'com.dd.comgradle'
 ```
+
 不需要在引用com.android.application或者com.android.library
 
 同时增加以下extension配置：
+
 ```gradle
 combuild {
     applicatonName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
