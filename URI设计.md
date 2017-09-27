@@ -30,10 +30,8 @@ UIRouter.getInstance().openUri(getActivity(), "componentdemo://share", bundle);
 
 ## 设计构想
 ### 协议部分
-有一些朋友提过issue：runalone时的传值问题。参考一些服务端的同事在一些非敏感接口同时兼容了query传值和表单传值的做法，我觉得Router部分兼容query传值和Intent的bundle传值是可取的。考虑到可能控制不住的场面。通过协议部分区分两种形式。
+协议部分将忽略，（逻辑中将移除scheme的部分）。
 
-* dunq: DDUiNavigation-QueryString 使用queryString传值
-* dunb: DDUiNavigation-Bundle 使用Bundle传值
 
 ### host部分
 我们可以将Component认为是不同的主机，给定不同的域名
@@ -49,6 +47,11 @@ UIRouter.getInstance().openUri(getActivity(), "componentdemo://share", bundle);
 计划中会按照注解的path生成一些常量，减少hardcode。这个时候group可能会有用哦。
 
 ### query部分
+有一些朋友提过issue：runalone时的传值问题。参考一些服务端的同事在一些非敏感接口同时兼容了query传值和表单传值的做法，我觉得Router部分兼容query传值和Intent的bundle传值是可取的。
+
 计划中需要支持使用query进行传值
+
+优先级：bundle > queryString
+当bundle中获取了相应的数据，即忽略queryString取值查询
 
 
