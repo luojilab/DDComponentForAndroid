@@ -8,8 +8,8 @@ import android.text.TextUtils;
 
 import com.ljsw.router.facade.Constants;
 import com.ljsw.router.facade.annotation.Router;
+import com.mrzhang.component.componentlib.router.UiActivityUri;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -93,6 +93,12 @@ public class UIRouter implements IUIRouter {
             Uri uri = Uri.parse(url);
             return openUri(context, uri, bundle);
         }
+        return true;
+    }
+
+    public boolean openUri(Context context, UiActivityUri uri, Bundle bundle) {
+        if (uri != null)
+            return openUri(context, uri.getUri(), bundle);
         return true;
     }
 

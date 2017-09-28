@@ -1,6 +1,8 @@
 package com.mrzhang.component.componentlib.router;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 /**
  * <p><b>Package:</b> com.mrzhang.component.componentlib.router </p>
@@ -35,7 +37,10 @@ public final class UiActivityUri {
         return path;
     }
 
+    private boolean needReformat = false;
+
     public void setQueryString(String queryString) {
+        needReformat = true;
         this.queryString = queryString;
     }
 
@@ -43,10 +48,14 @@ public final class UiActivityUri {
         return queryString;
     }
 
+    private Uri uri;
 
-
-    //    public  String getUri() {
-//
-//    }
-
+    public Uri getUri() {
+        if (uri == null || needReformat) {
+            String url = "http://"+getHost()+getPath() +
+                    (TextUtils.isEmpty(queryString)?"":"?"+queryString);
+           uri = Uri.parse(url);
+        }
+        return uri;
+    }
 }
