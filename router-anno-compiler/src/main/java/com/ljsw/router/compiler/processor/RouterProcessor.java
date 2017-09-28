@@ -120,6 +120,13 @@ public class RouterProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+       //test
+        try {
+            nestedClasses();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (CollectionUtils.isNotEmpty(set)) {
             Set<? extends Element> routeService =
                     roundEnvironment.getElementsAnnotatedWith(Router.class);
@@ -494,6 +501,51 @@ public class RouterProcessor extends AbstractProcessor {
         openUriMethodSpecBuilder.addStatement("return HOST.equals(host) && routeMapper.containsKey(path)");
 
         return openUriMethodSpecBuilder.build();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // just test nested class
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    private final String tacosPackage = "com.squareup.tacos";
+//    @Rule
+//    public final CompilationRule compilation = new CompilationRule();
+
+
+    public void nestedClasses() throws Exception {
+        ClassName taco = ClassName.get(tacosPackage, "Combo", "Taco");
+        ClassName topping = ClassName.get(tacosPackage, "Combo", "Taco", "Topping");
+        ClassName chips = ClassName.get(tacosPackage, "Combo", "Chips");
+        ClassName sauce = ClassName.get(tacosPackage, "Combo", "Sauce");
+        TypeSpec typeSpec = TypeSpec.classBuilder("Combo")
+                .addField(taco, "taco")
+                .addField(chips, "chips")
+                .addType(TypeSpec.classBuilder(taco.simpleName())
+                        .addModifiers(Modifier.STATIC)
+                        .addField(ParameterizedTypeName.get(ClassName.get(List.class), topping), "toppings")
+                        .addField(sauce, "sauce")
+                        .addType(TypeSpec.enumBuilder(topping.simpleName())
+                                .addEnumConstant("SHREDDED_CHEESE")
+                                .addEnumConstant("LEAN_GROUND_BEEF")
+                                .build())
+                        .build())
+                .addType(TypeSpec.classBuilder(chips.simpleName())
+                        .addModifiers(Modifier.STATIC)
+                        .addField(topping, "topping")
+                        .addField(sauce, "dippingSauce")
+                        .build())
+                .addType(TypeSpec.enumBuilder(sauce.simpleName())
+                        .addEnumConstant("SOUR_CREAM")
+                        .addEnumConstant("SALSA")
+                        .addEnumConstant("QUESO")
+                        .addEnumConstant("MILD")
+                        .addEnumConstant("FIRE")
+                        .build())
+                .build();
+
+        JavaFile.builder(tacosPackage, typeSpec).build().writeTo(mFiler);
     }
 
 

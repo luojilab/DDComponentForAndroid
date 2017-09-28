@@ -23,4 +23,5 @@ public @interface Router {
 //    Class classPath();
     String host();
     String group() default "default";
+    String alias() default "";
 }
