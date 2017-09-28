@@ -21,9 +21,10 @@ public interface Constants {
     String ANNOTATION_TYPE_ROUTE_NODE = ANNO_FACADE_PKG + ".annotation.RouteNode";
     String ANNOTATION_TYPE_ROUTER = ANNO_FACADE_PKG + ".annotation.Router";
     String ANNOTATION_TYPE_AUTOWIRED = ANNO_FACADE_PKG + ".annotation.Autowired";
+    String ANNOTATION_TYPE_UIROUTERSHOLDER = ANNO_FACADE_PKG + ".annotation.UiRoutersHolder";
+
 
     String PREFIX_OF_LOGGER = "[Router-Anno-Compiler]-- ";
-
 
     // System interface
     String ACTIVITY = "android.app.Activity";

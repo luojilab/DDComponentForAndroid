@@ -1,4 +1,4 @@
-package com.mrzhang.componentservice.address;
+package com.mrzhang.share.compouirouter;
 
 import com.ljsw.router.facade.annotation.Router;
 import com.ljsw.router.facade.annotation.UiRoutersHolder;
@@ -11,10 +11,12 @@ import com.ljsw.router.facade.annotation.UiRoutersHolder;
  *
  * <em> never do anything there!</em>
  *
+ * <em>attention it cannot cross module!</em>
+ *
  * all UiActivity defined a route will generate an
  * {@link com.mrzhang.component.componentlib.router.Address}
  * instance here, we will group them by 'component' and 'group'; </p>
- * when use {@link com.ljsw.router.facade.annotation.Router},
+ * when use {@link Router},
  * we defined a group and a host associated with it's component,
  * e.g. '@Router(host = "shareComponent",group = "share")'
  * we will get a inner class ShareComponent_Share, not graceful yeh? we can also use

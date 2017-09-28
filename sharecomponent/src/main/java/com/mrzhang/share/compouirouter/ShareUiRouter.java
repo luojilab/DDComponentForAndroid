@@ -10,6 +10,6 @@ import com.mrzhang.component.componentlib.router.ui.IComponentRouter;
  * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2017/9/25.
  */
-@Router(host = "shareComponent",group = "share")
+@Router(host = "shareComponent",group = "share",alias = "ShareCompo_Share")
 public interface ShareUiRouter extends IComponentRouter {
 }

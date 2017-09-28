@@ -7,6 +7,7 @@ import com.ljsw.router.compiler.utils.Logger;
 import com.ljsw.router.facade.Constants;
 import com.ljsw.router.facade.annotation.RouteNode;
 import com.ljsw.router.facade.annotation.Router;
+import com.ljsw.router.facade.annotation.UiRoutersHolder;
 import com.ljsw.router.facade.enums.NodeType;
 import com.ljsw.router.facade.model.Node;
 import com.squareup.javapoet.ClassName;
@@ -47,6 +48,7 @@ import javax.lang.model.util.Types;
 import static com.ljsw.router.compiler.utils.Constants.ACTIVITY;
 import static com.ljsw.router.compiler.utils.Constants.ANNOTATION_TYPE_ROUTER;
 import static com.ljsw.router.compiler.utils.Constants.ANNOTATION_TYPE_ROUTE_NODE;
+import static com.ljsw.router.compiler.utils.Constants.ANNOTATION_TYPE_UIROUTERSHOLDER;
 import static com.ljsw.router.compiler.utils.Constants.KEY_MODULE_NAME;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
@@ -63,7 +65,10 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 @AutoService(Processor.class)
 @SupportedOptions(KEY_MODULE_NAME)
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-@SupportedAnnotationTypes({ANNOTATION_TYPE_ROUTE_NODE, ANNOTATION_TYPE_ROUTER})
+@SupportedAnnotationTypes({
+        ANNOTATION_TYPE_ROUTE_NODE,
+        ANNOTATION_TYPE_ROUTER,
+        ANNOTATION_TYPE_UIROUTERSHOLDER})
 public class RouterProcessor extends AbstractProcessor {
     private Logger logger;
 
@@ -81,14 +86,12 @@ public class RouterProcessor extends AbstractProcessor {
     private Map<String, List<Node>> routerNodes;
 
     private TypeMirror type_TextUtils;
-    //    private TypeMirror type_List;
     private TypeMirror type_String;
     private TypeMirror type_Context;
     private TypeMirror type_Bundle;
     private TypeMirror type_Uri;
 
     private TypeName tn_ListString;
-
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -102,10 +105,10 @@ public class RouterProcessor extends AbstractProcessor {
         elements = processingEnv.getElementUtils();      // Get class meta.
 
         logger = new Logger(processingEnv.getMessager());   // Package the log utils.
+        logger.info("init");
 
 
         type_TextUtils = elements.getTypeElement("android.text.TextUtils").asType();
-//        type_List = elements.getTypeElement("java.util.List").asType();
         type_String = elements.getTypeElement("java.lang.String").asType();
         type_Context = elements.getTypeElement("android.content.Context").asType();
         type_Bundle = elements.getTypeElement("android.os.Bundle").asType();
@@ -120,13 +123,6 @@ public class RouterProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-       //test
-        try {
-            nestedClasses();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         if (CollectionUtils.isNotEmpty(set)) {
             Set<? extends Element> routeService =
                     roundEnvironment.getElementsAnnotatedWith(Router.class);
@@ -138,7 +134,8 @@ public class RouterProcessor extends AbstractProcessor {
             }
 
 
-            Set<? extends Element> routeNodes = roundEnvironment.getElementsAnnotatedWith(RouteNode.class);
+            Set<? extends Element> routeNodes =
+                    roundEnvironment.getElementsAnnotatedWith(RouteNode.class);
             try {
                 logger.info(">>> Found routes, start... <<<");
                 this.parseRouteNodes(routeNodes);
@@ -148,11 +145,23 @@ public class RouterProcessor extends AbstractProcessor {
 
             this.generateRouterImpl();
 
+            Set<? extends Element> placeHolder =
+                    roundEnvironment.getElementsAnnotatedWith(UiRoutersHolder.class);
+
+
+            try {
+                logger.info(">>> Generate PlaceHolder, start... <<<");
+                this.generatePlaceHolder(placeHolder);
+            } catch (Exception e) {
+                logger.error(e);
+            }
+
             return true;
         }
 
         return false;
     }
+
 
     private void generateRouterImpl() {
         Set<String> groups = routers.keySet();
@@ -161,15 +170,13 @@ public class RouterProcessor extends AbstractProcessor {
             logger.info(">>> write for group:" + group);
             GroupInfo groupInfo = routers.get(group);
 
-            String claName = groupInfo.getOutPutPath() ;
+            String claName = groupInfo.getOutPutPath();
             //pkg
             String pkg = claName.substring(0, claName.lastIndexOf("."));
             //simpleName
             String cn = claName.substring(claName.lastIndexOf(".") + 1);
             // superInterface ClassName
             ClassName superInterface = ClassName.get(elements.getTypeElement(groupInfo.getInterfacePath()));
-
-            logger.info(">>> :tag:");
             // private static Map<String,Class> routeMapper = new HashMap<String.Class>();
             FieldSpec routeMapperField = generateRouteMapperFieldSpec();
             //private static final String HOST = "xxx"
@@ -287,7 +294,7 @@ public class RouterProcessor extends AbstractProcessor {
                     Constants.DOT + group + Constants.DOT + element.getSimpleName() + "Impl";
 
             String interfacePath = ((TypeElement) element).getQualifiedName().toString();
-            this.routers.put(group, new GroupInfo(host, outPutPath,interfacePath));
+            this.routers.put(group, new GroupInfo(host, group, router.alias(), outPutPath, interfacePath));
         }
     }
 
@@ -505,48 +512,51 @@ public class RouterProcessor extends AbstractProcessor {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    // just test nested class
+    // generate PlaceHolder of Address to UiActivity
     ///////////////////////////////////////////////////////////////////////////
 
+    private void generatePlaceHolder(Set<? extends Element> placeHolder) throws IOException {
 
-    private final String tacosPackage = "com.squareup.tacos";
-//    @Rule
-//    public final CompilationRule compilation = new CompilationRule();
+        Set<String> groups = routers.keySet();
 
+        TypeMirror type_Address =
+                elements.getTypeElement("com.mrzhang.component.componentlib.router.Address").asType();
 
-    public void nestedClasses() throws Exception {
-        ClassName taco = ClassName.get(tacosPackage, "Combo", "Taco");
-        ClassName topping = ClassName.get(tacosPackage, "Combo", "Taco", "Topping");
-        ClassName chips = ClassName.get(tacosPackage, "Combo", "Chips");
-        ClassName sauce = ClassName.get(tacosPackage, "Combo", "Sauce");
-        TypeSpec typeSpec = TypeSpec.classBuilder("Combo")
-                .addField(taco, "taco")
-                .addField(chips, "chips")
-                .addType(TypeSpec.classBuilder(taco.simpleName())
-                        .addModifiers(Modifier.STATIC)
-                        .addField(ParameterizedTypeName.get(ClassName.get(List.class), topping), "toppings")
-                        .addField(sauce, "sauce")
-                        .addType(TypeSpec.enumBuilder(topping.simpleName())
-                                .addEnumConstant("SHREDDED_CHEESE")
-                                .addEnumConstant("LEAN_GROUND_BEEF")
-                                .build())
-                        .build())
-                .addType(TypeSpec.classBuilder(chips.simpleName())
-                        .addModifiers(Modifier.STATIC)
-                        .addField(topping, "topping")
-                        .addField(sauce, "dippingSauce")
-                        .build())
-                .addType(TypeSpec.enumBuilder(sauce.simpleName())
-                        .addEnumConstant("SOUR_CREAM")
-                        .addEnumConstant("SALSA")
-                        .addEnumConstant("QUESO")
-                        .addEnumConstant("MILD")
-                        .addEnumConstant("FIRE")
-                        .build())
-                .build();
+        TypeName addressFieldTypeName = TypeName.get(type_Address);
 
-        JavaFile.builder(tacosPackage, typeSpec).build().writeTo(mFiler);
+        for (Element element : placeHolder) {
+            String path = ((TypeElement) element).getQualifiedName().toString();
+            String pkg = path.substring(0, path.lastIndexOf("."));
+
+            String rootClzName = "$$" + element.getSimpleName().toString();
+            TypeSpec.Builder typeSpecBuilder = TypeSpec.classBuilder(rootClzName)
+                    .addJavadoc("It's just a \" chicken ribs \" - tasteless when eaten but a pity to throw away")
+                    .addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+
+            for (String group : groups) {
+                GroupInfo info = routers.get(group);
+
+                String innerClzName = info.getAlias();
+                ClassName groupClzName = ClassName.get(pkg, rootClzName, innerClzName);
+
+                TypeSpec.Builder groupClzTypeBuilder = TypeSpec.classBuilder(groupClzName.simpleName())
+                        .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL);
+                List<Node> nodes = routerNodes.get(group);
+
+                for (Node node : nodes) {
+                    groupClzTypeBuilder.addField(FieldSpec.builder(
+                            addressFieldTypeName,
+                            Node.formatAlias(node),
+                            Modifier.PUBLIC,
+                            Modifier.STATIC,
+                            Modifier.FINAL).initializer("new $T($S,$S)", type_Address, info.getHost(), node.getPath())
+                            .build()
+                    );
+                }
+
+                typeSpecBuilder.addType(groupClzTypeBuilder.build());
+            }
+            JavaFile.builder(pkg, typeSpecBuilder.build()).build().writeTo(mFiler);
+        }
     }
-
-
 }

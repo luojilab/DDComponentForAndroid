@@ -4,6 +4,8 @@ import com.ljsw.router.facade.enums.NodeType;
 
 import javax.lang.model.element.Element;
 
+import static com.ljsw.router.facade.Utils.checkNull;
+
 /**
  * <p><b>Package:</b> com.ljsw.router.facade.model </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
@@ -57,5 +59,11 @@ public class Node {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public static String formatAlias(Node node) {
+        checkNull(node, "node");
+        String path = node.getPath();
+        return ("UI" + path.replaceAll("/", "_")).toUpperCase();
     }
 }
