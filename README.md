@@ -3,26 +3,6 @@
 
 demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.com/p/59822a7b2fad)
 
-### 分支说明：
-常驻分支：
-
-* master
-* dev
-* release
-
-功能性分支：
-
-* feature/xxxxx
-
-其中：
-master分支作为版本主干，控制release标签
-
-**dev分支作为开发主干分支**，feature类型分支从dev迁出，相关功能开发完成后合并到dev，版本功能开发完成后，从dev迁出合并到release分支，“测试”通过后合并到master，发布标签，再从master合并到dev继续迭代。
-
-**注意：** 发现项目的bug、优化建议可以建立issue，如果提交bug的修复代码，**pull-request朝dev分支提交**，带上issue号。
-
-原则上：分支合并操作由仓库主负责人操作。
-
 ### 实现功能：
 - 组件可以单独调试
 - 组件之间通过接口+实现的方式进行数据传输
