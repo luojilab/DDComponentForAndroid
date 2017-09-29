@@ -71,16 +71,6 @@ public class AutowiredProcessor extends AbstractProcessor {
      */
     private Map<TypeElement, List<Element>> parentAndChild = new HashMap<>();
 
-//    private static final ClassName UIRouterClass =
-//            ClassName.get("com.mrzhang.component.componentlib.router.ui", "UIRouter");
-//
-//    private static final ClassName RouterClass =
-//            ClassName.get("com.mrzhang.component.componentlib.router", "Router");
-
-    private static final ClassName JsonServiceInterface =
-            ClassName.get("com.ljsw.component.json","JsonService");
-
-    //    private static final ClassName ARouterClass = ClassName.get("com.alibaba.android.arouter.launcher", "ARouter");
     private static final ClassName AndroidLog = ClassName.get("android.util", "Log");
 
     private static final String SUFFIX_AUTOWIRED = "$$Router$$Autowired";
@@ -262,8 +252,6 @@ public class AutowiredProcessor extends AbstractProcessor {
     }
 
     /**
-     * Categories field, find his papa.
-     *
      * @param elements Field need autowired
      */
     private void categories(Set<? extends Element> elements) throws IllegalAccessException {
