@@ -4,7 +4,9 @@ import com.google.auto.service.AutoService;
 import com.ljsw.router.compiler.model.GroupInfo;
 import com.ljsw.router.compiler.utils.AnnoUtils;
 import com.ljsw.router.compiler.utils.Logger;
+import com.ljsw.router.compiler.utils.TypeUtils;
 import com.ljsw.router.facade.Constants;
+import com.ljsw.router.facade.annotation.Autowired;
 import com.ljsw.router.facade.annotation.RouteNode;
 import com.ljsw.router.facade.annotation.Router;
 import com.ljsw.router.facade.annotation.UiRoutersHolder;
@@ -21,6 +23,7 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,6 +96,8 @@ public class RouterProcessor extends AbstractProcessor {
 
     private TypeName tn_ListString;
 
+    private TypeUtils typeUtils;
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
@@ -117,6 +122,8 @@ public class RouterProcessor extends AbstractProcessor {
         ClassName string = ClassName.get("java.lang", "String");
         ClassName list = ClassName.get("java.util", "List");
         tn_ListString = ParameterizedTypeName.get(list, string);
+
+        typeUtils = new TypeUtils(types, elements);
 
         logger.info(">>> RouteProcessor init. <<<");
     }
@@ -177,10 +184,12 @@ public class RouterProcessor extends AbstractProcessor {
             String cn = claName.substring(claName.lastIndexOf(".") + 1);
             // superInterface ClassName
             ClassName superInterface = ClassName.get(elements.getTypeElement(groupInfo.getInterfacePath()));
-            // private static Map<String,Class> routeMapper = new HashMap<String.Class>();
+            // private static Map<String,Class> routeMapper = new HashMap<String,Class>();
             FieldSpec routeMapperField = generateRouteMapperFieldSpec();
             //private static final String HOST = "xxx"
             FieldSpec hostField = generateHostFieldSpec(groupInfo.getHost());
+            //private static Map<String, Integer> paramsType = new HashMap<String,Integer>();
+            FieldSpec paramsConfigsTypeField = generateParamsConfigFieldSpec();
 
 
             /*
@@ -206,6 +215,7 @@ public class RouterProcessor extends AbstractProcessor {
                         .addSuperinterface(superInterface)
                         .addField(routeMapperField)
                         .addField(hostField)
+                        .addField(paramsConfigsTypeField)
                         .addStaticBlock(initBlock)
                         .addMethod(openUrl)
                         .addMethod(openUri)
@@ -217,6 +227,7 @@ public class RouterProcessor extends AbstractProcessor {
             }
         }
     }
+
 
     private void parseRouteNodes(Set<? extends Element> routeElements) {
 
@@ -241,6 +252,20 @@ public class RouterProcessor extends AbstractProcessor {
                     cacheForConflictCheck.put(group, groupPaths);
                 }
 
+                // get fields need to autowired
+                Map<String, Integer> paramsType = new HashMap<>();
+                for (Element field : element.getEnclosedElements()) {
+
+                    // TODO: 2017/9/29 consider if Autowired support componentService found one day
+
+                    if (field.getKind().isField() && field.getAnnotation(Autowired.class) != null) {
+                        Autowired paramConfig = field.getAnnotation(Autowired.class);
+                        paramsType.put(StringUtils.isEmpty(paramConfig.name()) ?
+                                        field.getSimpleName().toString() : paramConfig.name(),
+                                typeUtils.typeExchange(field));
+                    }
+                }
+
                 Node node = new Node();
                 String path = route.path();
 
@@ -252,6 +277,7 @@ public class RouterProcessor extends AbstractProcessor {
                 node.setPriority(route.priority());
                 node.setNodeType(NodeType.ACTIVITY);
                 node.setRawType(element);
+                node.setParamsType(paramsType);
 
                 if (routerNodes.containsKey(group)) {
                     routerNodes.get(group).add(node);
@@ -299,6 +325,7 @@ public class RouterProcessor extends AbstractProcessor {
     }
 
     private static final String mRouteMapperFieldName = "routeMapper";
+    private static final String mParamsConfigFieldName = "paramsConfigs";
 
     private FieldSpec generateRouteMapperFieldSpec() {
         ParameterizedTypeName routeMapperFieldTypeName = ParameterizedTypeName.get(
@@ -324,6 +351,35 @@ public class RouterProcessor extends AbstractProcessor {
                 .build();
     }
 
+    private FieldSpec generateParamsConfigFieldSpec() {
+        ClassName paramsConfigCn =
+                ClassName.get("com.ljsw.router.facade.model", "NodeParamsConfig");
+
+        ClassName hashMapCn = ClassName.get("java.util", "HashMap");
+
+        TypeMirror type_ParamsConfig =
+                elements.getTypeElement("com.ljsw.router.facade.model.NodeParamsConfig").asType();
+
+        TypeName tn =
+                ParameterizedTypeName.get(type_ParamsConfig);
+
+        ParameterizedTypeName paramsConfigFieldTypeName = ParameterizedTypeName.get(
+                ClassName.get(Map.class),
+                ClassName.get(String.class),
+                paramsConfigCn);
+
+
+        ParameterizedTypeName paramsConfigFieldInitializeTypeName =
+                ParameterizedTypeName.get(hashMapCn,
+                        ParameterizedTypeName.get(type_String),
+                        tn);
+
+        return FieldSpec
+                .builder(paramsConfigFieldTypeName, mParamsConfigFieldName, Modifier.PRIVATE, Modifier.STATIC)
+                .initializer("new $T()", paramsConfigFieldInitializeTypeName)
+                .build();
+    }
+
     private CodeBlock generateInitCodeBlock(String group) {
         CodeBlock.Builder initBlockBuilder = CodeBlock.builder();
 
@@ -333,12 +389,35 @@ public class RouterProcessor extends AbstractProcessor {
             return initBlockBuilder.build();
         }
 
+        ClassName paramsConfigCn =
+                ClassName.get("com.ljsw.router.facade.model", "NodeParamsConfig");
 
+        int i = 0;
         for (Node node : nodes) {
             initBlockBuilder.addStatement(
                     mRouteMapperFieldName + ".put($S,$T.class)",
                     node.getPath(),
                     ClassName.get((TypeElement) node.getRawType()));
+
+            String configName = "config" + i;
+
+            Map<String, Integer> paramsType = node.getParamsType();
+            if (paramsType == null || paramsType.isEmpty())
+                continue;
+
+            initBlockBuilder.addStatement("$T $L = new $T()",
+                    paramsConfigCn, configName, paramsConfigCn);
+
+            for (String name :paramsType.keySet()) {
+                initBlockBuilder.addStatement(
+                        configName + ".add($S,$L)",
+                        name, paramsType.get(name));
+            }
+
+            initBlockBuilder.addStatement(
+                    mParamsConfigFieldName + ".put($S,$L)",
+                    node.getPath(), configName);
+            i++;
         }
 
         return initBlockBuilder.build();
@@ -396,7 +475,7 @@ public class RouterProcessor extends AbstractProcessor {
      * }
      * <p>
      * 2
-     * String scheme = uri.getScheme();
+     * //String scheme = uri.getScheme();
      * String host = uri.getHost();
      * <p>
      * 3
@@ -412,6 +491,7 @@ public class RouterProcessor extends AbstractProcessor {
      * if (routeMapper.containsKey(path)) {
      * Class target = routeMapper.get(path);
      * Intent intent = new Intent(context, target);
+     * intent.setData(uri)
      * intent.putExtras(bundle == null ? new Bundle() : bundle);
      * //暂未支持startActivityForResult
      * context.startActivity(intent);
@@ -448,7 +528,7 @@ public class RouterProcessor extends AbstractProcessor {
         openUriMethodSpecBuilder.endControlFlow();
 
         //2
-        openUriMethodSpecBuilder.addStatement("$T scheme = uri.getScheme()", type_String);
+        //openUriMethodSpecBuilder.addStatement("$T scheme = uri.getScheme()", type_String);
         openUriMethodSpecBuilder.addStatement("$T host = uri.getHost()", type_String);
 
         //3
@@ -467,6 +547,7 @@ public class RouterProcessor extends AbstractProcessor {
         openUriMethodSpecBuilder.beginControlFlow("if (routeMapper.containsKey(path))");
         openUriMethodSpecBuilder.addStatement("Class target = routeMapper.get(path)");
         openUriMethodSpecBuilder.addStatement("$T intent = new $T(context, target)", type_Intent, type_Intent);
+        openUriMethodSpecBuilder.addStatement("intent.setData(uri)");
         openUriMethodSpecBuilder.addStatement("intent.putExtras(bundle == null ? new Bundle() : bundle)");
         openUriMethodSpecBuilder.addStatement("context.startActivity(intent)");
         openUriMethodSpecBuilder.addStatement("return true");

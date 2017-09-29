@@ -2,6 +2,8 @@ package com.ljsw.router.facade.model;
 
 import com.ljsw.router.facade.enums.NodeType;
 
+import java.util.Map;
+
 import javax.lang.model.element.Element;
 
 import static com.ljsw.router.facade.Utils.checkNull;
@@ -19,7 +21,9 @@ public class Node {
     private Element rawType;        // Raw type of route
     private Class<?> destination;   // Destination
     private String path;            // Path of route
-    private int priority = -1;      // The smaller the number, the higher the priority
+    private int priority = -1;
+    private Map<String, Integer> paramsType;
+
 
     public NodeType getNodeType() {
         return nodeType;
@@ -59,6 +63,14 @@ public class Node {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public Map<String, Integer> getParamsType() {
+        return paramsType;
+    }
+
+    public void setParamsType(Map<String, Integer> paramsType) {
+        this.paramsType = paramsType;
     }
 
     public static String formatAlias(Node node) {
