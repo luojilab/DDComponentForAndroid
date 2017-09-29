@@ -11,8 +11,13 @@ import com.ljsw.component.json.JsonService;
 import com.ljsw.router.facade.annotation.Autowired;
 import com.ljsw.router.facade.annotation.RouteNode;
 
+
 /**
- * Created by mrzhang on 2017/6/20.
+ * 正确的测试url：会打开本页面
+ * //shareComponent/share?bookName=testBookName&testDto={'s':'sss'}&b1=true&b2=true&testChar=a
+ * <p>
+ * 错误的测试url：会打开主页
+ * //shareComponent/dummy?bookName=testBookName&testDto={'s':'sss'}&b1=true&b2=true&testChar=a" target="_blank">app</a></li>
  */
 @RouteNode(path = "/share", group = "share")
 public class ShareActivity extends AppCompatActivity {

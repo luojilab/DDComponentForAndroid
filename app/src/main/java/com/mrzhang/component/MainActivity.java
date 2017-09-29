@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.ljsw.router.facade.annotation.RouteNode;
 import com.mrzhang.component.componentlib.router.Router;
 import com.mrzhang.componentservice.readerbook.ReadBookService;
 
+@RouteNode(path = "/index",group = "home")
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Fragment fragment;
