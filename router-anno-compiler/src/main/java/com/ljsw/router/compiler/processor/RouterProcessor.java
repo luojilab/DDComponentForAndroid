@@ -543,11 +543,18 @@ public class RouterProcessor extends AbstractProcessor {
         TypeMirror type_Intent =
                 elements.getTypeElement("android.content.Intent").asType();
 
+        TypeMirror type_Util =
+                elements.getTypeElement("com.mrzhang.component.componentlib.router.ui.utils.ParamsUtils").asType();
+
         //5
         openUriMethodSpecBuilder.beginControlFlow("if (routeMapper.containsKey(path))");
         openUriMethodSpecBuilder.addStatement("Class target = routeMapper.get(path)");
         openUriMethodSpecBuilder.addStatement("$T intent = new $T(context, target)", type_Intent, type_Intent);
         openUriMethodSpecBuilder.addStatement("intent.setData(uri)");
+
+        openUriMethodSpecBuilder.addStatement("bundle = $T.parseIfNeed(bundle,uri,$L.get(path))",
+                type_Util,mParamsConfigFieldName);
+
         openUriMethodSpecBuilder.addStatement("intent.putExtras(bundle == null ? new Bundle() : bundle)");
         openUriMethodSpecBuilder.addStatement("context.startActivity(intent)");
         openUriMethodSpecBuilder.addStatement("return true");

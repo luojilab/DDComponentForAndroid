@@ -14,7 +14,7 @@ import com.ljsw.router.facade.annotation.RouteNode;
 /**
  * Created by mrzhang on 2017/6/20.
  */
-@RouteNode(path = "/share",group = "share")
+@RouteNode(path = "/share", group = "share")
 public class ShareActivity extends AppCompatActivity {
 
     private static final String TAG = ShareActivity.class.getSimpleName();
@@ -37,6 +37,15 @@ public class ShareActivity extends AppCompatActivity {
     @Autowired
     TestDto testDto;
 
+    @Autowired
+    boolean b1;
+
+    @Autowired
+    Boolean b2 = Boolean.valueOf(false);
+
+    @Autowired
+    char testChar;
+
     private JsonService jsonService = JsonService.Factory.getInstance().create();
     private AutowiredService autowiredService = AutowiredService.Factory.getInstance().create();
 
@@ -48,9 +57,15 @@ public class ShareActivity extends AppCompatActivity {
 
 
         TextView textView = (TextView) findViewById(R.id.share_tv_tag);
-        textView.setText("share: " + bookName);
 
-        Log.d(TAG, "dto:\r" + (jsonService.toJsonString(testDto)));
+        String debug = "share: " + bookName + "\r\n" +
+                "dto:\r" + (jsonService.toJsonString(testDto)) + "\r\n"
+                + "b1:" + b1 + "\r\n"
+                + "b2:" + b2 + "\r\n"
+                + "testChar:" + testChar;
+        textView.setText(debug);
+
+        Log.d(TAG, debug);
 
     }
 
