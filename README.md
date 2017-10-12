@@ -59,7 +59,7 @@ apply plugin: 'com.dd.comgradle'
 
 ```gradle
 combuild {
-    applicatonName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
+    applicationName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
     isRegisterCompoAuto = false
 }
 ```
