@@ -53,7 +53,7 @@ apply plugin: 'com.dd.comgradle'
 同时增加以下extension配置：
 ```gradle
 combuild {
-    applicatonName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
+    applicationName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
     isRegisterCompoAuto = false
 }
 ```

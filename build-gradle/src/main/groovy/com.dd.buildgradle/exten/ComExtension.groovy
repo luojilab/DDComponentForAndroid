@@ -12,7 +12,7 @@ public class ComExtension {
      * 当前组件的applicatonName，用于字节码插入。
      * 当isRegisterCompoAuto==true的时候是必须的
      */
-    String applicatonName
+    String applicationName
 
 
 }

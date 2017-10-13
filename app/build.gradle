@@ -29,7 +29,7 @@ dependencies {
 }
 
 combuild {
-    applicatonName = 'com.mrzhang.component.application.AppApplication'
+    applicationName = 'com.mrzhang.component.application.AppApplication'
     isRegisterCompoAuto = true
 }
 
