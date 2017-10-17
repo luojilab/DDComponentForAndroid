@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.uninstall_share:
                 Router.unregisterComponent("com.mrzhang.share.applike.ShareApplike");
                 break;
+            default:break;
         }
     }
 }

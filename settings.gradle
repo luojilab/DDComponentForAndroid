@@ -1,1 +1,16 @@
-include ':app', ':componentlib', ':readercomponent', ':sharecomponent', ':componentservice', ':build-gradle', ':basiclib', ':basicres'
+def getProject() {
+    ArrayList<String> allProjects = new ArrayList<String>()
+    allProjects.add(":app")
+    allProjects.add(":componentlib")
+    allProjects.add(":readercomponent")
+    allProjects.add(":sharecomponent")
+    allProjects.add(":componentservice")
+    allProjects.add(":build-gradle")
+    allProjects.add(":basiclib")
+    allProjects.add(":basicres")
+    return allProjects
+}
+
+for (String project : getProject()) {
+    include(project)
+}
