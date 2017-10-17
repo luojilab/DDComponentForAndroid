@@ -25,4 +25,6 @@
 #-renamesourcefileattribute SourceFile
 -keep class com.mrzhang.component.componentlib.** {*;}
 -keep class * implements com.mrzhang.component.componentlib.applicationlike.IApplicationLike {*;}
-
+-dontwarn okio.**
+-dontwarn okhttp3.**
+-dontwarn com.squareup.**

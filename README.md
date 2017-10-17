@@ -6,7 +6,7 @@ demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.c
 ### 实现功能：
 - 组件可以单独调试
 - 组件之间通过接口+实现的方式进行数据传输
-- 使用schme和host路由的方式进行activity之间的跳转
+- 使用scheme和host路由的方式进行activity之间的跳转
 - 任意组件可以充当host，集成其他组件进行集成调试
 - 可以动态对已集成的组件进行加载和卸载
 - 杜绝组件之前相互耦合，代码完全隔离，彻底解耦
@@ -14,12 +14,14 @@ demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.c
 ### 使用指南
 #### 1、主项目引用编译脚本
 在根目录的gradle.properties文件中，增加属性：
+
 ```ini
 mainmodulename=app
 ```
 其中mainmodulename是项目中的host工程，一般为app
 
 在根目录的build.gradle中增加配置
+
 ```gradle
 buildscript {
     repositories {
@@ -36,6 +38,7 @@ buildscript {
 
 #### 2、拆分组件为module工程
 在每个组件的工程目录下新建文件gradle.properties文件，增加以下配置：
+
 ```ini
 isRunAlone=true
 debugComponent=sharecomponent
@@ -45,15 +48,18 @@ compileComponent=com.mrzhang.share:sharecomponent
 
 #### 3、应用组件化编译脚本
 在组件和host的build.gradle都增加配置：
+
 ```gradle
 apply plugin: 'com.dd.comgradle'
 ```
+
 不需要在引用com.android.application或者com.android.library
 
 同时增加以下extension配置：
+
 ```gradle
 combuild {
-    applicatonName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
+    applicationName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
     isRegisterCompoAuto = false
 }
 ```

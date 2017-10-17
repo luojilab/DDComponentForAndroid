@@ -22,17 +22,6 @@ android {
 
     resourcePrefix "share_"
 
-    sourceSets {
-        main {
-            if (isRunAlone.toBoolean()) {
-                manifest.srcFile 'src/main/runalone/AndroidManifest.xml'
-                java.srcDirs = ['src/main/java', 'src/main/runalone/java']
-                res.srcDirs = ['src/main/res', 'src/main/runalone/res']
-            } else {
-                manifest.srcFile 'src/main/AndroidManifest.xml'
-            }
-        }
-    }
 }
 
 dependencies {
@@ -40,6 +29,6 @@ dependencies {
 }
 
 combuild {
-    applicatonName = 'com.mrzhang.share.runalone.application.ShareApplication'
+    applicationName = 'com.mrzhang.share.runalone.application.ShareApplication'
     isRegisterCompoAuto = true
 }

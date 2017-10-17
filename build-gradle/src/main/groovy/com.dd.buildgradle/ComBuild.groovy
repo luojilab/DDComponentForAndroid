@@ -31,8 +31,8 @@ public class ComBuild implements Plugin<Project> {
         //对于isRunAlone==true的情况需要根据实际情况修改其值，
         // 但如果是false，则不用修改，该module作为一个lib，运行module:assembleRelease则发布aar到中央仓库
         boolean isRunAlone = Boolean.parseBoolean((project.properties.get("isRunAlone")))
+        String mainmodulename = project.rootProject.property("mainmodulename")
         if (isRunAlone && assembleTask.isAssemble) {
-            String mainmodulename = project.rootProject.property("mainmodulename")
             //对于要编译的组件和主项目，isRunAlone修改为true，其他组件都强制修改为false
             //这就意味着组件不能引用主项目，这在层级结构里面也是这么规定的
             if (module.equals(compilemodule) || module.equals(mainmodulename)) {
@@ -46,6 +46,15 @@ public class ComBuild implements Plugin<Project> {
         //根据配置添加各种组件依赖，并且自动化生成组件加载代码
         if (isRunAlone) {
             project.apply plugin: 'com.android.application'
+            if (!module.equals(mainmodulename)) {
+                project.android.sourceSets {
+                    main {
+                        manifest.srcFile 'src/main/runalone/AndroidManifest.xml'
+                        java.srcDirs = ['src/main/java', 'src/main/runalone/java']
+                        res.srcDirs = ['src/main/res', 'src/main/runalone/res']
+                    }
+                }
+            }
             System.out.println("apply plugin is " + 'com.android.application');
             if (assembleTask.isAssemble && module.equals(compilemodule)) {
                 compileComponents(assembleTask, project)
@@ -102,7 +111,9 @@ public class ComBuild implements Plugin<Project> {
     private AssembleTask getTaskInfo(List<String> taskNames) {
         AssembleTask assembleTask = new AssembleTask();
         for (String task : taskNames) {
-            if (task.toUpperCase().contains("ASSEMBLE") || task.toUpperCase().contains("RESGUARD")) {
+            if (task.toUpperCase().contains("ASSEMBLE")
+                    || task.contains("aR")
+                    || task.toUpperCase().contains("RESGUARD")) {
                 if (task.toUpperCase().contains("DEBUG")) {
                     assembleTask.isDebug = true;
                 }

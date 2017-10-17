@@ -75,7 +75,10 @@ public class UIRouter implements IUIRouter {
     public boolean openUri(Context context, String url, Bundle bundle) {
         url = url.trim();
         if (!TextUtils.isEmpty(url)) {
-            if (url.indexOf("://") < 0 && (!url.startsWith("tel:") || !url.startsWith("smsto:") || !url.startsWith("file:"))) {
+            if (!url.contains("://") &&
+                    (!url.startsWith("tel:") ||
+                            !url.startsWith("smsto:") ||
+                            !url.startsWith("file:"))) {
                 url = "http://" + url;
             }
             Uri uri = Uri.parse(url);
@@ -92,7 +95,7 @@ public class UIRouter implements IUIRouter {
                     return true;
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         return false;
