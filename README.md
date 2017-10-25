@@ -65,6 +65,13 @@ combuild {
 ```
 有关isRegisterCompoAuto的解释请参见上文第二篇文章
 
+#### 4、混淆
+在混淆文件中增加如下配置
+```
+-keep class com.mrzhang.component.componentlib.** {*;}
+-keep class * implements com.mrzhang.component.componentlib.applicationlike.IApplicationLike {*;}
+```
+
 关于如何定制化，请参看 [Wiki](https://github.com/luojilab/DDComponentForAndroid/wiki)
 
 ### License
