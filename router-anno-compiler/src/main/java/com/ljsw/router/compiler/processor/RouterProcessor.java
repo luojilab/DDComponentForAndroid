@@ -11,7 +11,9 @@ import com.ljsw.router.facade.annotation.RouteNode;
 import com.ljsw.router.facade.annotation.Router;
 import com.ljsw.router.facade.annotation.UiRoutersHolder;
 import com.ljsw.router.facade.enums.NodeType;
+import com.ljsw.router.facade.model.Address;
 import com.ljsw.router.facade.model.Node;
+import com.ljsw.router.facade.model.NodeParamsConfig;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
@@ -23,11 +25,14 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,10 +73,10 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 @AutoService(Processor.class)
 @SupportedOptions(KEY_MODULE_NAME)
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-@SupportedAnnotationTypes({
-        ANNOTATION_TYPE_ROUTE_NODE,
-        ANNOTATION_TYPE_ROUTER,
-        ANNOTATION_TYPE_UIROUTERSHOLDER})
+//@SupportedAnnotationTypes({
+//        ANNOTATION_TYPE_ROUTE_NODE,
+//        ANNOTATION_TYPE_ROUTER,
+//        ANNOTATION_TYPE_UIROUTERSHOLDER})
 public class RouterProcessor extends AbstractProcessor {
     private Logger logger;
 
@@ -98,9 +103,28 @@ public class RouterProcessor extends AbstractProcessor {
 
     private TypeUtils typeUtils;
 
+    private String PATH_BEAN_PARAMSCONFIG = NodeParamsConfig.class.getName();
+
+    private String PATH_UTIL_PARAMPARSER;//= "osp.leobert.android.component.router.utils.ParamsUtils";
+
+    private String PATH_BEAN_ADDRESS = Address.class.getName();
+
+    @Override
+    public Set<String> getSupportedAnnotationTypes() {
+        return new HashSet<>(Arrays.asList(
+                ANNOTATION_TYPE_ROUTE_NODE,
+                ANNOTATION_TYPE_ROUTER,
+                ANNOTATION_TYPE_UIROUTERSHOLDER
+        ));
+    }
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
+
+        logger = new Logger(processingEnv.getMessager());   // Package the log utils.
+        logger.info(">>>>parse options<<<");
+        parseOptionParams(processingEnv.getOptions());
 
         routers = new HashMap<>();
         routerNodes = new HashMap<>();
@@ -109,7 +133,6 @@ public class RouterProcessor extends AbstractProcessor {
         types = processingEnv.getTypeUtils();            // Get type utils.
         elements = processingEnv.getElementUtils();      // Get class meta.
 
-        logger = new Logger(processingEnv.getMessager());   // Package the log utils.
         logger.info("init");
 
 
@@ -126,6 +149,18 @@ public class RouterProcessor extends AbstractProcessor {
         typeUtils = new TypeUtils(types, elements);
 
         logger.info(">>> RouteProcessor init. <<<");
+    }
+
+    private void parseOptionParams(Map<String, String> options) {
+        if (MapUtils.isNotEmpty(options)) {
+            PATH_UTIL_PARAMPARSER = options.get("path_util_paramparser");
+        }
+
+
+        if (StringUtils.isEmpty(PATH_UTIL_PARAMPARSER)) {
+            logger.error("please set 'path_util_paramparser' in options");
+            throw new IllegalStateException("no path_util_paramparser found");
+        }
     }
 
     @Override
@@ -353,12 +388,13 @@ public class RouterProcessor extends AbstractProcessor {
 
     private FieldSpec generateParamsConfigFieldSpec() {
         ClassName paramsConfigCn =
-                ClassName.get("com.ljsw.router.facade.model", "NodeParamsConfig");
+                ClassName.get(NodeParamsConfig.class.getPackage().getName(),
+                        NodeParamsConfig.class.getSimpleName());
 
         ClassName hashMapCn = ClassName.get("java.util", "HashMap");
 
         TypeMirror type_ParamsConfig =
-                elements.getTypeElement("com.ljsw.router.facade.model.NodeParamsConfig").asType();
+                elements.getTypeElement(PATH_BEAN_PARAMSCONFIG).asType();
 
         TypeName tn =
                 ParameterizedTypeName.get(type_ParamsConfig);
@@ -390,7 +426,8 @@ public class RouterProcessor extends AbstractProcessor {
         }
 
         ClassName paramsConfigCn =
-                ClassName.get("com.ljsw.router.facade.model", "NodeParamsConfig");
+                ClassName.get(NodeParamsConfig.class.getPackage().getName(),
+                        NodeParamsConfig.class.getSimpleName());
 
         int i = 0;
         for (Node node : nodes) {
@@ -408,7 +445,7 @@ public class RouterProcessor extends AbstractProcessor {
             initBlockBuilder.addStatement("$T $L = new $T()",
                     paramsConfigCn, configName, paramsConfigCn);
 
-            for (String name :paramsType.keySet()) {
+            for (String name : paramsType.keySet()) {
                 initBlockBuilder.addStatement(
                         configName + ".add($S,$L)",
                         name, paramsType.get(name));
@@ -543,8 +580,7 @@ public class RouterProcessor extends AbstractProcessor {
         TypeMirror type_Intent =
                 elements.getTypeElement("android.content.Intent").asType();
 
-        TypeMirror type_Util =
-                elements.getTypeElement("com.mrzhang.component.componentlib.router.ui.utils.ParamsUtils").asType();
+        TypeMirror type_Util = elements.getTypeElement(PATH_UTIL_PARAMPARSER).asType();
 
         //5
         openUriMethodSpecBuilder.beginControlFlow("if (routeMapper.containsKey(path))");
@@ -553,7 +589,7 @@ public class RouterProcessor extends AbstractProcessor {
         openUriMethodSpecBuilder.addStatement("intent.setData(uri)");
 
         openUriMethodSpecBuilder.addStatement("bundle = $T.parseIfNeed(bundle,uri,$L.get(path))",
-                type_Util,mParamsConfigFieldName);
+                type_Util, mParamsConfigFieldName);
 
         openUriMethodSpecBuilder.addStatement("intent.putExtras(bundle == null ? new Bundle() : bundle)");
         openUriMethodSpecBuilder.addStatement("context.startActivity(intent)");
@@ -607,8 +643,7 @@ public class RouterProcessor extends AbstractProcessor {
 
         Set<String> groups = routers.keySet();
 
-        TypeMirror type_Address =
-                elements.getTypeElement("com.mrzhang.component.componentlib.router.Address").asType();
+        TypeMirror type_Address = elements.getTypeElement(PATH_BEAN_ADDRESS).asType();
 
         TypeName addressFieldTypeName = TypeName.get(type_Address);
 
@@ -647,4 +682,5 @@ public class RouterProcessor extends AbstractProcessor {
             JavaFile.builder(pkg, typeSpecBuilder.build()).build().writeTo(mFiler);
         }
     }
+
 }

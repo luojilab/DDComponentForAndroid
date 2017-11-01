@@ -11,6 +11,20 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        path_util_paramparser: 'com.mrzhang.component.componentlib.router.ui.utils.ParamsUtils',
+                        path_json_service    : 'com.ljsw.component.json.JsonService',
+                        path_isyringe        : 'com.ljsw.component.di.route.ISyringe'
+//                        path_util_paramparser: 'osp.leobert.android.component.router.utils.ParamsUtils',
+//                        path_json_service    : 'osp.leobert.android.common.json.JsonService',
+//                        path_isyringe        : 'osp.leobert.android.common.di.ISyringe'
+
+                ]
+
+            }
+        }
     }
 
     buildTypes {

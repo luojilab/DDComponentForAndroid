@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.ljsw.router.facade.model.Address;
+
 /**
  * <p><b>Package:</b> com.mrzhang.component.componentlib.router </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>

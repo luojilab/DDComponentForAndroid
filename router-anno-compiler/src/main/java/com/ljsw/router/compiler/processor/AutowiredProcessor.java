@@ -20,7 +20,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,12 +57,10 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 @AutoService(Processor.class)
 @SupportedOptions(KEY_MODULE_NAME)
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-@SupportedAnnotationTypes({ANNOTATION_TYPE_AUTOWIRED})
+//@SupportedAnnotationTypes({ANNOTATION_TYPE_AUTOWIRED})
 public class AutowiredProcessor extends AbstractProcessor {
     private static final String TAG = AutowiredProcessor.class.getSimpleName();
-
     private Logger logger;
-
     private Filer mFiler;
     private Types types;
     private TypeUtils typeUtils;
@@ -75,9 +75,24 @@ public class AutowiredProcessor extends AbstractProcessor {
 
     private static final String SUFFIX_AUTOWIRED = "$$Router$$Autowired";
 
+    private String PATH_TYPE_ISYRINGE;// = "osp.leobert.android.common.di.ISyringe";
+
+    private String PATH_TYPE_JSON_SERVICE;// = "osp.leobert.android.common.json.JsonService";
+
+    /*`
+    *  path_util_paramparser: 'osp.leobert.android.component.router.utils.ParamsUtils',
+                        path_json_service    : 'osp.leobert.android.common.json.JsonService',
+                        path_isyringe        : 'osp.leobert.android.common.di.ISyringe'
+
+    * */
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
+
+        logger = new Logger(processingEnv.getMessager());   // Package the log utils.
+        logger.info(">>>>parse options<<<<  :"+processingEnvironment.getOptions().size());
+        parseOptionParams(processingEnvironment.getOptions());
 
         mFiler = processingEnv.getFiler();                  // Generate class.
         types = processingEnv.getTypeUtils();            // Get type utils.
@@ -85,9 +100,32 @@ public class AutowiredProcessor extends AbstractProcessor {
 
         typeUtils = new TypeUtils(types, elements);
 
-        logger = new Logger(processingEnv.getMessager());   // Package the log utils.
 
         logger.info(">>> AutowiredProcessor init. <<<");
+    }
+
+    private void parseOptionParams(Map<String, String> options) {
+        if (MapUtils.isNotEmpty(options)) {
+            PATH_TYPE_ISYRINGE = options.get("path_isyringe");
+            PATH_TYPE_JSON_SERVICE = options.get("path_json_service");
+        }
+
+
+        if (StringUtils.isEmpty(PATH_TYPE_ISYRINGE)) {
+            logger.error("set 'path_isyringe' in options");
+            throw new IllegalStateException("no path_isyringe found");
+        }
+        if (StringUtils.isEmpty(PATH_TYPE_JSON_SERVICE)) {
+            logger.error("set 'path_json_service' in options");
+            throw new IllegalStateException("no path_json_service found");
+        }
+    }
+
+    @Override
+    public Set<String> getSupportedAnnotationTypes() {
+        return new HashSet<>(Collections.singletonList(
+                ANNOTATION_TYPE_AUTOWIRED
+        ));
     }
 
     @Override
@@ -108,9 +146,9 @@ public class AutowiredProcessor extends AbstractProcessor {
     }
 
     private void generateHelper() throws IOException, IllegalAccessException {
-        TypeElement type_ISyringe = elements.getTypeElement(Constants.ISYRINGE);
+        TypeElement type_ISyringe = elements.getTypeElement(PATH_TYPE_ISYRINGE);
 
-        TypeElement type_JsonService = elements.getTypeElement(Constants.JSON_SERVICE);
+        TypeElement type_JsonService = elements.getTypeElement(PATH_TYPE_JSON_SERVICE);
 
         TypeMirror activityTm = elements.getTypeElement(Constants.ACTIVITY).asType();
         TypeMirror fragmentTm = elements.getTypeElement(Constants.FRAGMENT).asType();
@@ -278,3 +316,4 @@ public class AutowiredProcessor extends AbstractProcessor {
     }
 
 }
+
