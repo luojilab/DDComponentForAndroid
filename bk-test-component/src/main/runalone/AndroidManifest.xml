@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="osp.leobert.bk_test_component">
+
+    <application
+        android:name="com.ljsw.bktest.runalone.application.BkApplication"
+        android:allowBackup="true"
+        android:label="bktest"
+        android:supportsRtl="true"
+        android:theme="@style/commonAppTheme"
+        tools:replace="android:label">
+        <activity android:name=".SimpleActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

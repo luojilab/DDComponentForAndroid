@@ -1,4 +1,4 @@
-include ':app', ':jsonlib', ':dilib',
+include ':app', ':jsonlib', ':dilib', ':bk-test-component',
         ':componentlib',
         ':readercomponent',
         ':sharecomponent',

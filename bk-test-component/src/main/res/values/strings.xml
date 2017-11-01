@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">bk-test-component</string>
+    <string name="field_method">Field and method binding for Android views.</string>
+    <string name="by_jake_wharton">by Jake Wharton</string>
+    <string name="say_hello">Say Hello</string>
+</resources>

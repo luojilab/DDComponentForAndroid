@@ -25,6 +25,13 @@
             android:textColor="@color/common_color_black" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_navigate_bktest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="进入butterknife测试"
+        android:textColor="@color/common_color_black" />
+
     <FrameLayout
         android:id="@+id/tab_content"
         android:layout_width="fill_parent"

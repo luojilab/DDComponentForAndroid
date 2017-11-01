@@ -9,7 +9,12 @@ import android.widget.Button;
 
 import com.ljsw.router.facade.annotation.RouteNode;
 import com.mrzhang.component.componentlib.router.Router;
+import com.mrzhang.component.componentlib.router.ui.UIRouter;
 import com.mrzhang.componentservice.readerbook.ReadBookService;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 @RouteNode(path = "/index",group = "home")
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -19,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button installReadBookBtn;
     Button uninstallReadBtn;
+
+    @BindView(R2.id.btn_navigate_bktest) Button btnNavToBktest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         installReadBookBtn.setOnClickListener(this);
         uninstallReadBtn.setOnClickListener(this);
         showFragment();
+
+//        findViewById(R.id.btn_navigate_bktest).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navigateToBktest();
+//            }
+//        });
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.btn_navigate_bktest) void navigateToBktest() {
+        UIRouter.getInstance()
+                .openUri(MainActivity.this,
+                        "https://bkComponent/demo",
+                        null);
     }
 
 
@@ -59,4 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+
 }

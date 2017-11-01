@@ -5,12 +5,13 @@ apply plugin: 'com.jakewharton.butterknife'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
     defaultConfig {
-        applicationId "com.mrzhang.androidcomponent"
         minSdkVersion 15
         targetSdkVersion 14
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
@@ -27,31 +28,36 @@ android {
 
             }
         }
-
     }
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-
-        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    resourcePrefix "bk_"
+
 }
+
 
 dependencies {
     compile project(':componentservice')
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor project(':router-anno-compiler')
+    compile project(':router-annotation')
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
 
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 
 combuild {
-    applicationName = 'com.mrzhang.component.application.AppApplication'
+    applicationName = 'com.ljsw.bktest.runalone.application.BkApplication'
     isRegisterCompoAuto = true
 }
-
