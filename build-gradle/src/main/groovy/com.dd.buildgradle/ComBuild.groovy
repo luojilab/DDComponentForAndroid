@@ -154,14 +154,14 @@ public class ComBuild implements Plugin<Project> {
             if (str.contains(":")) {
                 File file = project.file("../componentrelease/" + str.split(":")[1] + "-release.aar")
                 if (file.exists()) {
-                    project.dependencies.add("compile", str + "-release@aar")
-                    System.out.println("add dependencies : " + str + "-release@aar");
+                    project.dependencies.add("runtimeOnly", str + "-release@aar")
+                    System.out.println("add runtimeOnly dependencies : " + str + "-release@aar");
                 } else {
                     throw new RuntimeException(str + " not found ! maybe you should generate a new one ")
                 }
             } else {
-                project.dependencies.add("compile", project.project(':' + str))
-                System.out.println("add dependencies project : " + str);
+                project.dependencies.add("runtimeOnly", project.project(':' + str))
+                System.out.println("add runtimeOnly dependencies project : " + str);
             }
         }
     }

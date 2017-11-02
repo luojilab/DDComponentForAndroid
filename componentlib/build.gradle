@@ -5,7 +5,7 @@ targetCompatibility = "1.7"
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 14
@@ -60,4 +60,17 @@ task buildJarAndCopy(dependsOn: "buildJar", type: Copy) {
     from(project.buildDir.absolutePath + "/libs")
     include(sdk_baseName + "-" + sdk_appendix + "-" + sdk_version + ".jar")
     into("release")
+}
+
+
+apply plugin: 'maven'
+group = 'com.mrzhang.component.componentlib'
+version = '0.0.1'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
 }

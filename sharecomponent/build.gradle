@@ -2,7 +2,7 @@ apply plugin: 'com.dd.comgradle'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 15
@@ -26,9 +26,22 @@ android {
 
 dependencies {
     compile project(':componentservice')
+    implementation 'com.tencent.bugly:crashreport:2.6.5'
 }
 
 combuild {
     applicationName = 'com.mrzhang.share.runalone.application.ShareApplication'
     isRegisterCompoAuto = true
+}
+
+apply plugin: 'maven'
+group = 'com.mrzhang.share'
+version = '0.0.1'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
 }

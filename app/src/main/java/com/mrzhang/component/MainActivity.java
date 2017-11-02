@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         installReadBookBtn.setOnClickListener(this);
         uninstallReadBtn.setOnClickListener(this);
         showFragment();
+
     }
 
     private void showFragment() {
