@@ -22,7 +22,7 @@ android {
 }
 
 dependencies {
-    compile project(':componentlib')
-    compile project(':basicres')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':componentlib')
+    api project(':basicres')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

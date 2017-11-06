@@ -1,12 +1,12 @@
 apply plugin: 'com.dd.comgradle'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 14
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 
@@ -25,8 +25,7 @@ android {
 }
 
 dependencies {
-    compile project(':componentservice')
-    implementation 'com.tencent.bugly:crashreport:2.6.5'
+    api project(':componentservice')
 }
 
 combuild {
