@@ -68,6 +68,9 @@ combuild {
 #### 4、混淆
 在混淆文件中增加如下配置
 ```
+-keep interface * {
+  <methods>;
+}
 -keep class com.mrzhang.component.componentlib.** {*;}
 -keep class * implements com.mrzhang.component.componentlib.applicationlike.IApplicationLike {*;}
 ```
