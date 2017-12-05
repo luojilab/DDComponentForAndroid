@@ -7,10 +7,10 @@ import org.gradle.api.Task
 
 class ComBuild implements Plugin<Project> {
 
-    private final String MAINMODULE = "mainmodulename"
-    private final String DEDAULT = "app"
-    private final String ALLMODULE = "all"
-    private final String TAG = "ComBuild --->"
+    private def MAINMODULE = "mainmodulename"
+    private def DEDAULT = "app"
+    private def ALLMODULE = "all"
+    private def TAG = "ComBuild --->"
     //默认是app，直接运行assembleRelease的时候，等同于运行app:assembleRelease
     private def compileModule = DEDAULT
 
@@ -159,8 +159,8 @@ class ComBuild implements Plugin<Project> {
                 def aarPath = "../componentrelease/${component.split(":")[1]}-release.aar"
                 File file = project.file(aarPath)
                 if (file.exists()) {
-                    project.dependencies.add("compile", "$aarPath")
-                    System.out.println("$TAG add dependencies : $aarPath")
+                    project.dependencies.add("compile", component)
+                    System.out.println("$TAG add dependencies : $component")
                 } else {
                     throw new RuntimeException("$TAG $aarPath not found ! maybe you should generate a new one ")
                 }

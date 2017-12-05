@@ -3,12 +3,13 @@
   <groupId>com.mrzhang.andcomponent</groupId>
   <artifactId>build-gradle</artifactId>
   <versioning>
-    <release>0.0.3</release>
+    <release>0.0.4</release>
     <versions>
       <version>0.0.1</version>
       <version>0.0.2</version>
       <version>0.0.3</version>
+      <version>0.0.4</version>
     </versions>
-    <lastUpdated>20171205091532</lastUpdated>
+    <lastUpdated>20171205093353</lastUpdated>
   </versioning>
 </metadata>
