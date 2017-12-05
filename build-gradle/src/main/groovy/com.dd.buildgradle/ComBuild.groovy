@@ -153,21 +153,21 @@ class ComBuild implements Plugin<Project> {
             return
         }
         for (String component : compileComponents) {
-            System.out.println("$TAG add compile component $component")
+            System.out.println("$TAG adding compile component [$component]")
             //modulePackage:module语法格式，添加依赖aar
             if (component.contains(":")) {
                 def aarPath = "../componentrelease/${component.split(":")[1]}-release.aar"
                 File file = project.file(aarPath)
                 if (file.exists()) {
-                    project.dependencies.add("compile", component)
-                    System.out.println("$TAG add dependencies : $component")
+                    project.dependencies.add("compile", "$component-release@aar")
+                    System.out.println("$TAG add dependencies : [$component-release@aar]")
                 } else {
                     throw new RuntimeException("$TAG $aarPath not found ! maybe you should generate a new one ")
                 }
             } else {
                 //module语法格式，添加project依赖
                 project.dependencies.add("compile", project.project(":$component"))
-                System.out.println("$TAG add dependencies project : $component")
+                System.out.println("$TAG add dependencies project : [$component]")
             }
         }
     }
