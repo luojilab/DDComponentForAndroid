@@ -15,7 +15,7 @@ repositories {
 }
 
 group = 'com.mrzhang.andcomponent'
-version = '0.0.2'
+version = '0.0.4'
 
 uploadArchives {
     repositories {
