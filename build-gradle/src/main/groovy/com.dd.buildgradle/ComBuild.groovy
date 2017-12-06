@@ -159,14 +159,14 @@ class ComBuild implements Plugin<Project> {
                 def aarPath = "../componentrelease/${component.split(":")[1]}-release.aar"
                 File file = project.file(aarPath)
                 if (file.exists()) {
-                    project.dependencies.add("compile", "$component-release@aar")
+                    project.dependencies.add("implementation", "$component-release@aar")
                     System.out.println("$TAG add dependencies : [$component-release@aar]")
                 } else {
                     throw new RuntimeException("$TAG $aarPath not found ! maybe you should generate a new one ")
                 }
             } else {
                 //module语法格式，添加project依赖
-                project.dependencies.add("compile", project.project(":$component"))
+                project.dependencies.add("implementation", project.project(":$component"))
                 System.out.println("$TAG add dependencies project : [$component]")
             }
         }

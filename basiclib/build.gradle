@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
 
     defaultConfig {
         minSdkVersion 15
@@ -22,12 +21,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestApi('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
-    testCompile 'junit:junit:4.12'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    api 'com.android.support:appcompat-v7:26.1.0'
+    testApi 'junit:junit:4.12'
+    api 'com.squareup.okhttp3:okhttp:3.4.1'
+    api 'com.squareup.picasso:picasso:2.5.2'
 }
