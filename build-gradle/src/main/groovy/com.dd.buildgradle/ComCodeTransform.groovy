@@ -12,7 +12,7 @@ class ComCodeTransform extends Transform {
     private Project project
     private ClassPool classPool
     private String applicationName;
-    private def TAG = "ComCodeTransform --->"
+    private def TAG = "ComBuildTransform --->"
     def RegisterComponentSuper = "com.mrzhang.component.componentlib.applicationlike.IApplicationLike"
 
     ComCodeTransform(Project project) {
@@ -78,7 +78,9 @@ class ComCodeTransform extends Transform {
                         if (classNameTemp.endsWith(".class")) {
                             String className = classNameTemp.substring(1, classNameTemp.length() - 6)
                             if (className == applicationName) {
+                                System.out.println("$TAG [$className] injectApplicationCode begin")
                                 injectApplicationCode(applications.get(0), activators, fileName)
+                                System.out.println("$TAG [$className] injectApplicationCode success ")
                             }
                         }
                     }
@@ -102,24 +104,23 @@ class ComCodeTransform extends Transform {
 
 
     private void injectApplicationCode(CtClass ctClassApplication, List<CtClass> activators, String patch) {
-        System.out.println("$TAG injectApplicationCode begin")
         ctClassApplication.defrost()
+        def insertCode = getAutoLoadComCode(activators)
+        System.out.println("$TAG >>>>>>>>>> $insertCode ")
         try {
             CtMethod attachBaseContextMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
-            attachBaseContextMethod.insertAfter(getAutoLoadComCode(activators))
+            attachBaseContextMethod.insertAfter(insertCode)
         } catch (CannotCompileException | NotFoundException ignored) {
             StringBuilder methodBody = new StringBuilder()
             methodBody.append("protected void onCreate() {")
             methodBody.append("super.onCreate();")
-            methodBody.append(getAutoLoadComCode(activators))
+            methodBody.append(insertCode)
             methodBody.append("}")
             ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
         } catch (Exception ignored) {
         }
         ctClassApplication.writeFile(patch)
         ctClassApplication.detach()
-
-        System.out.println("$TAG injectApplicationCode success ")
     }
 
     private String getAutoLoadComCode(List<CtClass> activators) {
