@@ -7,11 +7,13 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
-public class ComCodeTransform extends Transform {
+class ComCodeTransform extends Transform {
 
     private Project project
-    ClassPool classPool
-    String applicationName;
+    private ClassPool classPool
+    private String applicationName;
+    private def TAG = "ComCodeTransform --->"
+    def RegisterComponentSuper = "com.mrzhang.component.componentlib.applicationlike.IApplicationLike"
 
     ComCodeTransform(Project project) {
         this.project = project
@@ -19,32 +21,32 @@ public class ComCodeTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        getRealApplicationName(transformInvocation.getInputs());
+        getRealApplicationName(transformInvocation.getInputs())
         classPool = new ClassPool()
         project.android.bootClasspath.each {
             classPool.appendClassPath((String) it.absolutePath)
         }
-        def box = ConvertUtils.toCtClasses(transformInvocation.getInputs(), classPool)
+        def box = ConvertUtils.toCtClasses(transformInvocation.inputs, classPool)
 
         //要收集的application，一般情况下只有一个
-        List<CtClass> applications = new ArrayList<>();
+        List<CtClass> applications = new ArrayList<>()
         //要收集的applicationlikes，一般情况下有几个组件就有几个applicationlike
-        List<CtClass> activators = new ArrayList<>();
+        List<CtClass> activators = new ArrayList<>()
 
         for (CtClass ctClass : box) {
             if (isApplication(ctClass)) {
                 applications.add(ctClass)
-                continue;
+                continue
             }
             if (isActivator(ctClass)) {
                 activators.add(ctClass)
             }
         }
         for (CtClass ctClass : applications) {
-            System.out.println("application is   " + ctClass.getName());
+            System.out.println("$TAG application is   " + ctClass.getName())
         }
         for (CtClass ctClass : activators) {
-            System.out.println("applicationlike is   " + ctClass.getName());
+            System.out.println("$TAG applicationlike is   " + ctClass.getName())
         }
 
         transformInvocation.inputs.each { TransformInput input ->
@@ -75,8 +77,8 @@ public class ComCodeTransform extends Transform {
                         String classNameTemp = filePath.replace(fileName, "").replace("\\", ".").replace("/", ".")
                         if (classNameTemp.endsWith(".class")) {
                             String className = classNameTemp.substring(1, classNameTemp.length() - 6)
-                            if (className.equals(applicationName)) {
-                                injectApplicationCode(applications.get(0), activators, fileName);
+                            if (className == applicationName) {
+                                injectApplicationCode(applications.get(0), activators, fileName)
                             }
                         }
                     }
@@ -100,61 +102,56 @@ public class ComCodeTransform extends Transform {
 
 
     private void injectApplicationCode(CtClass ctClassApplication, List<CtClass> activators, String patch) {
-        System.out.println("injectApplicationCode begin");
-        ctClassApplication.defrost();
+        System.out.println("$TAG injectApplicationCode begin")
+        ctClassApplication.defrost()
         try {
             CtMethod attachBaseContextMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
             attachBaseContextMethod.insertAfter(getAutoLoadComCode(activators))
-        } catch (CannotCompileException | NotFoundException e) {
-            StringBuilder methodBody = new StringBuilder();
-            methodBody.append("protected void onCreate() {");
-            methodBody.append("super.onCreate();");
-            methodBody.
-                    append(getAutoLoadComCode(activators));
-            methodBody.append("}");
-            ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication));
-        } catch (Exception e) {
-
+        } catch (CannotCompileException | NotFoundException ignored) {
+            StringBuilder methodBody = new StringBuilder()
+            methodBody.append("protected void onCreate() {")
+            methodBody.append("super.onCreate();")
+            methodBody.append(getAutoLoadComCode(activators))
+            methodBody.append("}")
+            ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
+        } catch (Exception ignored) {
         }
         ctClassApplication.writeFile(patch)
         ctClassApplication.detach()
 
-        System.out.println("injectApplicationCode success ");
+        System.out.println("$TAG injectApplicationCode success ")
     }
 
     private String getAutoLoadComCode(List<CtClass> activators) {
-        StringBuilder autoLoadComCode = new StringBuilder();
+        StringBuilder autoLoadComCode = new StringBuilder()
         for (CtClass ctClass : activators) {
             autoLoadComCode.append("new " + ctClass.getName() + "()" + ".onCreate();")
         }
-
         return autoLoadComCode.toString()
     }
 
-
     private boolean isApplication(CtClass ctClass) {
         try {
-            if (applicationName != null && applicationName.equals(ctClass.getName())) {
-                return true;
+            if (applicationName != null && applicationName == ctClass.getName()) {
+                return true
             }
-        } catch (Exception e) {
-            println "class not found exception class name:  " + ctClass.getName()
+        } catch (Exception ignored) {
+            println "$TAG class not found exception class name:  " + ctClass.getName()
         }
-        return false;
+        return false
     }
 
     private boolean isActivator(CtClass ctClass) {
         try {
             for (CtClass ctClassInter : ctClass.getInterfaces()) {
-                if ("com.mrzhang.component.componentlib.applicationlike.IApplicationLike".equals(ctClassInter.name)) {
-                    return true;
+                if (RegisterComponentSuper == ctClassInter.name) {
+                    return true
                 }
             }
-        } catch (Exception e) {
-            println "class not found exception class name:  " + ctClass.getName()
+        } catch (Exception ignored) {
+            println "$TAG class not found exception class name:  " + ctClass.getName()
         }
-
-        return false;
+        return false
     }
 
     @Override
