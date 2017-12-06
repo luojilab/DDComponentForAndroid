@@ -12,7 +12,7 @@ class ComCodeTransform extends Transform {
     private Project project
     private ClassPool classPool
     private String applicationName;
-    private def TAG = "ComBuildTransform --->"
+    private def TAG = "ComBuild Transform --->"
     def RegisterComponentSuper = "com.mrzhang.component.componentlib.applicationlike.IApplicationLike"
 
     ComCodeTransform(Project project) {
