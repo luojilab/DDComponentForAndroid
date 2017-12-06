@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 
 dependencies {
-    compile 'com.android.tools.build:gradle:2.3.2'
+    compile 'com.android.tools.build:gradle:3.0.1'
     compile group: 'org.javassist', name: 'javassist', version: '3.20.0-GA'
     //gradle sdk
     compile gradleApi()
@@ -15,7 +15,7 @@ repositories {
 }
 
 group = 'com.mrzhang.andcomponent'
-version = '0.0.2'
+version = '0.0.5'
 
 uploadArchives {
     repositories {

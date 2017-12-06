@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
 
     defaultConfig {
         minSdkVersion 15
@@ -22,7 +21,7 @@ android {
 }
 
 dependencies {
-    compile project(':componentlib')
-    compile project(':basicres')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':componentlib')
+    api project(':basicres')
+    api fileTree(dir: 'libs', include: ['*.jar'])
 }

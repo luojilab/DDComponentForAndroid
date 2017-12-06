@@ -1,12 +1,11 @@
 apply plugin: 'com.dd.comgradle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.mrzhang.androidcomponent"
         minSdkVersion 15
-        targetSdkVersion 14
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -25,7 +24,7 @@ android {
 }
 
 dependencies {
-    compile project(':componentservice')
+    implementation project(':componentservice')
 }
 
 combuild {
