@@ -3,22 +3,31 @@ package com.mrzhang.component.componentlib.router.ui;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.ljsw.router.facade.Constants;
+import com.ljsw.router.facade.annotation.Router;
+
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
 
 /**
+ * Singleton implement of {@link IUIRouter}
+ * provides services for UI-Component
+ * <p>
  * Created by mrzhang on 2017/6/20.
  */
 
 public class UIRouter implements IUIRouter {
+    private static Map<String, IComponentRouter> routerInstanceCache = new HashMap<>();
 
-    List<IComponentRouter> uiRouters = new ArrayList<IComponentRouter>();
-    HashMap<IComponentRouter, Integer> priorities = new HashMap<IComponentRouter, Integer>();
+    private List<IComponentRouter> uiRouters = new ArrayList<>();
+    private HashMap<IComponentRouter, Integer> priorities = new HashMap<>();
 
     private static volatile UIRouter instance;
 
@@ -52,7 +61,7 @@ public class UIRouter implements IUIRouter {
             i++;
         }
         uiRouters.add(i, router);
-        priorities.put(router, Integer.valueOf(priority));
+        priorities.put(router, priority);
     }
 
     @Override
@@ -75,7 +84,10 @@ public class UIRouter implements IUIRouter {
     public boolean openUri(Context context, String url, Bundle bundle) {
         url = url.trim();
         if (!TextUtils.isEmpty(url)) {
-            if (url.indexOf("://") < 0 && (!url.startsWith("tel:") || !url.startsWith("smsto:") || !url.startsWith("file:"))) {
+            if (!url.contains("://") &&
+                    (!url.startsWith("tel:") ||
+                            !url.startsWith("smsto:") ||
+                            !url.startsWith("file:"))) {
                 url = "http://" + url;
             }
             Uri uri = Uri.parse(url);
@@ -92,7 +104,7 @@ public class UIRouter implements IUIRouter {
                     return true;
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         return false;
@@ -118,5 +130,34 @@ public class UIRouter implements IUIRouter {
                 priorities.remove(tmp);
             }
         }
+    }
+
+    public static IComponentRouter fetch(@NonNull Class<? extends IComponentRouter> clz) {
+        if (!clz.isInterface())
+            throw new IllegalArgumentException("need a interface, but this isn't a interface:" + clz.getName());
+
+        Router router = clz.getAnnotation(Router.class);
+        if (router == null)
+            throw new IllegalArgumentException("not annotated with Router:" + clz.getName());
+
+        String path = Constants.ROUTERIMPL_OUTPUT_PKG +
+                Constants.DOT + router.group() + Constants.DOT + clz.getSimpleName() + "Impl";
+        if (routerInstanceCache.containsKey(path))
+            return routerInstanceCache.get(path);
+
+        try {
+            Class cla = Class.forName(path);
+            IComponentRouter instance = (IComponentRouter) cla.newInstance();
+            routerInstanceCache.put(path, instance);
+            return instance;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

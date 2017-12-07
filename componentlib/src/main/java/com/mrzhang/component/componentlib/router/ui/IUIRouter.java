@@ -1,6 +1,7 @@
 package com.mrzhang.component.componentlib.router.ui;
 
 /**
+ * router behaviors for component type, sub of {@link IComponentRouter}
  * Created by mrzhang on 2017/6/20.
  */
 
