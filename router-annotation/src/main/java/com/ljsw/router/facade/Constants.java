@@ -11,4 +11,5 @@ package com.ljsw.router.facade;
 public class Constants {
     public static final String ROUTERIMPL_OUTPUT_PKG = "com.ljsw.gen.router";
     public static final String DOT = ".";
+    public static final String UIROUTER= "UiRouter";
 }

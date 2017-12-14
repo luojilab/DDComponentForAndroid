@@ -16,7 +16,7 @@ public interface Constants {
     ///////////////////////////////////////////////////////////////////////////
     // Options of processor
     ///////////////////////////////////////////////////////////////////////////
-    String KEY_MODULE_NAME = "ModuleName";
+    String KEY_HOST_NAME = "host";
 
     String ANNOTATION_TYPE_ROUTE_NODE = ANNO_FACADE_PKG + ".annotation.RouteNode";
     String ANNOTATION_TYPE_ROUTER = ANNO_FACADE_PKG + ".annotation.Router";
@@ -45,13 +45,9 @@ public interface Constants {
 
     String ISYRINGE = "com.ljsw.component.di.route.ISyringe";
 
-    String JSON_SERVICE = "com.ljsw.component.json.JsonService";
+    String JSON_SERVICE = "com.ljsw.component.service.JsonService";
 
-    String ROUTER_UTIL_METHOD_ADDTO = "addTo";
+    String ICOMPONENTROUTER = "com.mrzhang.component.componentlib.router.ui.IComponentRouter";
 
-    String TYPE_UIROUTER_LOADER = "com.ljsw.router.facade.IUiRouterLoader";
 
-    String TYPE_COMPO_UIROTER_INTERFACE=
-            "com.mrzhang.component.componentlib.router.ui.IComponentRouter";
-    
 }

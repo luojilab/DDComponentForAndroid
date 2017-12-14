@@ -21,20 +21,9 @@ public @interface RouteNode {
     String path();
 
     /**
-     * refers to one group that contains a series of similar or related routers.
-     * use common words.
-     * e.g.
-     * '/user/login' and '/user/register' can be merger into group 'user'
-     *
-     * we have departed the whole system to different component,thus it is useless
-     * to define group for merge router
-     *
-     * it will be removed when route develop complete.
-     *
-     * emmm.... 暂时留存该设计
+     * host of one route, each component has an uinque host
      */
-    String group() default "default";
-
+    String host();
 
     /**
      * The priority of route.

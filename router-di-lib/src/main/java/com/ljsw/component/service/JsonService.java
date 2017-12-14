@@ -1,6 +1,5 @@
-package com.ljsw.component.json;
+package com.ljsw.component.service;
 
-import com.ljsw.component.json.serviceimpl.JsonServiceImpl;
 
 import java.util.List;
 
@@ -38,5 +37,6 @@ public interface JsonService {
             return new JsonServiceImpl();
         }
     }
+
 
 }

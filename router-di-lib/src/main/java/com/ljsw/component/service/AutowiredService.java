@@ -1,6 +1,4 @@
-package com.ljsw.component.di;
-
-import com.ljsw.component.di.serviceimpl.AutowiredServiceImpl;
+package com.ljsw.component.service;
 
 /**
  * <p><b>Package:</b> com.ljsw.component.di </p>

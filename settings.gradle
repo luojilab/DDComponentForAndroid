@@ -1,4 +1,4 @@
-include ':app', ':jsonlib', ':dilib',
+include ':app', ':router-di-lib',
         ':componentlib',
         ':readercomponent',
         ':sharecomponent',

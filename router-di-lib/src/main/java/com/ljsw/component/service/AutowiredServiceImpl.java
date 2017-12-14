@@ -1,8 +1,8 @@
-package com.ljsw.component.di.serviceimpl;
+package com.ljsw.component.service;
 
 import android.util.LruCache;
 
-import com.ljsw.component.di.AutowiredService;
+import com.ljsw.component.service.AutowiredService;
 import com.ljsw.component.di.route.ISyringe;
 
 import java.util.ArrayList;

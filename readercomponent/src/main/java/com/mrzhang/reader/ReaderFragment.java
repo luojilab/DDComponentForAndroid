@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ljsw.component.service.JsonService;
 import com.mrzhang.component.componentlib.router.ui.UIRouter;
+import com.mrzhang.componentservice.share.bean.Author;
 
 
 /**
@@ -26,20 +28,25 @@ public class ReaderFragment extends Fragment {
             rootView = inflater.inflate(R.layout.readerbook_fragment_reader, container,
                     false);
 
-
-
             rootView.findViewById(R.id.tv_content).setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    final String _dto = "{\"s\":\"sss\"}";
-                    bundle.putString("bookName","testBookName");
-                    bundle.putString("testDto",_dto);
-                    UIRouter.getInstance().openUri(getActivity(), "dunb://shareComponent/share", bundle);
-//                    "componentdemo://share"
+                    Author author = new Author();
+                    author.setName("Margaret Mitchell");
+                    author.setCounty("USA");
+
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("bookName", "Gone with the Wind");
+//                    bundle.putString("testDto", JsonService.Factory.getInstance().create().toJsonString(author));
+//                    UIRouter.getInstance().openUri(getActivity(), "dunb://share/shareBook", bundle);
+
+                    UIRouter.getInstance().openUri(getActivity(),
+                            "dunb://share/shareBook?bookName=Gone with the Wind&testDto="
+                                    + JsonService.Factory.getInstance().create().toJsonString(author), null);
                 }
             });
+
 
         }
         return rootView;
