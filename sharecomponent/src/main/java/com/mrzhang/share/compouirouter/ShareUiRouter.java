@@ -1,6 +1,5 @@
 package com.mrzhang.share.compouirouter;
 
-import com.ljsw.router.facade.annotation.Router;
 import com.mrzhang.component.componentlib.router.ui.IComponentRouter;
 
 /**
@@ -10,6 +9,5 @@ import com.mrzhang.component.componentlib.router.ui.IComponentRouter;
  * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2017/9/25.
  */
-@Router(host = "shareComponent",group = "share")
 public interface ShareUiRouter extends IComponentRouter {
 }

@@ -42,7 +42,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
 import static com.ljsw.router.compiler.utils.Constants.ANNOTATION_TYPE_AUTOWIRED;
-import static com.ljsw.router.compiler.utils.Constants.KEY_MODULE_NAME;
+import static com.ljsw.router.compiler.utils.Constants.KEY_HOST_NAME;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
 /**
@@ -53,7 +53,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
  * Created by leobert on 2017/9/18.
  */
 @AutoService(Processor.class)
-@SupportedOptions(KEY_MODULE_NAME)
+@SupportedOptions(KEY_HOST_NAME)
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 @SupportedAnnotationTypes({ANNOTATION_TYPE_AUTOWIRED})
 public class AutowiredProcessor extends AbstractProcessor {

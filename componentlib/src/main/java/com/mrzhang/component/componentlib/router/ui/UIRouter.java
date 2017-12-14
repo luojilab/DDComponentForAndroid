@@ -7,9 +7,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.ljsw.router.facade.Constants;
-import com.ljsw.router.facade.annotation.Router;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,6 +68,22 @@ public class UIRouter implements IUIRouter {
     }
 
     @Override
+    public void registerUI(String host) {
+        IComponentRouter router = fetch(host);
+        if (router != null) {
+            registerUI(router, PRIORITY_NORMAL);
+        }
+    }
+
+    @Override
+    public void registerUI(String host, int priority) {
+        IComponentRouter router = fetch(host);
+        if (router != null) {
+            registerUI(router, priority);
+        }
+    }
+
+    @Override
     public void unregisterUI(IComponentRouter router) {
         for (int i = 0; i < uiRouters.size(); i++) {
             if (router == uiRouters.get(i)) {
@@ -77,6 +91,14 @@ public class UIRouter implements IUIRouter {
                 priorities.remove(router);
                 break;
             }
+        }
+    }
+
+    @Override
+    public void unregisterUI(String host) {
+        IComponentRouter router = fetch(host);
+        if (router != null) {
+            unregisterUI(router);
         }
     }
 
@@ -132,16 +154,11 @@ public class UIRouter implements IUIRouter {
         }
     }
 
-    public static IComponentRouter fetch(@NonNull Class<? extends IComponentRouter> clz) {
-        if (!clz.isInterface())
-            throw new IllegalArgumentException("need a interface, but this isn't a interface:" + clz.getName());
-
-        Router router = clz.getAnnotation(Router.class);
-        if (router == null)
-            throw new IllegalArgumentException("not annotated with Router:" + clz.getName());
+    private IComponentRouter fetch(@NonNull String host) {
 
         String path = Constants.ROUTERIMPL_OUTPUT_PKG +
-                Constants.DOT + router.group() + Constants.DOT + clz.getSimpleName() + "Impl";
+                Constants.DOT + host + Constants.UIROUTER;
+
         if (routerInstanceCache.containsKey(path))
             return routerInstanceCache.get(path);
 

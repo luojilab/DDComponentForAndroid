@@ -15,5 +15,11 @@ public interface IUIRouter extends IComponentRouter {
 
     void registerUI(IComponentRouter router);
 
+    void registerUI(String host);
+
+    void registerUI(String host, int priority);
+
     void unregisterUI(IComponentRouter router);
+
+    void unregisterUI(String host);
 }

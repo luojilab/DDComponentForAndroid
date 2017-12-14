@@ -1,7 +1,10 @@
-package com.ljsw.component.json.serviceimpl;
+package com.ljsw.component.service;
+
+/**
+ * Created by mrzhang on 2017/12/14.
+ */
 
 import com.alibaba.fastjson.JSON;
-import com.ljsw.component.json.JsonService;
 
 import java.util.List;
 
@@ -15,7 +18,7 @@ import java.util.List;
  * Created by leobert on 2017/9/18.
  */
 
-public class JsonServiceImpl implements JsonService {
+class JsonServiceImpl implements JsonService {
     @Override
     public <T> T parseObject(String text, Class<T> clazz) {
         return JSON.parseObject(text, clazz);
