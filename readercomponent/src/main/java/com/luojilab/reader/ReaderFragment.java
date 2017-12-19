@@ -20,6 +20,8 @@ public class ReaderFragment extends Fragment {
 
     private View rootView;
 
+    private final static int REQUEST_CODE = 7777;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,14 +30,27 @@ public class ReaderFragment extends Fragment {
             rootView = inflater.inflate(R.layout.readerbook_fragment_reader, container,
                     false);
 
-            rootView.findViewById(R.id.tv_content).setOnClickListener(new View.OnClickListener() {
+            rootView.findViewById(R.id.tv_1).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    goToShareActivityWithBundle();
+                }
+            });
+            rootView.findViewById(R.id.tv_2).setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     goToShareActivityWithUri();
                 }
             });
+            rootView.findViewById(R.id.tv_3).setOnClickListener(new View.OnClickListener() {
 
+                @Override
+                public void onClick(View v) {
+                    goToShareActivityForResult();
+                }
+            });
 
         }
         return rootView;
@@ -49,16 +64,16 @@ public class ReaderFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("bookName", "Gone with the Wind");
         bundle.putString("author", JsonService.Factory.getInstance().create().toJsonString(author));
-        UIRouter.getInstance().openUri(getActivity(), "dunb://share/shareBook", bundle);
+        UIRouter.getInstance().openUri(getActivity(), "DDComp://share/shareBook", bundle);
     }
 
     // UI transfer with URI
     private void goToShareActivityWithUri() {
         Author author = new Author();
-        author.setName("Margaret Mitchell");
-        author.setCounty("USA");
+        author.setName("Barack Obama");
+        author.setCounty("New York");
         UIRouter.getInstance().openUri(getActivity(),
-                "dunb://share/shareBook?bookName=Gone with the Wind&author="
+                "DDComp://share/shareMagazine?bookName=NYTIME&author="
                         + JsonService.Factory.getInstance().create().toJsonString(author), null);
     }
 
@@ -68,8 +83,8 @@ public class ReaderFragment extends Fragment {
         author.setName("Margaret Mitchell");
         author.setCounty("USA");
         UIRouter.getInstance().openUri(getActivity(),
-                "dunb://share/shareBook?bookName=Gone with the Wind&author="
-                        + JsonService.Factory.getInstance().create().toJsonString(author), null);
+                "DDComp://share/shareBook?bookName=Gone with the Wind&author="
+                        + JsonService.Factory.getInstance().create().toJsonString(author), null, REQUEST_CODE);
     }
 
 }

@@ -33,8 +33,10 @@ public class Share2Activity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.share_activity_share);
         autowiredService.autowire(this);
 
+        binding.shareTitle.setText("Magazine");
+
         if (magazineName != null) {
-            binding.shareTvTag.setText(" " + magazineName);
+            binding.shareTvTag.setText(magazineName);
         }
 
         if (author != null) {

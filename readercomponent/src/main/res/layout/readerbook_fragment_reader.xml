@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="欢迎每天听本书,点击启动分享组件"
-        android:textSize="21sp"
-        android:layout_centerInParent="true" />
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="欢迎每天听本书,点击下面按钮分享"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/tv_1"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:text="Bundle方式跳转"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/tv_2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_1"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="Uri方式跳转"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/tv_3"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="startActivityForResult"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
 
 </RelativeLayout>
