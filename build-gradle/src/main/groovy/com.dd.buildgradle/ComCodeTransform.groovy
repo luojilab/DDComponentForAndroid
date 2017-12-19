@@ -72,7 +72,9 @@ public class ComCodeTransform extends Transform {
                     File dir = new File(fileName)
                     dir.eachFileRecurse { File file ->
                         String filePath = file.absolutePath
-                        String classNameTemp = filePath.replace(fileName, "").replace("\\", ".").replace("/", ".")
+                        String classNameTemp = filePath.replace(fileName, "")
+                                .replace("\\", ".")
+                                .replace("/", ".")
                         if (classNameTemp.endsWith(".class")) {
                             String className = classNameTemp.substring(1, classNameTemp.length() - 6)
                             if (className.equals(applicationName)) {
@@ -146,7 +148,7 @@ public class ComCodeTransform extends Transform {
     private boolean isActivator(CtClass ctClass) {
         try {
             for (CtClass ctClassInter : ctClass.getInterfaces()) {
-                if ("com.mrzhang.component.componentlib.applicationlike.IApplicationLike".equals(ctClassInter.name)) {
+                if ("com.luojilab.component.componentlib.applicationlike.IApplicationLike".equals(ctClassInter.name)) {
                     return true;
                 }
             }

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
-    package="com.mrzhang.share">
+    package="com.luojilab.share">
 
     <application
         android:allowBackup="true"
@@ -9,9 +9,14 @@
         tools:replace="android:label"
         android:supportsRtl="true">
 
-        <activity android:name="com.mrzhang.share.ShareActivity">
+        <activity android:name="com.luojilab.share.ShareActivity">
 
         </activity>
+
+        <activity android:name="com.luojilab.share.Share2Activity">
+
+        </activity>
+
 
     </application>
 

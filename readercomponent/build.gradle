@@ -40,6 +40,6 @@ dependencies {
 }
 
 combuild {
-    applicationName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
+    applicationName = 'com.luojilab.reader.runalone.application.ReaderApplication'
     isRegisterCompoAuto = false
 }

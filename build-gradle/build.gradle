@@ -14,8 +14,8 @@ repositories {
     mavenCentral()
 }
 
-group = 'com.mrzhang.andcomponent'
-version = '0.0.2'
+group = 'com.luojilab.andcomponent'
+version = '0.0.1'
 
 uploadArchives {
     repositories {

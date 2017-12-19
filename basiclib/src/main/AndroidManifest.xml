@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
-    package="com.mrzhang.component.basiclib">
+    package="com.luojilab.component.basiclib">
 
     <application
         android:allowBackup="true"
