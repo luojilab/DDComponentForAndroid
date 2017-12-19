@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.mrzhang.component.componentlib">
+          package="com.luojilab.component.componentlib">
 
     <application
         android:allowBackup="true"

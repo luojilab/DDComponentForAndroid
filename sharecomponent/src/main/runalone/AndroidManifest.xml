@@ -1,21 +1,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
-    package="com.mrzhang.share">
+    package="com.luojilab.share">
 
     <application
-        android:name="com.mrzhang.share.runalone.application.ShareApplication"
+        android:name=".runalone.application.ShareApplication"
         android:allowBackup="true"
         android:label="@string/share_app_name"
         android:supportsRtl="true"
         android:theme="@style/commonAppTheme"
         tools:replace="android:label">
-        <activity android:name="com.mrzhang.share.ShareActivity">
+        <activity android:name="com.luojilab.share.ShareActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.luojilab.share.Share2Activity">
+
+        </activity>
+
     </application>
 </manifest>

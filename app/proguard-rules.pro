@@ -23,8 +23,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class com.mrzhang.component.componentlib.** {*;}
--keep class * implements com.mrzhang.component.componentlib.applicationlike.IApplicationLike {*;}
+-keep class com.luojilab.component.componentlib.** {*;}
+-keep class * implements com.luojilab.component.componentlib.applicationlike.IApplicationLike {*;}
 -dontwarn okio.**
 -dontwarn okhttp3.**
 -dontwarn com.squareup.**

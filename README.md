@@ -30,7 +30,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.mrzhang.andcomponent:build-gradle:0.0.1'
+        classpath 'com.luojilab.andcomponent:build-gradle:0.0.1'
     }
 }
 ```
@@ -42,7 +42,7 @@ buildscript {
 ```ini
 isRunAlone=true
 debugComponent=sharecomponent
-compileComponent=com.mrzhang.share:sharecomponent
+compileComponent=com.luojilab.share:sharecomponent
 ```
 上面三个属性分别对应是否单独调试、debug模式下依赖的组件，release模式下依赖的组件。具体使用方式请解释请参见上文第二篇文章
 
@@ -59,7 +59,7 @@ apply plugin: 'com.dd.comgradle'
 
 ```gradle
 combuild {
-    applicationName = 'com.mrzhang.reader.runalone.application.ReaderApplication'
+    applicationName = 'com.luojilab.reader.runalone.application.ReaderApplication'
     isRegisterCompoAuto = false
 }
 ```
@@ -71,8 +71,8 @@ combuild {
 -keep interface * {
   <methods>;
 }
--keep class com.mrzhang.component.componentlib.** {*;}
--keep class * implements com.mrzhang.component.componentlib.applicationlike.IApplicationLike {*;}
+-keep class com.luojilab.component.componentlib.** {*;}
+-keep class * implements com.luojilab.component.componentlib.applicationlike.IApplicationLike {*;}
 ```
 
 关于如何定制化，请参看 [Wiki](https://github.com/luojilab/DDComponentForAndroid/wiki)

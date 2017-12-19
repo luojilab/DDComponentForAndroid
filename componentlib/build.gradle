@@ -31,7 +31,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile project(':router-di-lib')
+    compile project(':router-annotation')
+    compile 'com.alibaba:fastjson:1.1.63.android'
 }
 
 
@@ -55,10 +56,10 @@ task buildJar(dependsOn: ['compileReleaseJavaWithJavac'], type: Jar) {
     from srcClassDir
 
     //排除这两个文件
-    include("com/mrzhang/**/*.class")
-    exclude("com/mrzhang/component/componentlib/BuildConfig.class",
-            "com/mrzhang/component/componentlib/R.class",
-            "com/mrzhang/component/componentlib/R\$*.class")
+    include("com/luojilab/**/*.class")
+    exclude("com/luojilab/component/componentlib/BuildConfig.class",
+            "com/luojilab/component/componentlib/R.class",
+            "com/luojilab/component/componentlib/R\$*.class")
 }
 
 task buildJarAndCopy(dependsOn: "buildJar", type: Copy) {
