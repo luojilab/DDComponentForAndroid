@@ -11,6 +11,12 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [host: "reader"]
+            }
+        }
+
     }
 
     buildTypes {
@@ -32,7 +38,7 @@ android {
 dependencies {
     compile project(':componentservice')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
+    annotationProcessor project(':router-anno-compiler')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

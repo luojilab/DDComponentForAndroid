@@ -4,6 +4,7 @@ package com.luojilab.component.componentlib.router.ui;
  * Created by mrzhang on 2017/12/19.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,11 +16,22 @@ import java.util.List;
 import java.util.Map;
 
 public class BaseCompRouter implements IComponentRouter {
-    protected static Map<String, Class> routeMapper = new HashMap<String, Class>();
+    protected Map<String, Class> routeMapper = new HashMap<String, Class>();
 
-    protected static Map<Class, Map<String, Integer>> paramsMapper;
+    protected Map<Class, Map<String, Integer>> paramsMapper = new HashMap<>();
 
-    protected static String HOST = "";
+    protected String HOST = "";
+
+    protected boolean hasInitHost = false;
+    protected boolean hasInitMap = false;
+
+    protected void initHost() {
+        hasInitHost = true;
+    }
+
+    protected void initMap() {
+        hasInitMap = true;
+    }
 
     @Override
     public boolean openUri(Context context, String url, Bundle bundle) {
@@ -44,6 +56,9 @@ public class BaseCompRouter implements IComponentRouter {
 
     @Override
     public boolean openUri(Context context, Uri uri, Bundle bundle, Integer requestCode) {
+        if (!hasInitMap) {
+            initMap();
+        }
         if (uri == null || context == null) {
             return true;
         }
@@ -64,8 +79,8 @@ public class BaseCompRouter implements IComponentRouter {
             com.luojilab.component.componentlib.utils.UriUtils.setBundleValue(bundle, params, paramsType);
             Intent intent = new Intent(context, target);
             intent.putExtras(bundle);
-            if (requestCode > 0 && context instanceof android.app.Activity) {
-                ((android.app.Activity) context).startActivityForResult(intent, requestCode);
+            if (requestCode > 0 && context instanceof Activity) {
+                ((Activity) context).startActivityForResult(intent, requestCode);
                 return true;
             }
             context.startActivity(intent);
@@ -76,10 +91,19 @@ public class BaseCompRouter implements IComponentRouter {
 
     @Override
     public boolean verifyUri(Uri uri) {
+        if (!hasInitHost) {
+            initHost();
+        }
         String host = uri.getHost();
+        if (!HOST.equals(host)) {
+            return false;
+        }
+        if (!hasInitMap) {
+            initMap();
+        }
         List<String> pathSegments = uri.getPathSegments();
         String path = "/" + TextUtils.join("/", pathSegments);
-        return HOST.equals(host) && routeMapper.containsKey(path);
+        return routeMapper.containsKey(path);
     }
 }
 

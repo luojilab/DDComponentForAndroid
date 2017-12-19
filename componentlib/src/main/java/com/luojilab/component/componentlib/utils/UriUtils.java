@@ -83,7 +83,7 @@ public class UriUtils {
     }
 
     public static void setBundleValue(Bundle bundle, Map<String, String> params, Map<String, Integer> paramsType) {
-        if (!paramsType.isEmpty() && !params.isEmpty()) {
+        if (paramsType != null && params != null && !paramsType.isEmpty() && !params.isEmpty()) {
             for (Map.Entry<String, Integer> param : paramsType.entrySet()) {
                 UriUtils.setBundleValue(bundle, param.getValue(), param.getKey(), params.get(param.getKey()));
             }

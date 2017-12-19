@@ -15,6 +15,12 @@ android {
             enabled = true
         }
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [host: "app"]
+            }
+        }
+
     }
     buildTypes {
         release {
@@ -31,7 +37,7 @@ android {
 
 dependencies {
     compile project(':componentservice')
-//    annotationProcessor project(':router-anno-compiler')
+    annotationProcessor project(':router-anno-compiler')
 }
 
 combuild {

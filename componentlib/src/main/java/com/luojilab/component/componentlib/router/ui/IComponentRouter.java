@@ -8,7 +8,7 @@ import android.os.Bundle;
  * router behaviors for component type
  * Created by mrzhang on 2017/6/20.
  */
-public  interface IComponentRouter {
+public interface IComponentRouter {
 
     /**
      * 打开一个链接

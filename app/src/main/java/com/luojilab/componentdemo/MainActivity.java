@@ -1,15 +1,19 @@
 package com.luojilab.componentdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.componentservice.readerbook.ReadBookService;
+import com.luojilab.router.facade.annotation.RouteNode;
 
+@RouteNode(host = "app", path = "/main")
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Fragment fragment;
@@ -55,6 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.uninstall_share:
                 Router.unregisterComponent("com.luojilab.share.applike.ShareApplike");
                 break;
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
         }
     }
 }

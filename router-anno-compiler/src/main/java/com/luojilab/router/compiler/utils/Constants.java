@@ -47,7 +47,7 @@ public interface Constants {
 
     String JSON_SERVICE = "com.luojilab.component.componentlib.service.JsonService";
 
-    String ICOMPONENTROUTER = "com.luojilab.component.componentlib.router.ui.IComponentRouter";
+    String BASECOMPROUTER = "com.luojilab.component.componentlib.router.ui.BaseCompRouter";
 
 
 }
