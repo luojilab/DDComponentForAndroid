@@ -19,14 +19,13 @@ public @interface RouteNode {
      * path of one route
      */
     String path();
-
-    /**
-     * host of one route, each component has an uinque host
-     */
-    String host();
-
     /**
      * The priority of route.
      */
     int priority() default -1;
+
+    /**
+     * description of the activity, user for gen route table
+     */
+    String desc() default "";
 }

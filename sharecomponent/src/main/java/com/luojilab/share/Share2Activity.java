@@ -14,7 +14,7 @@ import com.luojilab.share.databinding.ShareActivityShareBinding;
 /**
  * Created by mrzhang on 2017/12/19.
  */
-@RouteNode(host = "share", path = "/shareMagazine")
+@RouteNode(path = "/shareMagazine")
 public class Share2Activity extends AppCompatActivity {
 
     @Autowired(name = "bookName")
