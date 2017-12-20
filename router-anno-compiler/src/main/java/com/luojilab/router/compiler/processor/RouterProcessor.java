@@ -1,6 +1,7 @@
 package com.luojilab.router.compiler.processor;
 
 import com.google.auto.service.AutoService;
+import com.luojilab.router.compiler.utils.FileUtils;
 import com.luojilab.router.compiler.utils.Logger;
 import com.luojilab.router.compiler.utils.TypeUtils;
 import com.luojilab.router.facade.annotation.Autowired;
@@ -71,6 +72,8 @@ public class RouterProcessor extends AbstractProcessor {
     private Types types;
     private Elements elements;
 
+    private TypeMirror type_String;
+
     private ArrayList<Node> routerNodes;
     private TypeUtils typeUtils;
     private String host = null;
@@ -86,12 +89,17 @@ public class RouterProcessor extends AbstractProcessor {
         elements = processingEnv.getElementUtils();
         typeUtils = new TypeUtils(types, elements);
 
+        type_String = elements.getTypeElement("java.lang.String").asType();
+
         logger = new Logger(processingEnv.getMessager());
 
         Map<String, String> options = processingEnv.getOptions();
         if (MapUtils.isNotEmpty(options)) {
             host = options.get(KEY_HOST_NAME);
             logger.info(">>> host is " + host + " <<<");
+        }
+        if (host == null || host.equals("")) {
+            host = "default";
         }
         logger.info(">>> RouteProcessor init. <<<");
     }
@@ -107,12 +115,42 @@ public class RouterProcessor extends AbstractProcessor {
                 logger.error(e);
             }
             generateRouterImpl();
+            generateRouterTable();
             return true;
         }
         return false;
     }
 
+    /**
+     * generate HostRouterTable.txt
+     */
+    private void generateRouterTable() {
+        String fileName = RouteUtils.genRouterTable(host);
+        if (FileUtils.createFile(fileName)) {
 
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("auto generated, do not change !!!! \n\n");
+            stringBuilder.append("HOST : " + host + "\n\n");
+
+            for (Node node : routerNodes) {
+                stringBuilder.append(node.getDesc() + "\n");
+                stringBuilder.append(node.getPath() + "\n");
+                Map<String, String> paramsType = node.getParamsDesc();
+                if (MapUtils.isNotEmpty(paramsType)) {
+                    for (Map.Entry<String, String> types : paramsType.entrySet()) {
+                        stringBuilder.append(types.getKey() + ":" + types.getValue() + "\n");
+                    }
+                }
+                stringBuilder.append("\n");
+            }
+            FileUtils.writeStringToFile(fileName, stringBuilder.toString(), false);
+        }
+    }
+
+
+    /**
+     * generate HostUIRouter.java
+     */
     private void generateRouterImpl() {
 
         String claName = RouteUtils.genHostUIRouterClass(host);
@@ -157,19 +195,24 @@ public class RouterProcessor extends AbstractProcessor {
                 checkPath(path);
 
                 node.setPath(path);
+                node.setDesc(route.desc());
                 node.setPriority(route.priority());
                 node.setNodeType(NodeType.ACTIVITY);
                 node.setRawType(element);
 
                 Map<String, Integer> paramsType = new HashMap<>();
+                Map<String, String> paramsDesc = new HashMap<>();
                 for (Element field : element.getEnclosedElements()) {
                     if (field.getKind().isField() && field.getAnnotation(Autowired.class) != null) {
                         Autowired paramConfig = field.getAnnotation(Autowired.class);
                         paramsType.put(StringUtils.isEmpty(paramConfig.name())
                                 ? field.getSimpleName().toString() : paramConfig.name(), typeUtils.typeExchange(field));
+                        paramsDesc.put(StringUtils.isEmpty(paramConfig.name())
+                                ? field.getSimpleName().toString() : paramConfig.name(), typeUtils.typeDesc(field));
                     }
                 }
                 node.setParamsType(paramsType);
+                node.setParamsDesc(paramsDesc);
 
                 if (!routerNodes.contains(node)) {
                     routerNodes.add(node);
@@ -196,16 +239,14 @@ public class RouterProcessor extends AbstractProcessor {
      * create init host method
      */
     private MethodSpec generateInitHostMethod() {
-        TypeName returnType = TypeName.VOID;
+        TypeName returnType = TypeName.get(type_String);
 
-        MethodSpec.Builder openUriMethodSpecBuilder = MethodSpec.methodBuilder("initHost")
+        MethodSpec.Builder openUriMethodSpecBuilder = MethodSpec.methodBuilder("getHost")
                 .returns(returnType)
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC);
 
-        openUriMethodSpecBuilder.addStatement("super.initHost()");
-
-        openUriMethodSpecBuilder.addStatement("HOST = $S", host);
+        openUriMethodSpecBuilder.addStatement("return $S", host);
 
         return openUriMethodSpecBuilder.build();
     }
@@ -228,9 +269,7 @@ public class RouterProcessor extends AbstractProcessor {
                     mRouteMapperFieldName + ".put($S,$T.class)",
                     node.getPath(),
                     ClassName.get((TypeElement) node.getRawType()));
-        }
 
-        for (Node node : routerNodes) {
             // Make map body for paramsType
             StringBuilder mapBodyBuilder = new StringBuilder();
             Map<String, Integer> paramsType = node.getParamsType();

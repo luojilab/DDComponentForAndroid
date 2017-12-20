@@ -15,7 +15,7 @@ import com.luojilab.share.databinding.ShareActivityShareBinding;
 /**
  * Created by mrzhang on 2017/6/20.
  */
-@RouteNode(path = "/shareBook")
+@RouteNode(path = "/shareBook", desc = "分享书籍页面")
 public class ShareActivity extends AppCompatActivity {
 
     @Autowired

@@ -15,19 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BaseCompRouter implements IComponentRouter {
+public abstract class BaseCompRouter implements IComponentRouter {
     protected Map<String, Class> routeMapper = new HashMap<String, Class>();
 
     protected Map<Class, Map<String, Integer>> paramsMapper = new HashMap<>();
 
-    protected String HOST = "";
-
-    protected boolean hasInitHost = false;
     protected boolean hasInitMap = false;
 
-    protected void initHost() {
-        hasInitHost = true;
-    }
+    protected abstract String getHost();
 
     protected void initMap() {
         hasInitMap = true;
@@ -64,7 +59,7 @@ public class BaseCompRouter implements IComponentRouter {
         }
         String scheme = uri.getScheme();
         String host = uri.getHost();
-        if (!HOST.equals(host)) {
+        if (!getHost().equals(host)) {
             return false;
         }
         List<String> pathSegments = uri.getPathSegments();
@@ -91,11 +86,8 @@ public class BaseCompRouter implements IComponentRouter {
 
     @Override
     public boolean verifyUri(Uri uri) {
-        if (!hasInitHost) {
-            initHost();
-        }
         String host = uri.getHost();
-        if (!HOST.equals(host)) {
+        if (!getHost().equals(host)) {
             return false;
         }
         if (!hasInitMap) {

@@ -1,0 +1,14 @@
+auto generated, do not change !!!! 
+
+HOST : share
+
+分享杂志页面
+/shareMagazine
+author:com.luojilab.componentservice.share.bean.Author
+bookName:String
+
+分享书籍页面
+/shareBook
+author:com.luojilab.componentservice.share.bean.Author
+bookName:String
+

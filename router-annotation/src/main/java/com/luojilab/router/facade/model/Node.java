@@ -19,8 +19,10 @@ public class Node {
     private Element rawType;        // Raw type of route
     private Class<?> destination;   // Destination
     private String path;            // Path of route
+    private String desc;            // Desc of route
     private int priority = -1;      // The smaller the number, the higher the priority
     private Map<String, Integer> paramsType;
+    private Map<String, String> paramsDesc;
 
     public NodeType getNodeType() {
         return nodeType;
@@ -68,5 +70,21 @@ public class Node {
 
     public void setParamsType(Map<String, Integer> paramsType) {
         this.paramsType = paramsType;
+    }
+
+    public Map<String, String> getParamsDesc() {
+        return paramsDesc;
+    }
+
+    public void setParamsDesc(Map<String, String> paramsDesc) {
+        this.paramsDesc = paramsDesc;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
