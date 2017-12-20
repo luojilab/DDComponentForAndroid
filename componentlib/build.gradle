@@ -3,6 +3,18 @@ apply plugin: 'com.android.library'
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
 
+
+ext {
+    bintrayName = 'componentlib'
+    artifact = bintrayName
+    libraryName = 'component build lib '
+    libraryDescription = 'component build lib '
+    libraryVersion = "0.0.2"
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
@@ -36,34 +48,5 @@ dependencies {
 }
 
 
-def sdk_appendix = "baselib"
-def sdk_baseName = "component"
-def sdk_version = "0.0.2"
-
-task buildJar(dependsOn: ['compileReleaseJavaWithJavac'], type: Jar) {
-
-    appendix = sdk_appendix
-    baseName = sdk_baseName
-    version = sdk_version
-    //classifier = "release"
-    //后缀名
-    extension = "jar"
-    //最终的Jar 包名 ， 如果没设置 ， 默认为[baseName] - [appendix] - [version] - [classifier].[extension]
-
-    // 需打包的资源所在的路径集
-    def srcClassDir = [project.buildDir.absolutePath + "/intermediates/classes/release"];
-    //初始化资源路径集
-    from srcClassDir
-
-    //排除这两个文件
-    include("com/luojilab/**/*.class")
-    exclude("com/luojilab/component/componentlib/BuildConfig.class",
-            "com/luojilab/component/componentlib/R.class",
-            "com/luojilab/component/componentlib/R\$*.class")
-}
-
-task buildJarAndCopy(dependsOn: "buildJar", type: Copy) {
-    from(project.buildDir.absolutePath + "/libs")
-    include(sdk_baseName + "-" + sdk_appendix + "-" + sdk_version + ".jar")
-    into("release")
-}
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

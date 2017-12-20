@@ -4,13 +4,13 @@ buildscript {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
-        maven {
-            url uri('./repo')
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.luojilab.andcomponent:build-gradle:0.0.1'
+//        classpath 'com.luojilab.andcomponent:build-gradle:0.0.1'
+        classpath 'com.luojilab.ddcomponent:build-gradle:0.0.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
@@ -18,8 +18,5 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
-        maven {
-            url uri('./repo')
-        }
     }
 }
