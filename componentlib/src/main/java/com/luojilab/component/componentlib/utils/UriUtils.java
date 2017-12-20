@@ -119,8 +119,6 @@ public class UriUtils {
                 } else if (typeDef == Type.STRING.ordinal()) {
                     bundle.putString(key, value);
                 } else if (typeDef == Type.PARCELABLE.ordinal()) {
-                    // TODO : How to description parcelable value with string?
-//                    bundle.putParcelable(key, );
                 } else if (typeDef == Type.OBJECT.ordinal()) {
                     bundle.putString(key, value);
                 } else {

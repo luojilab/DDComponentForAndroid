@@ -68,4 +68,46 @@ public class TypeUtils {
                 }
         }
     }
+
+    /**
+     * DESC of type
+     *
+     * @param element Raw type
+     * @return Type class of java
+     */
+    public String typeDesc(Element element) {
+        TypeMirror typeMirror = element.asType();
+
+        // Primitive
+        if (typeMirror.getKind().isPrimitive()) {
+            return element.asType().getKind().name();
+        }
+
+        switch (typeMirror.toString()) {
+            case Constants.BYTE:
+                return "byte";
+            case Constants.SHORT:
+                return "short";
+            case Constants.INTEGER:
+                return "int";
+            case Constants.LONG:
+                return "long";
+            case Constants.FLOAT:
+                return "byte";
+            case Constants.DOUBEL:
+                return "double";
+            case Constants.BOOLEAN:
+                return "boolean";
+            case Constants.STRING:
+                return "String";
+            default:    // Other side, maybe the PARCELABLE or OBJECT.
+                if (types.isSubtype(typeMirror, parcelableType)) {  // PARCELABLE
+                    return "parcelable";
+                } else {    // For others
+                    return typeMirror.toString();
+                }
+        }
+    }
+
+
 }
