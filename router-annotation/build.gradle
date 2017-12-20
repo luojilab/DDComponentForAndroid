@@ -1,5 +1,16 @@
 apply plugin: 'java'
 
+ext {
+    bintrayName = 'router-annotation'
+    artifact = bintrayName
+    libraryName = 'router-annotation '
+    libraryDescription = 'router-annotation '
+    libraryVersion = "0.0.2"
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
@@ -8,3 +19,6 @@ compileJava {
     sourceCompatibility = '1.7'
     targetCompatibility = '1.7'
 }
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
