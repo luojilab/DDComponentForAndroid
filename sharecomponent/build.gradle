@@ -36,7 +36,7 @@ android {
 
 dependencies {
     compile project(':componentservice')
-    annotationProcessor project(':router-anno-compiler')
+    annotationProcessor 'com.luojilab.ddcomponent:router-anno-compiler:1.0.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

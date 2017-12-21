@@ -77,7 +77,7 @@ public class ReaderFragment extends Fragment {
         final String URI_LEGAL = "DDComp://share/shareMagazine?bookName=NYTIME&author=";
 
         //参数非法的uri字符串 bookName是必须参数，并在注解中配置了错误外显策略。
-        final String URI_ILLEGAL = "DDComp://share/shareMagazine?bookNameeee=NYTIME&author=";
+//        final String URI_ILLEGAL = "DDComp://share/shareMagazine?bookNameeee=NYTIME&author=";
 
         /* TODO: 2017/12/21 change the secondary param to see difference between
         legal and illegal data delivering*/

@@ -9,7 +9,7 @@ ext {
     artifact = bintrayName
     libraryName = 'component build lib '
     libraryDescription = 'component build lib '
-    libraryVersion = "0.0.2"
+    libraryVersion = "1.0.0"
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
