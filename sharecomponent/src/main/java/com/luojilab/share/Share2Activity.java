@@ -16,8 +16,9 @@ import com.luojilab.share.databinding.ShareActivityShareBinding;
  */
 @RouteNode(path = "/shareMagazine", desc = "分享杂志页面")
 public class Share2Activity extends AppCompatActivity {
+    static final boolean enablethrow  = true;
 
-    @Autowired(name = "bookName")
+    @Autowired(name = "bookName", required = true, throwOnNull = AutowiredService.THROW_CONFIG)
     String magazineName;
 
     @Autowired

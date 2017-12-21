@@ -9,9 +9,11 @@ package com.luojilab.component.componentlib.service;
  */
 
 public interface AutowiredService {
+    boolean THROW_CONFIG = true;
 
     /**
      * Autowired core.
+     *
      * @param instance the instance who need autowired.
      */
     void autowire(Object instance);
