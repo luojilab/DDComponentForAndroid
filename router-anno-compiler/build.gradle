@@ -6,7 +6,7 @@ ext {
     artifact = bintrayName
     libraryName = 'router-anno-compiler'
     libraryDescription = 'router-anno-compiler'
-    libraryVersion = "0.0.2"
+    libraryVersion = "1.0.0"
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
@@ -22,8 +22,6 @@ dependencies {
 
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'org.apache.commons:commons-collections4:4.1'
-
-//    compile 'com.luojilab.ddcomponent:router-annotation:0.0.1'
 
     compile project(':router-annotation')
 
