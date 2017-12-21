@@ -73,6 +73,8 @@ public class AutowiredProcessor extends AbstractProcessor {
 
     private static final ClassName AndroidLog = ClassName.get("android.util", "Log");
 
+    private static final ClassName NullPointerException = ClassName.get("java.lang", "NullPointerException");
+
     private static final String SUFFIX_AUTOWIRED = "$$Router$$Autowired";
 
     @Override
@@ -194,7 +196,15 @@ public class AutowiredProcessor extends AbstractProcessor {
                     if (fieldConfig.required() && !element.asType().getKind().isPrimitive()) {  // Primitive wont be check.
                         injectMethodBuilder.beginControlFlow("if (null == substitute." + fieldName + ")");
                         injectMethodBuilder.addStatement(
-                                "$T.e(\"" + TAG + "\", \"The field '" + fieldName + "' is null, in class '\" + $T.class.getName() + \"!\")", AndroidLog, ClassName.get(parent));
+                                "$T.e(\"" + TAG + "\", \"The field '" + fieldName + "' is null," + "field description is:" + fieldConfig.desc() +
+                                        ",in class '\" + $T.class.getName() + \"!\")", AndroidLog, ClassName.get(parent));
+
+                        if (fieldConfig.throwOnNull()) {
+                            injectMethodBuilder.addStatement("throw new $T(" +
+                                    "\"The field '" + fieldName + "' is null," + "field description is:" + fieldConfig.desc() +
+                                    ",in class '\" + $T.class.getName() + \"!\")", NullPointerException, ClassName.get(parent));
+                        }
+
                         injectMethodBuilder.endControlFlow();
                     }
                 }
