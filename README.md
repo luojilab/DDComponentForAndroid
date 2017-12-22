@@ -47,7 +47,7 @@ buildscript {
 为每个组件引入依赖库，如果项目中存在basiclib等基础库，可以统一交给basiclib引入
 
 ```gradle
-    compile 'com.luojilab.ddcomponent:componentlib:1.0.0'
+compile 'com.luojilab.ddcomponent:componentlib:1.0.0'
 ```
 
 #### 2、拆分组件为module工程
