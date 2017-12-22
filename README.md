@@ -1,5 +1,15 @@
 ## AndroidComponent
 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/luojilab/DDComponentForAndroid/pulls)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/luojilab/DDComponentForAndroid/blob/master/LICENSEE) 
+
+### 最新版本
+
+模块|build-gradle|componentlib|router-anno-compiler|router-annotation
+---|---|---|---|---
+最新版本|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/build-gradle/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/build-gradle_latestVersion)|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/componentlib/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/componentlib_latestVersion)|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/router-anno-compiler/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/router-anno-compiler_latestVersion)|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/router-annotation/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/router-annotation_latestVersion)
+
+
 ### 实现功能：
 - 组件可以单独调试
 - 杜绝组件之前相互耦合，代码完全隔离，彻底解耦
