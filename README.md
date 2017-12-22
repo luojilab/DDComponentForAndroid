@@ -39,7 +39,7 @@ mainmodulename=app
 ```gradle
 buildscript {
     dependencies {
-        classpath 'com.luojilab.andcomponent:build-gradle:1.0.0'
+        classpath 'com.luojilab.ddcomponent:build-gradle:1.0.0'
     }
 }
 ```
