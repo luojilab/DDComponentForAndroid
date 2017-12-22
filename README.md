@@ -1,7 +1,4 @@
 ## AndroidComponent
-原理解释请参考文章[Android彻底组件化方案实践](http://www.jianshu.com/p/1b1d77f58e84)
-
-demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.com/p/59822a7b2fad)
 
 ### 实现功能：
 - 组件可以单独调试
@@ -11,6 +8,12 @@ demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.c
 - 自动生成路由跳转路由表
 - 任意组件可以充当host，集成其他组件进行集成调试
 - 可以动态对已集成的组件进行加载和卸载
+
+
+### 原理解析
+原理解释请参考文章[Android彻底组件化方案实践](http://www.jianshu.com/p/1b1d77f58e84)
+
+demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.com/p/59822a7b2fad)
 
 ### 使用指南
 #### 1、主项目引用编译脚本
