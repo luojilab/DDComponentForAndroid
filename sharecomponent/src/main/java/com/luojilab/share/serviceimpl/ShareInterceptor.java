@@ -20,15 +20,17 @@ public class ShareInterceptor implements IInterceptor {
 
     @Override
     public void process(Postcard postcard, InterceptorCallback callback) {
-        if (isRegister) {
-            callback.onContinue(postcard);
-        } else {
+        if (!isRegister
+                && ("/share/shareBook".equals(postcard.getPath())
+                || "/share/shareMagazine".equals(postcard.getPath()))) {
             MainLooper.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Toast.makeText(mContext, "分享组件已经卸载", Toast.LENGTH_SHORT).show();
                 }
             });
+        } else {
+            callback.onContinue(postcard);
         }
 
     }
