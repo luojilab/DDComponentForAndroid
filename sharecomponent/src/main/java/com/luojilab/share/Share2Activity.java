@@ -5,26 +5,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.luojilab.component.componentlib.service.AutowiredService;
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.luojilab.componentservice.share.bean.Author;
-import com.luojilab.router.facade.annotation.Autowired;
-import com.luojilab.router.facade.annotation.RouteNode;
 import com.luojilab.share.databinding.ShareActivityShareBinding;
 
 /**
  * Created by mrzhang on 2017/12/19.
  */
-@RouteNode(path = "/shareMagazine", desc = "分享杂志页面")
+@Route(path = "/share/shareMagazine")
 public class Share2Activity extends AppCompatActivity {
-    static final boolean enablethrow  = true;
 
-    @Autowired(name = "bookName", required = true, throwOnNull = AutowiredService.THROW_CONFIG)
+    @Autowired(name = "bookName")
     String magazineName;
 
     @Autowired
     Author author;
-
-    private AutowiredService autowiredService = AutowiredService.Factory.getInstance().create();
 
     ShareActivityShareBinding binding;
 
@@ -32,7 +29,8 @@ public class Share2Activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.share_activity_share);
-        autowiredService.autowire(this);
+
+        ARouter.getInstance().inject(this);
 
         binding.shareTitle.setText("Magazine");
 

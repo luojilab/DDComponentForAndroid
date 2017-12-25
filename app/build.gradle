@@ -17,7 +17,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [host: "app"]
+                arguments = [ moduleName : project.getName() ]
             }
         }
 
@@ -38,7 +38,7 @@ android {
 
 dependencies {
     compile project(':componentservice')
-    annotationProcessor project(':router-anno-compiler')
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
 }
 
 combuild {

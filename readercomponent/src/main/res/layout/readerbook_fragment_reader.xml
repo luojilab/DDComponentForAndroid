@@ -19,7 +19,7 @@
         android:layout_below="@id/tv_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
-        android:text="Bundle方式跳转"
+        android:text="普通跳转"
         android:textAllCaps="false"
         android:textSize="16sp" />
 
@@ -32,7 +32,8 @@
         android:layout_marginTop="10dp"
         android:text="Uri方式跳转"
         android:textAllCaps="false"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/tv_3"

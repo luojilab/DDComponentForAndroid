@@ -7,8 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.luojilab.component.componentlib.router.ui.UIRouter;
-import com.luojilab.component.componentlib.service.JsonService;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.luojilab.componentservice.share.bean.Author;
 
 
@@ -34,14 +33,7 @@ public class ReaderFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-                    goToShareActivityWithBundle();
-                }
-            });
-            rootView.findViewById(R.id.tv_2).setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    goToShareActivityWithUri();
+                    goToShareActivityNormal();
                 }
             });
             rootView.findViewById(R.id.tv_3).setOnClickListener(new View.OnClickListener() {
@@ -56,44 +48,26 @@ public class ReaderFragment extends Fragment {
         return rootView;
     }
 
-    // UI transfer with Bundle
-    private void goToShareActivityWithBundle() {
+    private void goToShareActivityNormal() {
         Author author = new Author();
         author.setName("Margaret Mitchell");
         author.setCounty("USA");
-        Bundle bundle = new Bundle();
-        bundle.putString("bookName", "Gone with the Wind");
-        bundle.putString("author", JsonService.Factory.getInstance().create().toJsonString(author));
-        UIRouter.getInstance().openUri(getActivity(), "DDComp://share/shareBook", bundle);
+        ARouter.getInstance().build("/share/shareBook")
+                .withString("bookName", "Gone with the Wind")
+                .withObject("author", author)
+                .navigation();
     }
 
-    // UI transfer with URI
-    private void goToShareActivityWithUri() {
-        Author author = new Author();
-        author.setName("Barack Obama");
-        author.setCounty("New York");
-
-        //参数合法的uri字符串
-        final String URI_LEGAL = "DDComp://share/shareMagazine?bookName=NYTIME&author=";
-
-        //参数非法的uri字符串 bookName是必须参数，并在注解中配置了错误外显策略。
-//        final String URI_ILLEGAL = "DDComp://share/shareMagazine?bookNameeee=NYTIME&author=";
-
-        /* TODO: 2017/12/21 change the secondary param to see difference between
-        legal and illegal data delivering*/
-        UIRouter.getInstance().openUri(getActivity(),
-                URI_LEGAL
-                        + JsonService.Factory.getInstance().create().toJsonString(author), null);
-    }
 
     //startActivityForResult
     private void goToShareActivityForResult() {
         Author author = new Author();
         author.setName("Margaret Mitchell");
         author.setCounty("USA");
-        UIRouter.getInstance().openUri(getActivity(),
-                "DDComp://share/shareBook?bookName=Gone with the Wind&author="
-                        + JsonService.Factory.getInstance().create().toJsonString(author), null, REQUEST_CODE);
+        ARouter.getInstance().build("/share/shareMagazine")
+                .withString("bookName", "Gone with the Wind")
+                .withObject("author", author)
+                .navigation(getActivity(), REQUEST_CODE);
     }
 
 }
