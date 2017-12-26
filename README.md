@@ -1,7 +1,7 @@
 ## AndroidComponent
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/luojilab/DDComponentForAndroid/pulls)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/luojilab/DDComponentForAndroid/blob/master/LICENSEE) 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/luojilab/DDComponentForAndroid/blob/master/LICENSE) 
 
 ### 最新版本
 
