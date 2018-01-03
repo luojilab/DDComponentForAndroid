@@ -30,12 +30,12 @@ class ShareMessageActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AutowiredService.Factory.getInstance().create().autowire(this)
-        setContentView(R.layout.share_activity_share)
+        setContentView(R.layout.kotlin_activity_share)
 
-        tvShareTitle = findViewById(R.id.share_title) as TextView?
-        tvShareBook = findViewById(R.id.share_tv_tag) as TextView?
-        tvAuthor = findViewById(R.id.share_tv_author) as TextView?
-        tvCounty = findViewById(R.id.share_tv_county) as TextView?
+        tvShareTitle = findViewById<TextView>(R.id.share_title)
+        tvShareBook = findViewById<TextView>(R.id.share_tv_tag)
+        tvAuthor = findViewById<TextView>(R.id.share_tv_author)
+        tvCounty = findViewById<TextView>(R.id.share_tv_county)
 
 
         tvShareTitle?.text = "Magazine"
