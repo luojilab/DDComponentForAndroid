@@ -18,9 +18,5 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.luojilab.share.Share2Activity">
-
-        </activity>
-
     </application>
 </manifest>

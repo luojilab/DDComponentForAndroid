@@ -1,8 +1,8 @@
 apply plugin: 'com.dd.comgradle'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.luojilab.androidcomponent"
         minSdkVersion 15
@@ -10,10 +10,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        dataBinding {
-            enabled = true
-        }
 
         javaCompileOptions {
             annotationProcessorOptions {

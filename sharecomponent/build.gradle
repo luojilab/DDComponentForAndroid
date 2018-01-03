@@ -1,8 +1,9 @@
 apply plugin: 'com.dd.comgradle'
 
+
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         minSdkVersion 15
@@ -10,9 +11,6 @@ android {
         versionCode 1
         versionName "1.0"
 
-        dataBinding {
-            enabled = true
-        }
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -41,9 +39,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 combuild {
     applicationName = 'com.luojilab.share.runalone.application.ShareApplication'
     isRegisterCompoAuto = true
+}
+repositories {
+    mavenCentral()
 }
