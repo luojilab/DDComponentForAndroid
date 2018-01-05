@@ -3,6 +3,7 @@
     package="com.luojilab.share.kotlin">
 
     <application
+        android:name="com.luojilab.share.runalone.application.KotlinApplication"
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity android:name=".ShareMessageActivity">
