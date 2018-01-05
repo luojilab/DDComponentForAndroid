@@ -40,3 +40,8 @@ dependencies {
     kapt 'com.luojilab.ddcomponent:router-anno-compiler:1.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
+
+combuild {
+    applicationName = 'com.luojilab.share.runalone.application.KotlinApplication'
+    isRegisterCompoAuto = true
+}
