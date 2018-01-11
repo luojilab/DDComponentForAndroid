@@ -22,8 +22,8 @@ android {
 }
 
 dependencies {
-//    compile project(':componentlib')
-    compile 'com.luojilab.ddcomponent:componentlib:1.0.0'
+    compile project(':componentlib')
+//    compile 'com.luojilab.ddcomponent:componentlib:1.0.0'
     compile project(':basicres')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

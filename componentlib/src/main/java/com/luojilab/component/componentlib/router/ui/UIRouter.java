@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.luojilab.component.componentlib.log.ILogger;
 import com.luojilab.component.componentlib.log.impl.DefaultLogger;
+import com.luojilab.component.componentlib.utils.UriUtils;
 import com.luojilab.router.facade.utils.RouteUtils;
 
 import java.util.ArrayList;
@@ -175,13 +176,12 @@ public class UIRouter implements IUIRouter {
 
     @Override
     public boolean verifyUri(Uri uri) {
-        // TODO: 11/01/2018 android unit test -- leobert
         for (IComponentRouter temp : uiRouters) {
             if (temp.verifyUri(uri)) {
                 return true;
             }
         }
-        getLogger().monitor("cannot verify uri for: " + uri.toSafeString() + ";\r cannot navigate to the target");
+        getLogger().monitor("cannot verify uri for: " + UriUtils.toSafeString(uri) + ";\r cannot navigate to the target");
         return false;
     }
 
@@ -193,8 +193,7 @@ public class UIRouter implements IUIRouter {
             if (tmp == router) {
                 iterator.remove();
                 priorities.remove(tmp);
-                // TODO: 11/01/2018 logger remove success
-
+                getLogger().monitor("remove OldUIRouter success");
             }
         }
     }

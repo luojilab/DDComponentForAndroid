@@ -55,7 +55,7 @@ public abstract class BaseCompRouter implements IComponentRouter {
             initMap();
         }
         if (uri == null || context == null) {
-            return true;
+            return true; // TODO: 11/01/2018 maybe false better?
         }
         String scheme = uri.getScheme();
         String host = uri.getHost();
@@ -86,6 +86,8 @@ public abstract class BaseCompRouter implements IComponentRouter {
 
     @Override
     public boolean verifyUri(Uri uri) {
+        if (uri == null)
+            return false;
         String host = uri.getHost();
         if (!getHost().equals(host)) {
             return false;
