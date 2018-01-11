@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class BaseCompRouter implements IComponentRouter {
-    protected Map<String, Class> routeMapper = new HashMap<String, Class>();
+    protected Map<String, Class> routeMapper = new HashMap<>();
 
     protected Map<Class, Map<String, Integer>> paramsMapper = new HashMap<>();
 

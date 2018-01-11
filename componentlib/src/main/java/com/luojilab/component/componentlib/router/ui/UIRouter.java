@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.luojilab.component.componentlib.log.ILogger;
+import com.luojilab.component.componentlib.log.impl.DefaultLogger;
 import com.luojilab.router.facade.utils.RouteUtils;
 
 import java.util.ArrayList;
@@ -22,6 +24,35 @@ import java.util.Map;
  */
 
 public class UIRouter implements IUIRouter {
+
+    ///////////////////////////////////////////////////////////////////////////
+    // logger define and init methods areas
+    ///////////////////////////////////////////////////////////////////////////
+
+    private static ILogger logger = new DefaultLogger("[DdCompo-UiRouter]");
+
+    public static void showLog(boolean isShowLog) {
+        logger.showLog(isShowLog);
+    }
+
+    public static void showStackTrace(boolean isShowStackTrace) {
+        logger.showStackTrace(isShowStackTrace);
+    }
+
+    public static void showMonitor(boolean isShowMonitor) {
+        logger.showMonitor(isShowMonitor);
+    }
+
+    public static void enableDebug() {
+        showLog(true);
+        showMonitor(true);
+        showStackTrace(true);
+    }
+
+    public static ILogger getLogger() {
+        return logger;
+    }
+
     private static Map<String, IComponentRouter> routerInstanceCache = new HashMap<>();
 
     private List<IComponentRouter> uiRouters = new ArrayList<>();
@@ -144,11 +175,13 @@ public class UIRouter implements IUIRouter {
 
     @Override
     public boolean verifyUri(Uri uri) {
+        // TODO: 11/01/2018 android unit test -- leobert
         for (IComponentRouter temp : uiRouters) {
             if (temp.verifyUri(uri)) {
                 return true;
             }
         }
+        getLogger().monitor("cannot verify uri for: " + uri.toSafeString() + ";\r cannot navigate to the target");
         return false;
     }
 
@@ -160,11 +193,14 @@ public class UIRouter implements IUIRouter {
             if (tmp == router) {
                 iterator.remove();
                 priorities.remove(tmp);
+                // TODO: 11/01/2018 logger remove success
+
             }
         }
     }
 
     private IComponentRouter fetch(@NonNull String host) {
+        // TODO: 11/01/2018 precondition for null-safety on runtime
 
         String path = RouteUtils.genHostUIRouterClass(host);
 
