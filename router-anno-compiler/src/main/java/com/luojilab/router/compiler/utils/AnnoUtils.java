@@ -18,7 +18,7 @@ import javax.lang.model.type.TypeMirror;
  * <p><b>Package:</b> com.luojilab.router.compiler.utils </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> AnnoUtils </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> AnnoUtils </p>
  * Created by leobert on 2017/9/25.
  */
 

@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.luojilab.component.componentlib.utils.UriUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +57,7 @@ public abstract class BaseCompRouter implements IComponentRouter {
             initMap();
         }
         if (uri == null || context == null) {
-            return true; // TODO: 11/01/2018 maybe false better?
+            return true;
         }
         String scheme = uri.getScheme();
         String host = uri.getHost();
@@ -86,6 +88,11 @@ public abstract class BaseCompRouter implements IComponentRouter {
 
     @Override
     public boolean verifyUri(Uri uri) {
+        if (UIRouter.getLogger().isMonitorMode()) { // monitor log for developer
+            UIRouter.getLogger().monitor("verify for: " + UriUtils.toSafeString(uri) +
+                    " in " + getClass().getSimpleName() + " ;host is: " + getHost());
+        }
+
         if (uri == null)
             return false;
         String host = uri.getHost();
@@ -99,5 +106,6 @@ public abstract class BaseCompRouter implements IComponentRouter {
         String path = "/" + TextUtils.join("/", pathSegments);
         return routeMapper.containsKey(path);
     }
+
 }
 

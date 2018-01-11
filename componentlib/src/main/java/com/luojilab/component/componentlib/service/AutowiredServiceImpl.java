@@ -1,8 +1,8 @@
 package com.luojilab.component.componentlib.service;
 
-import android.util.Log;
 import android.util.LruCache;
 
+import com.luojilab.component.componentlib.log.ILogger;
 import com.luojilab.component.componentlib.router.ISyringe;
 
 import java.util.ArrayList;
@@ -39,8 +39,7 @@ public class AutowiredServiceImpl implements AutowiredService {
                 autowiredHelper.inject(instance);
                 classCache.put(className, autowiredHelper);
             } else {
-                // TODO: 2017/12/21 change to specific log system
-                Log.d("[DDComponent]", "[autowire] " + className + "is in blacklist, ignore data inject");
+                ILogger.logger.monitor("[autowire] " + className + "is in blacklist, ignore data inject");
             }
         } catch (Exception ex) {
             if (ex instanceof NullPointerException) { // may define custom exception better

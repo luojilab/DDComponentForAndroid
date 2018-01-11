@@ -4,7 +4,7 @@ package com.luojilab.router.facade.enums;
  * <p><b>Package:</b> com.luojilab.router.facade.enums </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> NodeType </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> Type of the node in the Route-Net </p>
  * Created by leobert on 2017/9/19.
  */
 

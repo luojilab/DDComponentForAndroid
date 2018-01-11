@@ -199,7 +199,11 @@ public class UIRouter implements IUIRouter {
     }
 
     private IComponentRouter fetch(@NonNull String host) {
-        // TODO: 11/01/2018 precondition for null-safety on runtime
+        if (TextUtils.isEmpty(host)) {
+            getLogger().monitor("Try to fetch ComponentRouter for null/empty host. Ignore!");
+            return null;
+        }
+
 
         String path = RouteUtils.genHostUIRouterClass(host);
 

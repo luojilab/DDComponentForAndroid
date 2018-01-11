@@ -8,7 +8,7 @@ import com.luojilab.component.componentlib.log.ILogger;
  * <p><b>Package:</b> com.luojilab.component.componentlib.log.impl </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> DefaultLogger </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> DefaultLogger </p>
  * Created by leobert on 11/01/2018.
  */
 
