@@ -24,17 +24,13 @@ public interface JsonService {
     String toJsonString(Object instance);
 
     class Factory {
-        private static Factory instance;
+        private static JsonService jsonService;
 
-        public static Factory getInstance() {
-            if (instance == null) {
-                instance = new Factory();
+        public static JsonService getSingletonImpl() {
+            if (jsonService == null) {
+                jsonService = new JsonServiceImpl();
             }
-            return instance;
-        }
-
-        public JsonService create() {
-            return new JsonServiceImpl();
+            return jsonService;
         }
     }
 

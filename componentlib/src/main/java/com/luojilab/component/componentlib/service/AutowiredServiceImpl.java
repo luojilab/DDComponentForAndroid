@@ -1,10 +1,14 @@
 package com.luojilab.component.componentlib.service;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.LruCache;
 
+import com.luojilab.component.componentlib.exceptions.ParamException;
 import com.luojilab.component.componentlib.log.ILogger;
 import com.luojilab.component.componentlib.router.ISyringe;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +51,34 @@ public class AutowiredServiceImpl implements AutowiredService {
             }
             ex.printStackTrace();
             blackList.add(className);    // This instance need not autowired.
+        }
+    }
+
+    @Override
+    public void preCondition(@NonNull Class targetActivityClz, Bundle params) throws ParamException {
+        String className = targetActivityClz.getName();
+
+        try {
+            ISyringe iSyringe = classCache.get(className);
+
+            if (null == iSyringe) {  // No cache.
+                iSyringe = (ISyringe) Class.forName(className + SUFFIX_AUTOWIRED)
+                        .getConstructor().newInstance();
+            }
+
+            classCache.put(className, iSyringe);
+            iSyringe.preCondition(params);
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

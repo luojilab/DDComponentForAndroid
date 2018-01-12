@@ -1,5 +1,9 @@
 package com.luojilab.component.componentlib.service;
 
+import android.os.Bundle;
+
+import com.luojilab.component.componentlib.exceptions.ParamException;
+
 /**
  * <p><b>Package:</b> com.luojilab.component.componentlib.di </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
@@ -18,19 +22,17 @@ public interface AutowiredService {
      */
     void autowire(Object instance);
 
+    void preCondition(Class targetActivityClz, Bundle params) throws ParamException;
+
 
     class Factory {
-        private static Factory instance;
+        private static AutowiredService autowiredServiceImpl;
 
-        public static Factory getInstance() {
-            if (instance == null) {
-                instance = new Factory();
+        public static AutowiredService getSingletonImpl() {
+            if (autowiredServiceImpl == null) {
+                autowiredServiceImpl = new AutowiredServiceImpl();
             }
-            return instance;
-        }
-
-        public AutowiredService create() {
-            return new AutowiredServiceImpl();
+            return autowiredServiceImpl;
         }
     }
 }

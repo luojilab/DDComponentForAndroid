@@ -33,7 +33,7 @@ public class ShareActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AutowiredService.Factory.getInstance().create().autowire(this);
+        AutowiredService.Factory.getSingletonImpl().autowire(this);
         setContentView(R.layout.share_activity_share);
 
         tvShareTitle =  findViewById(R.id.share_title);

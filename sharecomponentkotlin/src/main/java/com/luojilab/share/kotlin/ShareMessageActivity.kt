@@ -29,7 +29,7 @@ class ShareMessageActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AutowiredService.Factory.getInstance().create().autowire(this)
+        AutowiredService.Factory.getSingletonImpl().autowire(this)
         setContentView(R.layout.kotlin_activity_share)
 
         tvShareTitle = findViewById<TextView>(R.id.share_title)

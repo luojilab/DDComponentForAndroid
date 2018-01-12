@@ -63,7 +63,7 @@ public class ReaderFragment extends Fragment {
         author.setCounty("USA");
         Bundle bundle = new Bundle();
         bundle.putString("bookName", "Gone with the Wind");
-        bundle.putString("author", JsonService.Factory.getInstance().create().toJsonString(author));
+        bundle.putString("author", JsonService.Factory.getSingletonImpl().toJsonString(author));
         UIRouter.getInstance().openUri(getActivity(), "DDComp://share/shareBook", bundle);
     }
 
@@ -74,7 +74,7 @@ public class ReaderFragment extends Fragment {
         author.setCounty("New York");
         UIRouter.getInstance().openUri(getActivity(),
                 "DDComp://kotlin/shareMagazine?bookName=NYTIME&author="
-                        + JsonService.Factory.getInstance().create().toJsonString(author), null);
+                        + JsonService.Factory.getSingletonImpl().toJsonString(author), null);
     }
 
     //startActivityForResult
@@ -84,7 +84,7 @@ public class ReaderFragment extends Fragment {
         author.setCounty("USA");
         UIRouter.getInstance().openUri(getActivity(),
                 "DDComp://share/shareBook?bookName=Gone with the Wind&author="
-                        + JsonService.Factory.getInstance().create().toJsonString(author), null, REQUEST_CODE);
+                        + JsonService.Factory.getSingletonImpl().toJsonString(author), null, REQUEST_CODE);
     }
 
 }
