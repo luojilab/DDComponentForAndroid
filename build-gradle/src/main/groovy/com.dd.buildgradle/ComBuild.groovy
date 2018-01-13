@@ -17,10 +17,10 @@ public class ComBuild implements Plugin<Project> {
         System.out.println("taskNames is " + taskNames);
         String module = project.path.replace(":", "")
         System.out.println("current module is " + module);
-        AssembleTask assembleTask = getTaskInfo(project.gradle.startParameter.taskNames)
+        AssembleTask assembleTask = getTaskInfo(taskNames)
 
         if (assembleTask.isAssemble) {
-            fetchMainmodulename(project, assembleTask);
+            compilemodule = fetchMainmodulename(project, assembleTask);
             System.out.println("compilemodule  is " + compilemodule);
         }
 
@@ -46,6 +46,11 @@ public class ComBuild implements Plugin<Project> {
         //根据配置添加各种组件依赖，并且自动化生成组件加载代码
         if (isRunAlone) {
             project.apply plugin: 'com.android.application'
+            System.out.println("apply plugin is " + 'com.android.application');
+            if (assembleTask.isAssemble && module.equals(compilemodule)) {
+                compileComponents(assembleTask, project)
+                project.android.registerTransform(new ComCodeTransform(project))
+            }
             if (!module.equals(mainmodulename)) {
                 project.android.sourceSets {
                     main {
@@ -54,11 +59,6 @@ public class ComBuild implements Plugin<Project> {
                         res.srcDirs = ['src/main/res', 'src/main/runalone/res']
                     }
                 }
-            }
-            System.out.println("apply plugin is " + 'com.android.application');
-            if (assembleTask.isAssemble && module.equals(compilemodule)) {
-                compileComponents(assembleTask, project)
-                project.android.registerTransform(new ComCodeTransform(project))
             }
         } else {
             project.apply plugin: 'com.android.library'
@@ -85,29 +85,6 @@ public class ComBuild implements Plugin<Project> {
 
     }
 
-    /**
-     * 根据当前的task，获取要运行的组件，规则如下：
-     * assembleRelease ---app
-     * app:assembleRelease :app:assembleRelease ---app
-     * sharecomponent:assembleRelease :sharecomponent:assembleRelease ---sharecomponent
-     * @param assembleTask
-     */
-    private void fetchMainmodulename(Project project, AssembleTask assembleTask) {
-        if (!project.rootProject.hasProperty("mainmodulename")) {
-            throw new RuntimeException("you should set compilemodule in rootproject's gradle.properties")
-        }
-        if (assembleTask.modules.size() > 0 && assembleTask.modules.get(0) != null
-                && assembleTask.modules.get(0).trim().length() > 0
-                && !assembleTask.modules.get(0).equals("all")) {
-            compilemodule = assembleTask.modules.get(0);
-        } else {
-            compilemodule = project.rootProject.property("mainmodulename")
-        }
-        if (compilemodule == null || compilemodule.trim().length() <= 0) {
-            compilemodule = "app"
-        }
-    }
-
     private AssembleTask getTaskInfo(List<String> taskNames) {
         AssembleTask assembleTask = new AssembleTask();
         for (String task : taskNames) {
@@ -124,6 +101,31 @@ public class ComBuild implements Plugin<Project> {
             }
         }
         return assembleTask
+    }
+
+    /**
+     * 根据当前的task，获取要运行的组件，规则如下：
+     * assembleRelease ---app
+     * app:assembleRelease :app:assembleRelease ---app
+     * sharecomponent:assembleRelease :sharecomponent:assembleRelease ---sharecomponent
+     * @param assembleTask
+     */
+    private String fetchMainmodulename(Project project, AssembleTask assembleTask) {
+        String mainModule;
+        if (!project.rootProject.hasProperty("mainmodulename")) {
+            throw new RuntimeException("you should set mainmodulename in rootproject's gradle.properties")
+        }
+        if (assembleTask.modules.size() > 0 && assembleTask.modules.get(0) != null
+                && assembleTask.modules.get(0).trim().length() > 0
+                && !assembleTask.modules.get(0).equals("all")) {
+            mainModule = assembleTask.modules.get(0);
+        } else {
+            mainModule = project.rootProject.property("mainmodulename")
+        }
+        if (mainModule == null || mainModule.trim().length() <= 0) {
+            mainModule = "app"
+        }
+        return mainModule;
     }
 
     /**
