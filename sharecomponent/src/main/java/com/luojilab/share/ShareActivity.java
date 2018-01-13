@@ -17,7 +17,7 @@ import com.luojilab.router.facade.annotation.RouteNode;
 @RouteNode(path = "/shareBook", desc = "分享书籍页面")
 public class ShareActivity extends AppCompatActivity {
 
-    @Autowired
+    @Autowired(required = true)
     String bookName;
 
     @Autowired

@@ -31,6 +31,7 @@ public interface Constants {
     String FRAGMENT_V4 = "android.support.v4.app.Fragment";
     String SERVICE = "android.app.Service";
     String PARCELABLE = "android.os.Parcelable";
+    String BUNDLE = "android.os.Bundle";
 
     // Java type
     String LANG = "java.lang";
