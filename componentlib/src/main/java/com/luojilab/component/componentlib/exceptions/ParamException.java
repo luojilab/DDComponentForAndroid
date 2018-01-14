@@ -8,6 +8,8 @@ package com.luojilab.component.componentlib.exceptions;
  * Created by leobert on 12/01/2018.
  */
 
-public class ParamException extends UiRouterException {
-
+public final class ParamException extends UiRouterException {
+    public ParamException(String paramName) {
+        super(paramName + " is required param, but didn't contains in the bundle");
+    }
 }

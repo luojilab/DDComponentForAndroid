@@ -78,6 +78,8 @@ public class AutowiredProcessor extends AbstractProcessor {
 
     private static final String SUFFIX_AUTOWIRED = "$$Router$$Autowired";
 
+    private static final ClassName ParamException = ClassName.get("com.luojilab.component.componentlib.exceptions","ParamException");
+
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
@@ -138,6 +140,7 @@ public class AutowiredProcessor extends AbstractProcessor {
                 MethodSpec.Builder preConditionMethodBuilder = MethodSpec.methodBuilder("preCondition")
                         .addAnnotation(Override.class)
                         .addModifiers(PUBLIC)
+                        .addException(ParamException)
                         .addParameter(bundleParamSpec);
 
                 TypeElement parent = entry.getKey();
@@ -218,6 +221,17 @@ public class AutowiredProcessor extends AbstractProcessor {
 
                         injectMethodBuilder.endControlFlow();
                     }
+
+                    //preCondition
+
+                    if(fieldConfig.required()) {
+                        preConditionMethodBuilder.beginControlFlow("if (!bundle.containsKey(\""+fieldName+"\"))");
+
+                        preConditionMethodBuilder.addStatement("throw new $T(" +
+                                "\"" + fieldName + "\")", ParamException);
+
+                        preConditionMethodBuilder.endControlFlow();
+                    }
                 }
 
                 helper.addMethod(injectMethodBuilder.build());
@@ -278,6 +292,7 @@ public class AutowiredProcessor extends AbstractProcessor {
 
         return statement;
     }
+
 
     /**
      * Categories field, find his papa.
