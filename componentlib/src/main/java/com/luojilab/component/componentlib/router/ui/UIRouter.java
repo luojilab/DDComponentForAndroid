@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.luojilab.component.componentlib.exceptions.UiRouterException;
 import com.luojilab.component.componentlib.log.ILogger;
 import com.luojilab.component.componentlib.log.impl.DefaultLogger;
 import com.luojilab.component.componentlib.utils.UriUtils;
@@ -183,6 +184,23 @@ public class UIRouter implements IUIRouter {
         }
         getLogger().monitor("cannot verify uri for: " + UriUtils.toSafeString(uri) + ";\r cannot navigate to the target");
         return false;
+    }
+
+    public boolean preCondition(Uri uri) throws UiRouterException {
+        for (IComponentRouter temp : uiRouters) {
+            if (temp.verifyUri(uri)) {
+                if (temp instanceof BaseCompRouter)
+                    //check the required params, only key-name check
+                    //some other errors cannot be detected like: unmatched type, illegal expression
+                    //of one json, out of boundary and so on. So be caution.
+                    return ((BaseCompRouter) temp).preCondition(uri, null);
+                else
+                    return true;
+            }
+        }
+
+        //no one matched for the uri,may uri error or component is not mounted
+        throw new UiRouterException.NonMatchedException(uri);
     }
 
 

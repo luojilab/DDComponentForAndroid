@@ -32,11 +32,11 @@ public abstract class BaseCompRouter implements IComponentRouter {
         hasInitMap = true;
     }
 
-    public void preCondition(String url, Bundle bundle) {
-
+    public boolean preCondition(String url, Bundle bundle) throws UiRouterException {
+        return this.preCondition(Uri.parse(url),bundle);
     }
 
-    public boolean preCondition(Uri uri, Bundle bundle) throws UiRouterException{
+    public boolean preCondition(Uri uri, Bundle bundle) throws UiRouterException {
         if (!hasInitMap) {
             initMap();
         }
@@ -58,12 +58,13 @@ public abstract class BaseCompRouter implements IComponentRouter {
             Map<String, Integer> paramsType = paramsMapper.get(target);
             com.luojilab.component.componentlib.utils.UriUtils.setBundleValue(bundle, params, paramsType);
 
-            AutowiredService.Factory.getSingletonImpl().preCondition(target,bundle);
+            AutowiredService.Factory.getSingletonImpl().preCondition(target, bundle);
             return true;
         }
 
         return false;
     }
+
     @Override
     public boolean openUri(Context context, String url, Bundle bundle) {
         if (TextUtils.isEmpty(url) || context == null) {
