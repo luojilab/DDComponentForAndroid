@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.component.componentlib.router.ui.UIRouter;
 import com.luojilab.component.componentlib.service.JsonService;
+import com.luojilab.componentservice.readerbook.ReadBookService;
+import com.luojilab.componentservice.share.ShareService;
 import com.luojilab.componentservice.share.bean.Author;
 
 
@@ -51,6 +54,13 @@ public class ReaderFragment extends Fragment {
                     goToShareActivityForResult();
                 }
             });
+            rootView.findViewById(R.id.tv_4).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    goToShareActivityForResultByNative();
+                }
+            });
 
         }
         return rootView;
@@ -85,6 +95,24 @@ public class ReaderFragment extends Fragment {
         UIRouter.getInstance().openUri(getActivity(),
                 "DDComp://share/shareBook?bookName=Gone with the Wind&author="
                         + JsonService.Factory.getInstance().create().toJsonString(author), null, REQUEST_CODE);
+    }
+
+    /**
+     * 使用原生的方法来进行跳转
+     */
+    private void goToShareActivityForResultByNative() {
+        Author author = new Author();
+        author.setName("OuyangPeng");
+        author.setCounty("China");
+        String authorString = JsonService.Factory.getInstance().create().toJsonString(author);
+
+        String bookName = "Gone with the Wind&author";
+
+        Router router = Router.getInstance();
+        if (router.getService(ReadBookService.class.getSimpleName()) != null) {
+            ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+            service.startActivityForResult(getActivity(), bookName, authorString, REQUEST_CODE);
+        }
     }
 
 }

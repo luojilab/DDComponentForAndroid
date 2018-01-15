@@ -66,8 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+        //分享组件 的 RESULT_CODE
+        if (resultCode == 8888) {
+            if (data != null) {
+                Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
