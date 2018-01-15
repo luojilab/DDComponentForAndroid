@@ -12,7 +12,7 @@ import com.luojilab.share.Share2Activity;
  */
 public class ShareServiceImpl implements ShareService {
     @Override
-    public void startActivity(Activity context, String bookName, String author) {
+    public void startShare2Activity(Activity context, String bookName, String author) {
         Intent intent = new Intent(context, Share2Activity.class);
         intent.putExtra("bookName", bookName);
         intent.putExtra("author", author);
@@ -20,7 +20,7 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public void startActivityForResult(Activity context, String bookName, String author, int requestCode) {
+    public void startShare2ActivityForResult(Activity context, String bookName, String author, int requestCode) {
         Intent intent = new Intent(context, Share2Activity.class);
         intent.putExtra("bookName", bookName);
         intent.putExtra("author", author);

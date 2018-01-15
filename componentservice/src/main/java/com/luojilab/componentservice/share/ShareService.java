@@ -8,6 +8,6 @@ import android.app.Activity;
  * created by OuyangPeng at 2018/1/15 上午 11:36
  */
 public interface ShareService {
-    void startActivity(Activity context, String bookName , String author);
-    void startActivityForResult(Activity context,String bookName , String author , int requestCode);
+    void startShare2Activity(Activity context, String bookName , String author);
+    void startShare2ActivityForResult(Activity context, String bookName , String author , int requestCode);
 }
