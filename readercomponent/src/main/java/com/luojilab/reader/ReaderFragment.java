@@ -102,7 +102,9 @@ public class ReaderFragment extends Fragment {
                 "DDComp://share/shareBook?bookName=Gone with the Wind&author="
                         + JsonService.Factory.getInstance().create().toJsonString(author), null, REQUEST_CODE);
     }
-
+    /**
+     * 使用原生的方法来进行跳转
+     */
     private void goToShareActivityByNative() {
         Author author = new Author();
         author.setName("OuyangPeng");
@@ -114,12 +116,12 @@ public class ReaderFragment extends Fragment {
         Router router = Router.getInstance();
         if (router.getService(ReadBookService.class.getSimpleName()) != null) {
             ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
-            service.startActivity(getActivity(), bookName, authorString);
+            service.startShare2Activity(getActivity(), bookName, authorString);
         }
     }
 
     /**
-     * 使用原生的方法来进行跳转
+     * 使用原生的方法来进行跳转，并且处理返回结果
      */
     private void goToShareActivityForResultByNative() {
         Author author = new Author();
@@ -132,7 +134,7 @@ public class ReaderFragment extends Fragment {
         Router router = Router.getInstance();
         if (router.getService(ReadBookService.class.getSimpleName()) != null) {
             ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
-            service.startActivityForResult(getActivity(), bookName, authorString, REQUEST_CODE);
+            service.startShare2ActivityForResult(getActivity(), bookName, authorString, REQUEST_CODE);
         }
     }
 
