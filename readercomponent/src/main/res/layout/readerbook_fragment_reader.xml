@@ -45,4 +45,14 @@
         android:textAllCaps="false"
         android:textSize="16sp" />
 
+    <Button
+        android:id="@+id/tv_4"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_3"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:text="startActivityForResultByNativeByOYP"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
 </RelativeLayout>
