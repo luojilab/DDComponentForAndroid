@@ -58,10 +58,16 @@ public class ReaderFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
+                    goToShareActivityByNative();
+                }
+            });
+            rootView.findViewById(R.id.tv_5).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
                     goToShareActivityForResultByNative();
                 }
             });
-
         }
         return rootView;
     }
@@ -97,6 +103,21 @@ public class ReaderFragment extends Fragment {
                         + JsonService.Factory.getInstance().create().toJsonString(author), null, REQUEST_CODE);
     }
 
+    private void goToShareActivityByNative() {
+        Author author = new Author();
+        author.setName("OuyangPeng");
+        author.setCounty("China");
+        String authorString = JsonService.Factory.getInstance().create().toJsonString(author);
+
+        String bookName = "goToShareActivityByNative";
+
+        Router router = Router.getInstance();
+        if (router.getService(ReadBookService.class.getSimpleName()) != null) {
+            ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+            service.startActivity(getActivity(), bookName, authorString);
+        }
+    }
+
     /**
      * 使用原生的方法来进行跳转
      */
@@ -106,7 +127,7 @@ public class ReaderFragment extends Fragment {
         author.setCounty("China");
         String authorString = JsonService.Factory.getInstance().create().toJsonString(author);
 
-        String bookName = "Gone with the Wind&author";
+        String bookName = "goToShareActivityForResultByNative";
 
         Router router = Router.getInstance();
         if (router.getService(ReadBookService.class.getSimpleName()) != null) {
@@ -114,5 +135,7 @@ public class ReaderFragment extends Fragment {
             service.startActivityForResult(getActivity(), bookName, authorString, REQUEST_CODE);
         }
     }
+
+
 
 }
