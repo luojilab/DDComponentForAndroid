@@ -114,8 +114,8 @@ public class ReaderFragment extends Fragment {
         String bookName = "goToShareActivityByNative";
 
         Router router = Router.getInstance();
-        if (router.getService(ReadBookService.class.getSimpleName()) != null) {
-            ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+        ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+        if (service != null) {
             service.startShare2Activity(getActivity(), bookName, authorString);
         }
     }
@@ -132,8 +132,9 @@ public class ReaderFragment extends Fragment {
         String bookName = "goToShareActivityForResultByNative";
 
         Router router = Router.getInstance();
-        if (router.getService(ReadBookService.class.getSimpleName()) != null) {
-            ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+
+        ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+        if (service != null) {
             service.startShare2ActivityForResult(getActivity(), bookName, authorString, REQUEST_CODE);
         }
     }

@@ -1,7 +1,5 @@
 package com.luojilab.share.runalone.application;
 
-import android.app.Application;
-
 import com.luojilab.component.basicres.BaseApplication;
 
 /**
