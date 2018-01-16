@@ -12,7 +12,7 @@ import java.util.regex.Matcher
 class ConvertUtils {
     static List<CtClass> toCtClasses(Collection<TransformInput> inputs, ClassPool classPool) {
         List<String> classNames = new ArrayList<>()
-        List<CtClass> allClass = new ArrayList<>();
+        List<CtClass> allClass = new ArrayList<>()
         inputs.each {
             it.directoryInputs.each {
                 def dirPath = it.file.absolutePath
@@ -31,10 +31,10 @@ class ConvertUtils {
             it.jarInputs.each {
                 classPool.insertClassPath(it.file.absolutePath)
                 def jarFile = new JarFile(it.file)
-                Enumeration<JarEntry> classes = jarFile.entries();
+                Enumeration<JarEntry> classes = jarFile.entries()
                 while (classes.hasMoreElements()) {
-                    JarEntry libClass = classes.nextElement();
-                    String className = libClass.getName();
+                    JarEntry libClass = classes.nextElement()
+                    String className = libClass.getName()
                     if (className.endsWith(SdkConstants.DOT_CLASS)) {
                         className = className.substring(0, className.length() - SdkConstants.DOT_CLASS.length()).replaceAll('/', '.')
                         if (classNames.contains(className)) {
@@ -47,12 +47,12 @@ class ConvertUtils {
         }
         classNames.each {
             try {
-                allClass.add(classPool.get(it));
+                allClass.add(classPool.get(it))
             } catch (javassist.NotFoundException e) {
                 println "class not found exception class name:  $it "
             }
         }
-        return allClass;
+        return allClass
     }
 
 
