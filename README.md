@@ -97,7 +97,7 @@ combuild {
 关于如何进行组件之间数据交互和UI跳转，请参看 [Wiki](https://github.com/luojilab/DDComponentForAndroid/wiki)
 
 
-### 官方讨论群
+### 组件化讨论群
 DDComponent的讨论群，群号693097923，欢迎大家加入：
 
 ![进群请扫码](http://upload-images.jianshu.io/upload_images/6650461-45da9dd9dc2a79b2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
