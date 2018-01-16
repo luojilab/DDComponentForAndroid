@@ -52,7 +52,7 @@
         android:layout_below="@id/tv_3"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
-        android:text="startActivityByNativeByOYP"
+        android:text="startActivityByNativeMethod"
         android:textAllCaps="false"
         android:textSize="16sp" />
 
@@ -63,7 +63,7 @@
         android:layout_below="@id/tv_4"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
-        android:text="startActivityForResultByNativeByOYP"
+        android:text="startActivityForResultByNativeMethod"
         android:textAllCaps="false"
         android:textSize="16sp" />
 
