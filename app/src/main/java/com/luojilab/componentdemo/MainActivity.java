@@ -6,9 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
+import com.luojilab.component.basiclib.ToastManager;
 import com.luojilab.component.basicres.BaseActivity;
+import com.luojilab.component.basicres.BaseApplication;
 import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.componentservice.readerbook.ReadBookService;
 import com.luojilab.router.facade.annotation.RouteNode;
@@ -69,7 +70,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+            ToastManager.show(BaseApplication.getAppContext(), data.getStringExtra("result"));
         }
     }
 }
