@@ -76,25 +76,6 @@ class ComBuild implements Plugin<Project> {
             //应用plugin为 library
             project.apply plugin: 'com.android.library'
             System.out.println("apply plugin is " + 'com.android.library')
-            project.afterEvaluate {
-                Task assembleReleaseTask = project.tasks.findByPath("assembleRelease")
-                if (assembleReleaseTask != null) {
-                    //每次assembleRelease 执行完之后，将aar copy到 componentrelease 目录
-                    assembleReleaseTask.doLast {
-                        File infile = project.file("build/outputs/aar/$module-release.aar")
-                        File outfile = project.file("../componentrelease")
-                        File desFile = project.file("$module-release.aar")
-                        project.copy {
-                            from infile
-                            into outfile
-                            rename {
-                                String fileName -> desFile.name
-                            }
-                        }
-                        System.out.println("$module-release.aar copy success ")
-                    }
-                }
-            }
         }
 
     }
@@ -128,6 +109,7 @@ class ComBuild implements Plugin<Project> {
             //ASSEMBLE打包 、 aR = assembleRelease  、RESGUARD混淆
             if (task.toUpperCase().contains("ASSEMBLE")
                     || task.contains("aR")
+                    || task.toUpperCase().contains("INSTALL")
                     || task.toUpperCase().contains("RESGUARD")) {
                 if (task.toUpperCase().contains("DEBUG")) {
                     assembleTask.isDebug = true
@@ -149,7 +131,7 @@ class ComBuild implements Plugin<Project> {
 
     /**
      * 自动添加依赖，只在运行assemble任务的才会添加依赖，因此在开发期间组件之间是完全感知不到的，这是做到完全隔离的关键
-     * 支持两种语法：module或者modulePackage:module,前者之间引用module工程，后者使用componentrelease中已经发布的aar
+     * 支持两种语法：module或者groupId:artifactId:version(@aar),前者之间引用module工程，后者使用maven中已经发布的aar
      * @param assembleTask
      * @param project
      */
@@ -165,6 +147,7 @@ class ComBuild implements Plugin<Project> {
         } else {
             components = (String) project.properties.get("compileComponent")
         }
+
         if (components == null || components.length() == 0) {
             System.out.println("there is no add dependencies ")
             return
@@ -177,23 +160,19 @@ class ComBuild implements Plugin<Project> {
         }
         for (String str : compileComponents) {
             System.out.println("comp is " + str)
-            //如果module格式为componentrelease中已经发布的aar，格式类似为： modulePackage:module
             if (str.contains(":")) {
                 /**
-                 *  这一段逻辑可以优化为  配置文件中配置具体的版本信息即可
-                     debugComponent=readercomponent,com.xtc.comp:sharecomponent:1.0.1,sharecomponentkotlin
-                     compileComponent=readercomponent,com.xtc.comp:sharecomponent:1.0.1,sharecomponentkotlin
-
-                     这样就可以直接用  project.dependencies.add("compile", str)
+                 * 示例语法:groupId:artifactId:version(@aar)
+                 * compileComponent=com.luojilab.reader:readercomponent:1.0.0
+                 * 注意，前提是已经将组件aar文件发布到maven上，并配置了相应的repositories
                  */
-                File file = project.file("../componentrelease/" + str.split(":")[1] + "-release.aar")
-                if (file.exists()) {
-                    project.dependencies.add("compile", str + "-release@aar")
-                    System.out.println("add dependencies : " + str + "-release@aar")
-                } else {
-                    throw new RuntimeException(str + " not found ! maybe you should generate a new one ")
-                }
+                project.dependencies.add("compile", str)
+                System.out.println("add dependencies lib  : " + str)
             } else {
+                /**
+                 * 示例语法:module
+                 * compileComponent=readercomponent,sharecomponent
+                 */
                 //如果为直接引用module工程
                 project.dependencies.add("compile", project.project(':' + str))
                 System.out.println("add dependencies project : " + str)

@@ -19,12 +19,11 @@ class ComCodeTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        getRealApplicationName()
+        getRealApplicationName(transformInvocation.getInputs())
         classPool = new ClassPool()
         project.android.bootClasspath.each {
             classPool.appendClassPath((String) it.absolutePath)
         }
-
         def box = ConvertUtils.toCtClasses(transformInvocation.getInputs(), classPool)
 
         //要收集的application，一般情况下只有一个
@@ -94,14 +93,7 @@ class ComCodeTransform extends Transform {
     }
 
 
-    private void getRealApplicationName() {
-        /**
-         获取在build.gradle中的配置中的格式 applicationName
-             combuild {
-                applicationName = 'com.luojilab.reader.runalone.application.ReaderApplication'
-                isRegisterCompoAuto = false
-            }
-        */
+    private void getRealApplicationName(Collection<TransformInput> inputs) {
         applicationName = project.extensions.combuild.applicationName
         if (applicationName == null || applicationName.isEmpty()) {
             throw new RuntimeException("you should set applicationName in combuild")
