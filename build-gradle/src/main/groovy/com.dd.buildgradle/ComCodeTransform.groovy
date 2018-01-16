@@ -7,11 +7,11 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
-public class ComCodeTransform extends Transform {
+class ComCodeTransform extends Transform {
 
     private Project project
     ClassPool classPool
-    String applicationName;
+    String applicationName
 
     ComCodeTransform(Project project) {
         this.project = project
@@ -19,32 +19,33 @@ public class ComCodeTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        getRealApplicationName(transformInvocation.getInputs());
+        getRealApplicationName()
         classPool = new ClassPool()
         project.android.bootClasspath.each {
             classPool.appendClassPath((String) it.absolutePath)
         }
+
         def box = ConvertUtils.toCtClasses(transformInvocation.getInputs(), classPool)
 
         //要收集的application，一般情况下只有一个
-        List<CtClass> applications = new ArrayList<>();
+        List<CtClass> applications = new ArrayList<>()
         //要收集的applicationlikes，一般情况下有几个组件就有几个applicationlike
-        List<CtClass> activators = new ArrayList<>();
+        List<CtClass> activators = new ArrayList<>()
 
         for (CtClass ctClass : box) {
             if (isApplication(ctClass)) {
                 applications.add(ctClass)
-                continue;
+                continue
             }
             if (isActivator(ctClass)) {
                 activators.add(ctClass)
             }
         }
         for (CtClass ctClass : applications) {
-            System.out.println("application is   " + ctClass.getName());
+            System.out.println("application is   " + ctClass.getName())
         }
         for (CtClass ctClass : activators) {
-            System.out.println("applicationlike is   " + ctClass.getName());
+            System.out.println("applicationlike is   " + ctClass.getName())
         }
 
         transformInvocation.inputs.each { TransformInput input ->
@@ -78,7 +79,7 @@ public class ComCodeTransform extends Transform {
                         if (classNameTemp.endsWith(".class")) {
                             String className = classNameTemp.substring(1, classNameTemp.length() - 6)
                             if (className.equals(applicationName)) {
-                                injectApplicationCode(applications.get(0), activators, fileName);
+                                injectApplicationCode(applications.get(0), activators, fileName)
                             }
                         }
                     }
@@ -93,7 +94,14 @@ public class ComCodeTransform extends Transform {
     }
 
 
-    private void getRealApplicationName(Collection<TransformInput> inputs) {
+    private void getRealApplicationName() {
+        /**
+         获取在build.gradle中的配置中的格式 applicationName
+             combuild {
+                applicationName = 'com.luojilab.reader.runalone.application.ReaderApplication'
+                isRegisterCompoAuto = false
+            }
+        */
         applicationName = project.extensions.combuild.applicationName
         if (applicationName == null || applicationName.isEmpty()) {
             throw new RuntimeException("you should set applicationName in combuild")
@@ -102,30 +110,36 @@ public class ComCodeTransform extends Transform {
 
 
     private void injectApplicationCode(CtClass ctClassApplication, List<CtClass> activators, String patch) {
-        System.out.println("injectApplicationCode begin");
-        ctClassApplication.defrost();
+        System.out.println("injectApplicationCode begin")
+        ctClassApplication.defrost()
         try {
+            //在主项目的Application.onCreate()中插入调用ApplicationLike.onCreate()的代码
             CtMethod attachBaseContextMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
             attachBaseContextMethod.insertAfter(getAutoLoadComCode(activators))
         } catch (CannotCompileException | NotFoundException e) {
-            StringBuilder methodBody = new StringBuilder();
-            methodBody.append("protected void onCreate() {");
-            methodBody.append("super.onCreate();");
+            //在主项目的Application.onCreate()中插入调用ApplicationLike.onCreate()的代码
+            //如果上面的方法出现异常，则自己拼凑onCreate方法的具体实现
+            StringBuilder methodBody = new StringBuilder()
+            methodBody.append("protected void onCreate() {")
+            methodBody.append("super.onCreate();")
             methodBody.
-                    append(getAutoLoadComCode(activators));
-            methodBody.append("}");
-            ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication));
+                    append(getAutoLoadComCode(activators))
+            methodBody.append("}")
+            ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
         } catch (Exception e) {
-
+            e.printStackTrace()
         }
         ctClassApplication.writeFile(patch)
         ctClassApplication.detach()
 
-        System.out.println("injectApplicationCode success ");
+        System.out.println("injectApplicationCode success ")
     }
 
+    /**
+     * 生成 ApplicationLike.onCreate() 的代码，便于在主项目的Application.onCreate()中插入
+     */
     private String getAutoLoadComCode(List<CtClass> activators) {
-        StringBuilder autoLoadComCode = new StringBuilder();
+        StringBuilder autoLoadComCode = new StringBuilder()
         for (CtClass ctClass : activators) {
             autoLoadComCode.append("new " + ctClass.getName() + "()" + ".onCreate();")
         }
@@ -133,30 +147,34 @@ public class ComCodeTransform extends Transform {
         return autoLoadComCode.toString()
     }
 
-
+    /**
+     * 是否为真正的application
+     */
     private boolean isApplication(CtClass ctClass) {
         try {
             if (applicationName != null && applicationName.equals(ctClass.getName())) {
-                return true;
+                return true
             }
         } catch (Exception e) {
             println "class not found exception class name:  " + ctClass.getName()
         }
-        return false;
+        return false
     }
-
+    /**
+     * 是否为applicationlikes
+     */
     private boolean isActivator(CtClass ctClass) {
         try {
             for (CtClass ctClassInter : ctClass.getInterfaces()) {
                 if ("com.luojilab.component.componentlib.applicationlike.IApplicationLike".equals(ctClassInter.name)) {
-                    return true;
+                    return true
                 }
             }
         } catch (Exception e) {
             println "class not found exception class name:  " + ctClass.getName()
         }
 
-        return false;
+        return false
     }
 
     @Override
