@@ -2,7 +2,7 @@ auto generated, do not change !!!!
 
 HOST : share
 
-·ÖÏíÊé¼®Ò³Ãæ
+åˆ†äº«ä¹¦ç±é¡µé¢
 /shareBook
 author:com.luojilab.componentservice.share.bean.Author
 bookName:String

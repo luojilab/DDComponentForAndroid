@@ -2,7 +2,7 @@ auto generated, do not change !!!!
 
 HOST : kotlin
 
-·ÖÏíÔÓÖ¾Ò³Ãæ
+åˆ†äº«æ‚å¿—é¡µé¢
 /shareMagazine
 author:com.luojilab.componentservice.share.bean.Author
 bookName:String
