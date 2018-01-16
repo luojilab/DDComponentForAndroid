@@ -19,7 +19,7 @@ class ComBuild implements Plugin<Project> {
         AssembleTask assembleTask = getTaskInfo(project.gradle.startParameter.taskNames)
 
         if (assembleTask.isAssemble) {
-            fetchMainmodulename(project, assembleTask)
+            fetchMainModulename(project, assembleTask)
             System.out.println("compilemodule  is " + compilemodule)
         }
 
@@ -73,7 +73,7 @@ class ComBuild implements Plugin<Project> {
      * sharecomponent:assembleRelease :sharecomponent:assembleRelease ---sharecomponent
      * @param assembleTask
      */
-    private void fetchMainmodulename(Project project, AssembleTask assembleTask) {
+    private void fetchMainModulename(Project project, AssembleTask assembleTask) {
         if (!project.rootProject.hasProperty("mainmodulename")) {
             throw new RuntimeException("you should set compilemodule in rootproject's gradle.properties")
         }
