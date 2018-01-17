@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-//apply from: "${rootDir}/copy.gradle"
+apply from: "${rootDir}/copy.gradle"
 buildscript {
     ext.kotlin_version = '1.1.3-2'
     repositories {
@@ -27,51 +27,5 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
-    }
-
-//    project.beforeEvaluate {
-//        copyApiToJava
-//    }
-
-//    gradle.beforeProject {project ->
-//        print(">>>>>>>>>>>>>>>" + project.name)
-//        copyApiToJava
-//    }
-
-//    gradle.beforeProject {
-//        preBuild.mustRunAfter copyApiToJava
-//    }
-//    gradle.beforeProject {Gradle gradle ->
-//        gradle.rootProject{
-//            preBuild.mustRunAfter copyApiToJava
-//        }
-//    }
-
-//    gradle.taskGraph.whenReady { TaskExecutionGraph taskExecutionGraph ->
-//        if(taskExecutionGraph.hasTask(preBuild)){
-//            preBuild.mustRunAfter copyApiToJava
-//        }
-//    }
-//    project.gradle.beforeProject {
-//        copyApiToJava
-//    }
-
-}
-
-//同步任务（Sync）继承自复制任务（Copy），
-//当执行时会复制源文件到目标目录，然后从目标目录删除所有非复制文件。
-task copyApiToJava(type: Sync) {
-    println "------>  copyApiToJava() 开始了"
-    from "${rootDir}/sharecomponent/src/main/java"
-    from "${rootDir}/readercomponent/src/main/java"
-
-//    from "${rootDir}/*/src/main/java"
-    into "${rootDir}/ApiComponentService/src/main/java"
-    exclude '**/*.java'
-    include '**/*.api'
-
-    rename{String fileName ->
-        println "------>  copyApiToJava() 要重命名文件:" + fileName
-        fileName.replace('.api', '.java')
     }
 }
