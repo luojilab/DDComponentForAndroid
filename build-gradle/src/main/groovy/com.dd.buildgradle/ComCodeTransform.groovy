@@ -46,9 +46,9 @@ class ComCodeTransform extends Transform {
         for (CtClass ctClass : activators) {
             System.out.println("applicationlike is   " + ctClass.getName())
         }
-
+        //Transform的inputs有两种类型，一种是项目内的目录，一种是第三方的jar包，要分开遍历
         transformInvocation.inputs.each { TransformInput input ->
-            //对类型为jar文件的input进行遍历
+            //对类型为 jar文件 的input进行遍历
             input.jarInputs.each { JarInput jarInput ->
                 //jar文件一般是第三方依赖库jar文件
                 // 重命名输出文件（同目录copyFile会冲突）
@@ -76,6 +76,7 @@ class ComCodeTransform extends Transform {
                                 .replace("\\", ".")
                                 .replace("/", ".")
                         if (classNameTemp.endsWith(".class")) {
+                            // ".class".length == 6
                             String className = classNameTemp.substring(1, classNameTemp.length() - 6)
                             if (className.equals(applicationName)) {
                                 injectApplicationCode(applications.get(0), activators, fileName)
@@ -83,6 +84,7 @@ class ComCodeTransform extends Transform {
                         }
                     }
                 }
+                //获取 output 目录
                 def dest = transformInvocation.outputProvider.getContentLocation(directoryInput.name,
                         directoryInput.contentTypes,
                         directoryInput.scopes, Format.DIRECTORY)
@@ -103,6 +105,8 @@ class ComCodeTransform extends Transform {
 
     private void injectApplicationCode(CtClass ctClassApplication, List<CtClass> activators, String patch) {
         System.out.println("injectApplicationCode begin")
+
+        //Defrosts the class so that the class can be modified again.
         ctClassApplication.defrost()
         try {
             //在主项目的Application.onCreate()中插入调用ApplicationLike.onCreate()的代码

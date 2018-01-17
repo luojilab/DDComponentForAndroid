@@ -41,7 +41,8 @@ android {
 }
 
 dependencies {
-    compile project(':componentservice')
+    //    compile project(':componentservice')
+    compile project(':ApiComponentService')
     annotationProcessor project(':router-anno-compiler')
 }
 
@@ -49,4 +50,3 @@ combuild {
     applicationName = 'com.luojilab.componentdemo.application.AppApplication'
     isRegisterCompoAuto = true
 }
-

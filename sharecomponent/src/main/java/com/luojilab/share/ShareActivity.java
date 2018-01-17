@@ -7,9 +7,9 @@ import android.widget.TextView;
 
 import com.luojilab.component.basicres.BaseActivity;
 import com.luojilab.component.componentlib.service.AutowiredService;
-import com.luojilab.componentservice.share.bean.Author;
 import com.luojilab.router.facade.annotation.Autowired;
 import com.luojilab.router.facade.annotation.RouteNode;
+import com.luojilab.share.bean.Author;
 
 /**
  * Created by mrzhang on 2017/6/20.

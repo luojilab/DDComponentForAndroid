@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.luojilab.component.componentlib.service.AutowiredService;
 import com.luojilab.component.componentlib.service.JsonService;
-import com.luojilab.componentservice.share.bean.Author;
+import com.luojilab.share.bean.Author;
 
 /**
  *  测试使用原生的是否可以

@@ -10,9 +10,8 @@ import android.view.ViewGroup;
 import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.component.componentlib.router.ui.UIRouter;
 import com.luojilab.component.componentlib.service.JsonService;
-import com.luojilab.componentservice.readerbook.ReadBookService;
-import com.luojilab.componentservice.share.ShareService;
-import com.luojilab.componentservice.share.bean.Author;
+import com.luojilab.share.ShareService;
+import com.luojilab.share.bean.Author;
 
 
 /**

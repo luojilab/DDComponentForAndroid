@@ -2,8 +2,8 @@ auto generated, do not change !!!!
 
 HOST : kotlin
 
-åˆ†äº«æ‚å¿—é¡µé¢
+·ÖÏíÔÓÖ¾Ò³Ãæ
 /shareMagazine
-author:com.luojilab.componentservice.share.bean.Author
+author:com.luojilab.share.bean.Author
 bookName:String
 

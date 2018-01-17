@@ -1,5 +1,4 @@
 apply plugin: 'com.dd.comgradle'
-
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -36,7 +35,8 @@ android {
 }
 
 dependencies {
-    compile project(':componentservice')
+//    compile project(':componentservice')
+    compile project(':ApiComponentService')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     annotationProcessor 'com.luojilab.ddcomponent:router-anno-compiler:1.0.0'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

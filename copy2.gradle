@@ -1,0 +1,31 @@
+//同步任务（Sync）继承自复制任务（Copy）
+task copyApiToJava(type: Sync) {
+    println "------>  copyApiToJava() 开始了"
+
+//  from "/src/main/java"
+    from "${rootDir}/"
+    into "${rootDir}/ApiComponentService/src/main/java"
+    exclude '**/*.java'
+    include '**/*.api'
+
+//    preserve {
+//        exclude '**/*.java'
+//        include '**/*.api'
+//    }
+
+    rename{String fileName ->
+        fileName.replace('.api', '.java')
+        println "------>  copyApiToJava() 重命名文件:" + fileName
+    }
+}
+
+project.beforeEvaluate {
+    tasks.matching {
+        // 以process开头以ReleaseJavaRes或DebugJavaRes结尾的task
+        it.name.startsWith('process') && (it.name.endsWith('ReleaseJavaRes') || it.name.endsWith
+                ('DebugJavaRes'))
+    }.each {task ->
+        // 任务依赖：执行task之前需要执行dependsOn指定的任务
+        task.dependsOn(copyApiToJava)
+    }
+}
