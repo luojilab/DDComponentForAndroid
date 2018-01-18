@@ -20,19 +20,6 @@ buildscript {
 }
 
 allprojects {
-//    beforeEvaluate {project ->
-//        if (project.name.equals("readercomponent") || project.name.equals("sharecomponent") || project.name.equals("sharecomponentkotlin")){
-//            println "------>------>------>  开始扫描到的组件库为 : " +project.name
-//            project.apply "${rootDir}/copy.gradle"
-//        }
-//    }
-
-//    println "------>  项目 =" + name
-//    if (name.equals("readercomponent") || name.equals("sharecomponent") || name.equals("sharecomponentkotlin")){
-//        println "------>------>------>  开始扫描到的组件库为 : " +name
-//        apply from: "${rootDir}/copy.gradle"
-//    }
-
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
