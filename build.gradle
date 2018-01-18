@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from: "${rootDir}/copy.gradle"
+
 buildscript {
     ext.kotlin_version = '1.1.3-2'
     repositories {
@@ -20,6 +20,19 @@ buildscript {
 }
 
 allprojects {
+//    beforeEvaluate {project ->
+//        if (project.name.equals("readercomponent") || project.name.equals("sharecomponent") || project.name.equals("sharecomponentkotlin")){
+//            println "------>------>------>  开始扫描到的组件库为 : " +project.name
+//            project.apply "${rootDir}/copy.gradle"
+//        }
+//    }
+
+//    println "------>  项目 =" + name
+//    if (name.equals("readercomponent") || name.equals("sharecomponent") || name.equals("sharecomponentkotlin")){
+//        println "------>------>------>  开始扫描到的组件库为 : " +name
+//        apply from: "${rootDir}/copy.gradle"
+//    }
+
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }

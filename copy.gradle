@@ -20,6 +20,8 @@ task copyApiToJava(type: Sync) {
     }
 }
 
+preBuild.dependsOn copyApiToJava
+
 ////apk编译之前运行taskA
 ////preBuild.mustRunAfter copyApiToJava
 ////同步任务（Sync）继承自复制任务（Copy），
