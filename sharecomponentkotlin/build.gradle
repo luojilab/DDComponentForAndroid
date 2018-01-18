@@ -2,7 +2,6 @@ apply plugin: 'com.dd.comgradle'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply from: "${rootDir}/copy.gradle"
 kapt {
     arguments {
         arg("host", "kotlin")

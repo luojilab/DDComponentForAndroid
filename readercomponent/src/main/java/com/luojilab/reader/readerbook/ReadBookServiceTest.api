@@ -1,0 +1,13 @@
+package com.luojilab.reader.readerbook;
+
+import com.luojilab.share.bean.Author;
+
+/**
+ * export module services
+ * Created by mrzhang on 2017/6/15.
+ */
+
+public interface ReadBookServiceTest {
+    Author getAuthor();
+    void test(String author,String reader);
+}
