@@ -7,11 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
 
+import com.luojilab.api.reader.readerbook.ReadBookService;
 import com.luojilab.component.basiclib.ToastManager;
 import com.luojilab.component.basicres.BaseActivity;
 import com.luojilab.component.basicres.BaseApplication;
 import com.luojilab.component.componentlib.router.Router;
-import com.luojilab.reader.readerbook.ReadBookService;
 import com.luojilab.router.facade.annotation.RouteNode;
 
 @RouteNode(path = "/main", desc = "首页")

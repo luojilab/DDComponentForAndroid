@@ -4,6 +4,6 @@ HOST : kotlin
 
 ∑÷œÌ‘”÷æ“≥√Ê
 /shareMagazine
-author:com.luojilab.share.bean.Author
+author:com.luojilab.api.share.bean.Author
 bookName:String
 

@@ -1,9 +1,9 @@
 package com.luojilab.reader.applike;
 
+import com.luojilab.api.reader.readerbook.ReadBookService;
 import com.luojilab.component.componentlib.applicationlike.IApplicationLike;
 import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.component.componentlib.router.ui.UIRouter;
-import com.luojilab.reader.readerbook.ReadBookService;
 import com.luojilab.reader.serviceimpl.ReadBookServiceImpl;
 
 /**

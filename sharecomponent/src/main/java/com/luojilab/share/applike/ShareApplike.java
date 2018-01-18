@@ -1,9 +1,9 @@
 package com.luojilab.share.applike;
 
+import com.luojilab.api.share.ShareService;
 import com.luojilab.component.componentlib.applicationlike.IApplicationLike;
 import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.component.componentlib.router.ui.UIRouter;
-import com.luojilab.share.ShareService;
 import com.luojilab.share.serviceimpl.ShareServiceImpl;
 
 /**

@@ -1,6 +1,6 @@
-package com.luojilab.reader.readerbook;
+package com.luojilab.api.reader.readerbook;
 
-import com.luojilab.share.bean.Author;
+import com.luojilab.api.share.bean.Author;
 
 /**
  * export module services

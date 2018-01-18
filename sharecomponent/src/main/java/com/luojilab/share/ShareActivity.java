@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
+import com.luojilab.api.share.bean.Author;
 import com.luojilab.component.basicres.BaseActivity;
 import com.luojilab.component.componentlib.service.AutowiredService;
 import com.luojilab.router.facade.annotation.Autowired;
 import com.luojilab.router.facade.annotation.RouteNode;
-import com.luojilab.share.bean.Author;
 
 /**
  * Created by mrzhang on 2017/6/20.

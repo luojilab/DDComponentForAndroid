@@ -6,9 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.luojilab.api.share.bean.Author;
 import com.luojilab.component.componentlib.service.AutowiredService;
 import com.luojilab.component.componentlib.service.JsonService;
-import com.luojilab.share.bean.Author;
 
 /**
  *  测试使用原生的是否可以

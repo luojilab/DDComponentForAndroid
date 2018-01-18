@@ -1,4 +1,4 @@
-package com.luojilab.reader.readerbook;
+package com.luojilab.api.reader.readerbook;
 
 import android.support.v4.app.Fragment;
 

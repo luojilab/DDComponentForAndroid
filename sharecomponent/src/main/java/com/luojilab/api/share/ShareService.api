@@ -1,4 +1,4 @@
-package com.luojilab.share;
+package com.luojilab.api.share;
 
 import android.app.Activity;
 

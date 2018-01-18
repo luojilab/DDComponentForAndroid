@@ -2,8 +2,8 @@ package com.luojilab.share.serviceimpl;
 
 import android.app.Activity;
 import android.content.Intent;
+import com.luojilab.api.share.ShareService;
 import com.luojilab.share.Share2Activity;
-import com.luojilab.share.ShareService;
 
 /**
  *  实现原生方式跳转Activity

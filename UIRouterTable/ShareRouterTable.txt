@@ -4,6 +4,6 @@ HOST : share
 
 ∑÷œÌ ÈºÆ“≥√Ê
 /shareBook
-author:com.luojilab.share.bean.Author
+author:com.luojilab.api.share.bean.Author
 bookName:String
 
