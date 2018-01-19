@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply from: "${rootDir}/copy.gradle"
+apply from: "${rootDir}/copy2.gradle"
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
