@@ -6,7 +6,7 @@ task copyApiToJava(type: Sync) {
 
     //第一步、解析所有的task列表，确定好是点击Sync按钮还是哪个组件单独打包运行
     List<String> taskNames =  project.gradle.startParameter.taskNames
-    System.out.println("------>  copyApiToJava()\ttaskNames 列表为： " + taskNames.toString())
+    println("------>  copyApiToJava()\ttaskNames 列表为： " + taskNames.toString())
 
     //是否打包的时候是debug模式
     boolean isDebug = false
@@ -41,55 +41,55 @@ task copyApiToJava(type: Sync) {
     if (modules.size() > 0 && modules.get(0) != null
             && modules.get(0).trim().length() > 0 && !modules.get(0).equals("all")) {
         compilemodule = modules.get(0)
-        System.out.println("------>  copyApiToJava()\t要进行打包的模块为：" + modules.toString())
+        println("------>  copyApiToJava()\t要进行打包的模块为：" + modules.toString())
     } else {
         compilemodule = project.rootProject.property("mainmodulename")
-        System.out.println("------>  copyApiToJava()\t没有要打包的模块，只是在【Android Studio】中点了【Sync】按钮同步代码而已，去扫描所有的组件中的.api")
+        println("------>  copyApiToJava()\t没有要打包的模块，只是在【Android Studio】中点了【Sync】按钮同步代码而已，去扫描所有的组件中的.api")
     }
     if (compilemodule == null || compilemodule.trim().length() <= 0) {
         compilemodule = "app"
-        System.out.println("------>  copyApiToJava()\t没有要打包的模块，去扫描 app 中依赖的组件 的.api")
+        println("------>  copyApiToJava()\t没有要打包的模块，去扫描 app 中依赖的组件 的.api")
     }
 
     //第二步、读取从第一步得知的具体哪个组件的配置文件 gradle.properties，获取Project依赖的组件
     Properties gradle_properties = new Properties()
     String gradlePropertiesPath = "${rootDir}/${compilemodule}/gradle.properties"
-    System.out.println("------>  copyApiToJava()\t要编译的组件为： " + compilemodule +" ,下面来读取该组件需要依赖的其他组件，读取的配置文件为："+ gradlePropertiesPath)
+    println("------>  copyApiToJava()\t要编译的组件为： " + compilemodule +" ,下面来读取该组件需要依赖的其他组件，读取的配置文件为："+ gradlePropertiesPath)
     gradle_properties.load(project.file(gradlePropertiesPath).newDataInputStream())
 
     String components
     if(isAssemble){
         if (isDebug){
             components = gradle_properties.getProperty("debugComponent")
-            System.out.println("------>  copyApiToJava()\t任务为 Bubug版本的打包任务，读取gradle.properties配置文件中的【debugComponent】属性")
+            println("------>  copyApiToJava()\t任务为 Bubug版本的打包任务，读取gradle.properties配置文件中的【debugComponent】属性")
         } else{
             components = gradle_properties.getProperty("compileComponent")
-            System.out.println("------>  copyApiToJava()\t任务为 Release版本的打包任务，读取gradle.properties配置文件中的【compileComponent】属性")
+            println("------>  copyApiToJava()\t任务为 Release版本的打包任务，读取gradle.properties配置文件中的【compileComponent】属性")
         }
     } else{
-        System.out.println("------>  copyApiToJava()\t任务 不是 打包任务,读取gradle.properties配置文件中的【debugComponent】属性")
+        println("------>  copyApiToJava()\t任务 不是 打包任务,读取gradle.properties配置文件中的【debugComponent】属性")
         components = gradle_properties.getProperty("debugComponent")
     }
 
     //第三步、遍历 Project所依赖的组件 中的全部.api文件以及自己组件中的api文件，然后复制到ApiComponentService库中
-    System.out.println("------>  copyApiToJava()\t读取到要依赖的组件为为：【"+ components + "】")
+    println("------>  copyApiToJava()\t读取到要依赖的组件为为：【"+ components + "】")
     if(components == null || components.length() == 0){
-        System.out.println("------>  copyApiToJava()\t没有需要额外依赖的组件")
+        println("------>  copyApiToJava()\t没有需要额外依赖的组件")
     } else {
         //通过 逗号分隔 转换为组件名数组
         String[] compileComponents = components.split(",")
         if (compileComponents == null || compileComponents.length == 0) {
-            System.out.println("------>  copyApiToJava()\t没有需要额外依赖的组件")
+            println("------>  copyApiToJava()\t没有需要额外依赖的组件")
         } else {
             //copy依赖的库的组件中的api
             for (String str : compileComponents) {
-                System.out.println("------>  copyApiToJava()\t检测组件【 " + str +" 】,中是否有需要开始复制 .api 文件")
+                println("------>  copyApiToJava()\t检测组件【 " + str +" 】,中是否有需要开始复制 .api 文件")
                 from "${rootDir}/${str}/src/main/java/com/luojilab/api"
             }
         }
     }
     //copy自己当前组件中的api
-    System.out.println("------>  copyApiToJava()\t检测自己的组件【 " + compilemodule +" 】,中是否有需要开始复制 .api 文件")
+    println("------>  copyApiToJava()\t检测自己的组件【 " + compilemodule +" 】,中是否有需要开始复制 .api 文件")
     from "${rootDir}/${compilemodule}/src/main/java/com/luojilab/api"
     //复制到 ApiComponentService/src/main/java 目录中去
     into "${rootDir}/ApiComponentService/src/main/java"
