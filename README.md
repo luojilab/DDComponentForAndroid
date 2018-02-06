@@ -3,6 +3,15 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/luojilab/DDComponentForAndroid/pulls)
 [![License](https://img.shields.io/badge/License-Apache%202.0-orange.svg)](https://github.com/luojilab/DDComponentForAndroid/blob/master/LICENSE) 
 
+### 部分想法
+在得到的DDComponent基础上，加上了部分的想法实现
+
++ 1、实现组件对内对外的代码都放在组件内部，对外的改后缀名为.api，编译之前自动copy&rename为.java文件。
+ - a. 可以通过判断是sync还是assemble打包来确定要编译的组件
+ - b. 如果是sync的话，则读取所有组件中的.api文件
+ - c. 如果是某个组件单独运行的话，则只扫描该组件所依赖的组件中的.api文件以及自己组件中的.api文件
++ 2、内部有具体的实现Native方式（不使用Annotation）来进行UI跳转，这部分可忽略。
+
 ### 最新版本
 
 模块|build-gradle|componentlib|router-anno-compiler|router-annotation

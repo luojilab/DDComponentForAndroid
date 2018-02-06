@@ -19,7 +19,9 @@ class ConvertUtils {
                 classPool.insertClassPath(it.file.absolutePath)
                 org.apache.commons.io.FileUtils.listFiles(it.file, null, true).each {
                     if (it.absolutePath.endsWith(SdkConstants.DOT_CLASS)) {
-                        def className = it.absolutePath.substring(dirPath.length() + 1, it.absolutePath.length() - SdkConstants.DOT_CLASS.length()).replaceAll(Matcher.quoteReplacement(File.separator), '.')
+                        def className = it.absolutePath.substring(dirPath.length() + 1,
+                                it.absolutePath.length() - SdkConstants.DOT_CLASS.length())
+                                .replaceAll(Matcher.quoteReplacement(File.separator), '.')
                         if (classNames.contains(className)) {
                             throw new RuntimeException("You have duplicate classes with the same name : " + className + " please remove duplicate classes ")
                         }
@@ -36,15 +38,18 @@ class ConvertUtils {
                     JarEntry libClass = classes.nextElement()
                     String className = libClass.getName()
                     if (className.endsWith(SdkConstants.DOT_CLASS)) {
-                        className = className.substring(0, className.length() - SdkConstants.DOT_CLASS.length()).replaceAll('/', '.')
+                        className = className.substring(0, className.length() - SdkConstants.DOT_CLASS.length())
+                                .replaceAll('/', '.')
                         if (classNames.contains(className)) {
-                            throw new RuntimeException("You have duplicate classes with the same name : " + className + " please remove duplicate classes ")
+                            throw new RuntimeException("You have duplicate classes with the same name : "
+                                    + className + " please remove duplicate classes ")
                         }
                         classNames.add(className)
                     }
                 }
             }
         }
+
         classNames.each {
             try {
                 allClass.add(classPool.get(it))

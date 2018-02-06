@@ -1,0 +1,26 @@
+//同步任务（Sync）继承自复制任务（Copy），
+//当执行时会复制源文件到目标目录，然后从目标目录删除所有非复制文件。
+task copyApiToJava(type: Sync) {
+    description "复制组件中的 .api 文件到 ApiComponentService 库中，然后改名为 .java"
+    println "------>  copyApiToJava() 开始了，复制组件中的 .api 文件到 ApiComponentService 库中，然后改名为 .java"
+
+    project.rootProject.subprojects.each {
+        println "------>  copyApiToJava() 扫描项目 =" + it.name
+        if (it.name.toUpperCase().contains("COMPONENT")){
+            println "------>------>------>  copyApiToJava() 开始扫描到的组件库为 : " + it.name
+            from "${rootDir}/${it.name}/src/main/java/com/luojilab/api"
+        }
+    }
+
+    into "${rootDir}/ApiComponentService/src/main/java/com/luojilab/api"
+    exclude '**/*.java'
+    include '**/*.api'
+
+    rename{String fileName ->
+        println "------>  copyApiToJava() 要重命名文件:" + fileName
+        fileName.replace('.api', '.java')
+    }
+}
+
+preBuild.dependsOn copyApiToJava
+

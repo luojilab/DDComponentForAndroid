@@ -3,24 +3,22 @@ package com.luojilab.share;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.luojilab.api.share.bean.Author;
-import com.luojilab.component.basicres.BaseActivity;
 import com.luojilab.component.componentlib.service.AutowiredService;
-import com.luojilab.router.facade.annotation.Autowired;
-import com.luojilab.router.facade.annotation.RouteNode;
+import com.luojilab.component.componentlib.service.JsonService;
 
 /**
- * Created by mrzhang on 2017/6/20.
+ *  测试使用原生的是否可以
+ * </p>
+ * created by OuyangPeng at 2018/1/15 上午 11:29
  */
-@RouteNode(path = "/shareBook", desc = "分享书籍页面")
-public class ShareActivity extends BaseActivity {
+public class Share2Activity extends AppCompatActivity {
 
-    @Autowired
     String bookName;
 
-    @Autowired
     Author author;
 
     private TextView tvShareTitle;
@@ -41,7 +39,13 @@ public class ShareActivity extends BaseActivity {
         tvAuthor =  (TextView)findViewById(R.id.share_tv_author);
         tvCounty =  (TextView)findViewById(R.id.share_tv_county);
 
-        tvShareTitle.setText("Book");
+        tvShareTitle.setText("Book2");
+
+
+        bookName = getIntent().getStringExtra("bookName");
+        String authorString = getIntent().getStringExtra("author");
+        System.out.println("获取到的参数为：bookName = " + bookName + " author = " + authorString);
+        author = JsonService.Factory.getInstance().create().parseObject(authorString,Author.class);
 
         if (bookName != null) {
             tvShareBook.setText(bookName);
@@ -53,9 +57,8 @@ public class ShareActivity extends BaseActivity {
         }
 
         Intent intent = new Intent();
-        intent.putExtra("result", "Share Success! OuyangPeng");
+        intent.putExtra("result", "Share Success! OuyangPeng's method!");
         setResult(RESULT_CODE, intent);
-
     }
 
     @Override

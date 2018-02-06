@@ -3,6 +3,7 @@ package com.dd.buildgradle
 import com.dd.buildgradle.exten.ComExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 
 class ComBuild implements Plugin<Project> {
 
@@ -10,6 +11,16 @@ class ComBuild implements Plugin<Project> {
     String compilemodule = "app"
 
     void apply(Project project) {
+        /**
+         * 每个Gradle的Project都维护了一个ExtenionContainer，
+           我们可以通过project.extentions访问额外的Property和定义额外的Property
+
+           弄好之后，在build.gradle中的配置如下面所示的格式
+         *      combuild {
+                     applicationName = 'com.luojilab.reader.runalone.application.ReaderApplication'
+                     isRegisterCompoAuto = false
+                }
+         */
         project.extensions.create('combuild', ComExtension)
 
         String taskNames = project.gradle.startParameter.taskNames.toString()
@@ -44,6 +55,7 @@ class ComBuild implements Plugin<Project> {
 
         //根据配置添加各种组件依赖，并且自动化生成组件加载代码
         if (isRunAlone) {
+            //应用plugin为 application
             project.apply plugin: 'com.android.application'
             if (!module.equals(mainmodulename)) {
                 project.android.sourceSets {
@@ -56,10 +68,12 @@ class ComBuild implements Plugin<Project> {
             }
             System.out.println("apply plugin is " + 'com.android.application')
             if (assembleTask.isAssemble && module.equals(compilemodule)) {
+                //编译组件
                 compileComponents(assembleTask, project)
                 project.android.registerTransform(new ComCodeTransform(project))
             }
         } else {
+            //应用plugin为 library
             project.apply plugin: 'com.android.library'
             System.out.println("apply plugin is " + 'com.android.library')
         }
@@ -92,6 +106,7 @@ class ComBuild implements Plugin<Project> {
     private AssembleTask getTaskInfo(List<String> taskNames) {
         AssembleTask assembleTask = new AssembleTask()
         for (String task : taskNames) {
+            //ASSEMBLE打包 、 aR = assembleRelease  、RESGUARD混淆
             if (task.toUpperCase().contains("ASSEMBLE")
                     || task.contains("aR")
                     || task.toUpperCase().contains("TINKER")
@@ -102,6 +117,12 @@ class ComBuild implements Plugin<Project> {
                 }
                 assembleTask.isAssemble = true
                 String[] strs = task.split(":")
+                /**
+                 * 根据当前的task，获取要运行的组件，规则如下：
+                 * assembleRelease ---app
+                 * app:assembleRelease :app:assembleRelease ---app
+                 * sharecomponent:assembleRelease :sharecomponent:assembleRelease ---sharecomponent
+                 */
                 assembleTask.modules.add(strs.length > 1 ? strs[strs.length - 2] : "all")
                 break
             }
@@ -116,6 +137,11 @@ class ComBuild implements Plugin<Project> {
      * @param project
      */
     private void compileComponents(AssembleTask assembleTask, Project project) {
+        /**
+         * 从配置文件中读取要依赖的组件名  配置文件格式如下：
+             debugComponent=readercomponent,sharecomponent,sharecomponentkotlin
+             compileComponent=readercomponent,sharecomponent,sharecomponentkotlin
+         */
         String components
         if (assembleTask.isDebug) {
             components = (String) project.properties.get("debugComponent")
@@ -127,6 +153,7 @@ class ComBuild implements Plugin<Project> {
             System.out.println("there is no add dependencies ")
             return
         }
+        //通过 逗号分隔 转换为组件名数组
         String[] compileComponents = components.split(",")
         if (compileComponents == null || compileComponents.length == 0) {
             System.out.println("there is no add dependencies ")
@@ -147,6 +174,7 @@ class ComBuild implements Plugin<Project> {
                  * 示例语法:module
                  * compileComponent=readercomponent,sharecomponent
                  */
+                //如果为直接引用module工程
                 project.dependencies.add("compile", project.project(':' + str))
                 System.out.println("add dependencies project : " + str)
             }

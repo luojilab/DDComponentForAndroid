@@ -2,8 +2,8 @@ auto generated, do not change !!!!
 
 HOST : share
 
-åˆ†äº«ä¹¦ç±é¡µé¢
+·ÖÏíÊé¼®Ò³Ãæ
 /shareBook
-author:com.luojilab.componentservice.share.bean.Author
+author:com.luojilab.api.share.bean.Author
 bookName:String
 

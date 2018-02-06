@@ -46,9 +46,9 @@ class ComCodeTransform extends Transform {
         for (CtClass ctClass : activators) {
             System.out.println("applicationlike is   " + ctClass.getName())
         }
-
+        //Transform的inputs有两种类型，一种是项目内的目录，一种是第三方的jar包，要分开遍历
         transformInvocation.inputs.each { TransformInput input ->
-            //对类型为jar文件的input进行遍历
+            //对类型为 jar文件 的input进行遍历
             input.jarInputs.each { JarInput jarInput ->
                 //jar文件一般是第三方依赖库jar文件
                 // 重命名输出文件（同目录copyFile会冲突）
@@ -76,6 +76,7 @@ class ComCodeTransform extends Transform {
                                 .replace("\\", ".")
                                 .replace("/", ".")
                         if (classNameTemp.endsWith(".class")) {
+                            // ".class".length == 6
                             String className = classNameTemp.substring(1, classNameTemp.length() - 6)
                             if (className.equals(applicationName)) {
                                 injectApplicationCode(applications.get(0), activators, fileName)
@@ -83,6 +84,7 @@ class ComCodeTransform extends Transform {
                         }
                     }
                 }
+                //获取 output 目录
                 def dest = transformInvocation.outputProvider.getContentLocation(directoryInput.name,
                         directoryInput.contentTypes,
                         directoryInput.scopes, Format.DIRECTORY)
@@ -103,11 +105,16 @@ class ComCodeTransform extends Transform {
 
     private void injectApplicationCode(CtClass ctClassApplication, List<CtClass> activators, String patch) {
         System.out.println("injectApplicationCode begin")
+
+        //Defrosts the class so that the class can be modified again.
         ctClassApplication.defrost()
         try {
+            //在主项目的Application.onCreate()中插入调用ApplicationLike.onCreate()的代码
             CtMethod attachBaseContextMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
             attachBaseContextMethod.insertAfter(getAutoLoadComCode(activators))
         } catch (CannotCompileException | NotFoundException e) {
+            //在主项目的Application.onCreate()中插入调用ApplicationLike.onCreate()的代码
+            //如果上面的方法出现异常，则自己拼凑onCreate方法的具体实现
             StringBuilder methodBody = new StringBuilder()
             methodBody.append("protected void onCreate() {")
             methodBody.append("super.onCreate();")
@@ -116,7 +123,7 @@ class ComCodeTransform extends Transform {
             methodBody.append("}")
             ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
         } catch (Exception e) {
-
+            e.printStackTrace()
         }
         ctClassApplication.writeFile(patch)
         ctClassApplication.detach()
@@ -124,6 +131,9 @@ class ComCodeTransform extends Transform {
         System.out.println("injectApplicationCode success ")
     }
 
+    /**
+     * 生成 ApplicationLike.onCreate() 的代码，便于在主项目的Application.onCreate()中插入
+     */
     private String getAutoLoadComCode(List<CtClass> activators) {
         StringBuilder autoLoadComCode = new StringBuilder()
         for (CtClass ctClass : activators) {
@@ -133,7 +143,9 @@ class ComCodeTransform extends Transform {
         return autoLoadComCode.toString()
     }
 
-
+    /**
+     * 是否为真正的application
+     */
     private boolean isApplication(CtClass ctClass) {
         try {
             if (applicationName != null && applicationName.equals(ctClass.getName())) {
@@ -144,7 +156,9 @@ class ComCodeTransform extends Transform {
         }
         return false
     }
-
+    /**
+     * 是否为applicationlikes
+     */
     private boolean isActivator(CtClass ctClass) {
         try {
             for (CtClass ctClassInter : ctClass.getInterfaces()) {

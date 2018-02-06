@@ -7,10 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.luojilab.api.share.ShareService;
+import com.luojilab.api.share.bean.Author;
+import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.component.componentlib.router.ui.UIRouter;
 import com.luojilab.component.componentlib.service.JsonService;
-import com.luojilab.componentservice.share.bean.Author;
-
 
 /**
  * Created by mrzhang on 2017/6/15.
@@ -51,7 +52,20 @@ public class ReaderFragment extends Fragment {
                     goToShareActivityForResult();
                 }
             });
+            rootView.findViewById(R.id.tv_4).setOnClickListener(new View.OnClickListener() {
 
+                @Override
+                public void onClick(View v) {
+                    goToShareActivityByNative();
+                }
+            });
+            rootView.findViewById(R.id.tv_5).setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    goToShareActivityForResultByNative();
+                }
+            });
         }
         return rootView;
     }
@@ -86,5 +100,43 @@ public class ReaderFragment extends Fragment {
                 "DDComp://share/shareBook?bookName=Gone with the Wind&author="
                         + JsonService.Factory.getInstance().create().toJsonString(author), null, REQUEST_CODE);
     }
+    /**
+     * 使用原生的方法来进行跳转
+     */
+    private void goToShareActivityByNative() {
+        Author author = new Author();
+        author.setName("OuyangPeng");
+        author.setCounty("China");
+        String authorString = JsonService.Factory.getInstance().create().toJsonString(author);
+
+        String bookName = "goToShareActivityByNative";
+
+        Router router = Router.getInstance();
+        ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+        if (service != null) {
+            service.startShare2Activity(getActivity(), bookName, authorString);
+        }
+    }
+
+    /**
+     * 使用原生的方法来进行跳转，并且处理返回结果
+     */
+    private void goToShareActivityForResultByNative() {
+        Author author = new Author();
+        author.setName("OuyangPeng");
+        author.setCounty("China");
+        String authorString = JsonService.Factory.getInstance().create().toJsonString(author);
+
+        String bookName = "goToShareActivityForResultByNative";
+
+        Router router = Router.getInstance();
+
+        ShareService service = (ShareService) router.getService(ShareService.class.getSimpleName());
+        if (service != null) {
+            service.startShare2ActivityForResult(getActivity(), bookName, authorString, REQUEST_CODE);
+        }
+    }
+
+
 
 }

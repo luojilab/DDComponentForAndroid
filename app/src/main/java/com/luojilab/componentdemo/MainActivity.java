@@ -7,11 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
 
+import com.luojilab.api.reader.readerbook.ReadBookService;
 import com.luojilab.component.basiclib.ToastManager;
 import com.luojilab.component.basicres.BaseActivity;
 import com.luojilab.component.basicres.BaseApplication;
 import com.luojilab.component.componentlib.router.Router;
-import com.luojilab.componentservice.readerbook.ReadBookService;
 import com.luojilab.router.facade.annotation.RouteNode;
 
 @RouteNode(path = "/main", desc = "首页")
@@ -28,8 +28,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        installReadBookBtn = findViewById(R.id.install_share);
-        uninstallReadBtn = findViewById(R.id.uninstall_share);
+        installReadBookBtn = (Button) findViewById(R.id.install_share);
+        uninstallReadBtn = (Button) findViewById(R.id.uninstall_share);
         installReadBookBtn.setOnClickListener(this);
         uninstallReadBtn.setOnClickListener(this);
         showFragment();
@@ -69,8 +69,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            ToastManager.show(BaseApplication.getAppContext(), data.getStringExtra("result"));
+        //分享组件 的 RESULT_CODE
+        if (resultCode == 8888) {
+            if (data != null) {
+                ToastManager.show(BaseApplication.getAppContext(), data.getStringExtra("result"));
+            }
         }
     }
 }
