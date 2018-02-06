@@ -94,6 +94,7 @@ class ComBuild implements Plugin<Project> {
         for (String task : taskNames) {
             if (task.toUpperCase().contains("ASSEMBLE")
                     || task.contains("aR")
+                    || task.toUpperCase().contains("TINKER")
                     || task.toUpperCase().contains("INSTALL")
                     || task.toUpperCase().contains("RESGUARD")) {
                 if (task.toUpperCase().contains("DEBUG")) {
