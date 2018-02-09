@@ -15,7 +15,7 @@ import org.junit.Test;
  * <p><b>Package:</b> com.luojilab.componentdemo </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
  * <p><b>Classname:</b> UiRouterTest </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> test cases for {@link UIRouter} </p>
  * Created by leobert on 11/01/2018.
  */
 public class UiRouterTest {
@@ -27,7 +27,7 @@ public class UiRouterTest {
     @Before
     public void setUp() throws Exception {
         uiRouter = UIRouter.getInstance();
-        UIRouter.enableDebug();
+//        UIRouter.enableDebug();
 
         uiRouter.registerUI(new IComponentRouter() {
             @Override
