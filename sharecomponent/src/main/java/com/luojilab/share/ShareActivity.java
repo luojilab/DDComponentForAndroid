@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.luojilab.component.basicres.BaseActivity;
 import com.luojilab.component.componentlib.service.AutowiredService;
 import com.luojilab.componentservice.share.bean.Author;
 import com.luojilab.router.facade.annotation.Autowired;
@@ -15,7 +16,7 @@ import com.luojilab.router.facade.annotation.RouteNode;
  * Created by mrzhang on 2017/6/20.
  */
 @RouteNode(path = "/shareBook", desc = "分享书籍页面")
-public class ShareActivity extends AppCompatActivity {
+public class ShareActivity extends BaseActivity {
 
     @Autowired(required = true)
     String bookName;

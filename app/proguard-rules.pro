@@ -23,11 +23,32 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-ignorewarnings
+-dontoptimize
+-keep class !android.support.v7.view.menu.*MenuBuilder*, android.support.v7.** { *; }
+-keep class android.support.v4.** { *; }
+-keep interface android.support.** { *; }
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends android.support.**
+-keep public class * extends android.app.Fragment
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends com.netease.ntespmmvp.** {*;}
+
+-keep enum * { *;}
+
 -keep interface * {
   <methods>;
 }
 -keep class com.luojilab.component.componentlib.** {*;}
 -keep class com.luojilab.router.** {*;}
+-keep class com.luojilab.gen.** {*;}
 -keep class * implements com.luojilab.component.componentlib.router.ISyringe {*;}
 -keep class * implements com.luojilab.component.componentlib.applicationlike.IApplicationLike {*;}
 -dontwarn okio.**

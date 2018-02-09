@@ -5,7 +5,8 @@
     <application
         android:name="com.luojilab.share.runalone.application.KotlinApplication"
         android:allowBackup="true"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/commonAppTheme">
         <activity android:name=".ShareMessageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

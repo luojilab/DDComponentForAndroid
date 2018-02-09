@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
+import com.luojilab.component.basiclib.ToastManager;
+import com.luojilab.component.basicres.BaseActivity;
+import com.luojilab.component.basicres.BaseApplication;
 import com.luojilab.component.componentlib.router.Router;
 import com.luojilab.componentservice.readerbook.ReadBookService;
 import com.luojilab.router.facade.annotation.RouteNode;
 
 @RouteNode(path = "/main", desc = "首页")
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     Fragment fragment;
     FragmentTransaction ft;
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        installReadBookBtn = (Button) findViewById(R.id.install_share);
-        uninstallReadBtn = (Button) findViewById(R.id.uninstall_share);
+        installReadBookBtn = findViewById(R.id.install_share);
+        uninstallReadBtn = findViewById(R.id.uninstall_share);
         installReadBookBtn.setOnClickListener(this);
         uninstallReadBtn.setOnClickListener(this);
         showFragment();
@@ -55,9 +56,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.install_share:
                 Router.registerComponent("com.luojilab.share.applike.ShareApplike");
+                Router.registerComponent("com.luojilab.share.kotlin.applike.KotlinApplike");
                 break;
             case R.id.uninstall_share:
                 Router.unregisterComponent("com.luojilab.share.applike.ShareApplike");
+                Router.unregisterComponent("com.luojilab.share.kotlin.applike.KotlinApplike");
                 break;
         }
     }
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+            ToastManager.show(BaseApplication.getAppContext(), data.getStringExtra("result"));
         }
     }
 }
