@@ -42,6 +42,17 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
 
+            <intent-filter>
+                <data
+                    android:path="/compodemo"
+                    android:host="www.luojilab.com"
+                    android:scheme="ddcompo"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
         </activity>
 
 

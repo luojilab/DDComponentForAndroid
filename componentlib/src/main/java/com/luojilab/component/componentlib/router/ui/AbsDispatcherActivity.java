@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 /**
  * <p><b>Package:</b> com.luojilab.component.componentlib.router.ui </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
- * <p><b>Classname:</b> AbsRouteActivity </p>
+ * <p><b>Classname:</b> AbsDispatcherActivity </p>
  * <p><b>Description:</b> It is the basic activity to handle intent call from web.
  * <p>
  * Register your own impl each component as follow in manifest:
@@ -37,8 +37,7 @@ import android.support.v7.app.AppCompatActivity;
  * </p>
  * Created by leobert on 14/01/2018.
  */
-
-public abstract class AbsRouteActivity extends AppCompatActivity {
+public abstract class AbsDispatcherActivity extends AppCompatActivity {
 
     @Override
     protected final void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +67,8 @@ public abstract class AbsRouteActivity extends AppCompatActivity {
             onNullUri();
             return;
         }
+        if (needTransferUri(uri))
+            uri = transferUri(uri);
 
         VerifyResult verifyResult = UIRouter.getInstance().verifyUri(uri,null,true);
 
@@ -85,9 +86,12 @@ public abstract class AbsRouteActivity extends AppCompatActivity {
         onHandled();
     }
 
+    protected abstract boolean needTransferUri(Uri uri);
+
+    protected abstract Uri transferUri(Uri uri);
 
     /**
-     * maybe your app is just started by this call, open your splash page?
+     *
      */
     protected abstract void onBeforeHandle();
 
