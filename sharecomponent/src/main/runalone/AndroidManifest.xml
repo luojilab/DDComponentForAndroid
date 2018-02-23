@@ -32,7 +32,7 @@
 
             <intent-filter>
                 <data
-                    android:host="www.luojilab.com"
+                    android:host="share"
                     android:scheme="ddcompo"/>
                 <action android:name="android.intent.action.VIEW"/>
 
