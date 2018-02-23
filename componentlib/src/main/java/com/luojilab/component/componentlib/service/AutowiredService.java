@@ -30,7 +30,10 @@ public interface AutowiredService {
 
         public static AutowiredService getSingletonImpl() {
             if (autowiredServiceImpl == null) {
-                autowiredServiceImpl = new AutowiredServiceImpl();
+                synchronized (AutowiredService.class) {
+                    if (autowiredServiceImpl == null)
+                        autowiredServiceImpl = new AutowiredServiceImpl();
+                }
             }
             return autowiredServiceImpl;
         }

@@ -9,7 +9,7 @@ import java.util.List;
  * <p><b>Classname:</b> JsonService </p>
  * <p><b>Description:</b> APIs provided by the JsonComponent.
  * <em>you can implement it via fast-json,gson,jackson etc.</em>
- *
+ * <p>
  * currently only basic functions contains!
  * </p>
  * Created by leobert on 2017/9/18.
@@ -28,11 +28,12 @@ public interface JsonService {
 
         public static JsonService getSingletonImpl() {
             if (jsonService == null) {
-                jsonService = new JsonServiceImpl();
+                synchronized (Factory.class) {
+                    if (jsonService == null)
+                        jsonService = new JsonServiceImpl();
+                }
             }
             return jsonService;
         }
     }
-
-
 }
