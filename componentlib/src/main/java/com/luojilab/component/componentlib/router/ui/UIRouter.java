@@ -165,9 +165,13 @@ public class UIRouter implements IUIRouter {
     public boolean openUri(Context context, Uri uri, Bundle bundle, Integer requestCode) {
         for (IComponentRouter temp : uiRouters) {
             try {
-                if (temp.verifyUri(uri) && temp.openUri(context, uri, bundle, requestCode)) {
+                //ignore params check
+                VerifyResult verifyResult = temp.verifyUri(uri,bundle,false);
+                if (verifyResult.isSuccess() && temp.openUri(context, uri, bundle, requestCode))
                     return true;
-                }
+//                if (temp.verifyUri(uri) && temp.openUri(context, uri, bundle, requestCode)) {
+//                    return true;
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -175,7 +179,11 @@ public class UIRouter implements IUIRouter {
         return false;
     }
 
+    /**
+     * use {@link #verifyUri(Uri, Bundle, boolean)} instead
+     */
     @Override
+    @Deprecated
     public boolean verifyUri(Uri uri) {
         for (IComponentRouter temp : uiRouters) {
             if (temp.verifyUri(uri)) {
@@ -186,23 +194,31 @@ public class UIRouter implements IUIRouter {
         return false;
     }
 
-    public boolean preCondition(Uri uri) throws UiRouterException {
+    @Override
+    @NonNull
+    public VerifyResult verifyUri(Uri uri, Bundle bundle, boolean checkParams) {
+        StringBuilder verifyMsg = new StringBuilder();
         for (IComponentRouter temp : uiRouters) {
-            if (temp.verifyUri(uri)) {
-                if (temp instanceof BaseCompRouter)
-                    //check the required params, only key-name check
-                    //some other errors cannot be detected like: unmatched type, illegal expression
-                    //of one json, out of boundary and so on. So be caution.
-                    return ((BaseCompRouter) temp).preCondition(uri, null);
-                else
-                    return true;
-            }
+            VerifyResult result = temp.verifyUri(uri, bundle, checkParams);
+//            if (result != null) {
+                if (result.isSuccess())
+                    return result;
+                else if (result.getThrowable() != null)
+                    verifyMsg.append(result.getThrowable().getMessage()).append("\r");
+
+//            }
         }
 
-        //no one matched for the uri,may uri error or component is not mounted
-        throw new UiRouterException.NonMatchedException(uri);
-    }
+        String msg = "cannot verify uri for: " + UriUtils.toSafeString(uri) +
+                ";\r cannot navigate to the target\r"
+                + verifyMsg.toString() + "check if uri error，params error or component has not been mounted";
 
+        getLogger().monitor(msg);
+
+        return new VerifyResult(false, new UiRouterException(msg) {
+        });
+
+    }
 
     private void removeOldUIRouter(IComponentRouter router) {
         Iterator<IComponentRouter> iterator = uiRouters.iterator();

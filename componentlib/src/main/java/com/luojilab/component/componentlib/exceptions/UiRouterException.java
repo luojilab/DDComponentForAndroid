@@ -1,9 +1,5 @@
 package com.luojilab.component.componentlib.exceptions;
 
-import android.net.Uri;
-
-import com.luojilab.component.componentlib.utils.UriUtils;
-
 /**
  * <p><b>Package:</b> com.luojilab.component.componentlib.exceptions </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
@@ -26,15 +22,5 @@ public abstract class UiRouterException extends Exception {
 
     public UiRouterException(Throwable cause) {
         super(cause);
-    }
-
-    public static final class NonMatchedException extends UiRouterException {
-        public NonMatchedException(String url) {
-            super("none matched target for: " + url + "; check if uri error or component is not mounted");
-        }
-
-        public NonMatchedException(Uri uri) {
-            super("none matched target for: " + UriUtils.toSafeString(uri) + "; check if uri error or component is not mounted");
-        }
     }
 }
