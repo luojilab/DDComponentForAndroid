@@ -3,7 +3,6 @@ package com.luojilab.share;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.luojilab.component.basicres.BaseActivity;
@@ -37,10 +36,10 @@ public class ShareActivity extends BaseActivity {
         AutowiredService.Factory.getSingletonImpl().autowire(this);
         setContentView(R.layout.share_activity_share);
 
-        tvShareTitle =  findViewById(R.id.share_title);
-        tvShareBook =  findViewById(R.id.share_tv_tag);
-        tvAuthor =  findViewById(R.id.share_tv_author);
-        tvCounty =  findViewById(R.id.share_tv_county);
+        tvShareTitle = findViewById(R.id.share_title);
+        tvShareBook = findViewById(R.id.share_tv_tag);
+        tvAuthor = findViewById(R.id.share_tv_author);
+        tvCounty = findViewById(R.id.share_tv_county);
 
         tvShareTitle.setText("Book");
 
@@ -57,5 +56,9 @@ public class ShareActivity extends BaseActivity {
         intent.putExtra("result", "Share Success");
         setResult(RESULT_CODE, intent);
 
+    }
+
+    private String generateShareUrl() {
+        return "http://www.luojilab.com/";
     }
 }

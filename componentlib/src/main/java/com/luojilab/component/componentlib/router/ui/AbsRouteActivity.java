@@ -21,7 +21,7 @@ import android.support.v7.app.AppCompatActivity;
  *
  *       &lt;intent-filter&gt;
  *          &lt;data
- *              android:host="share"
+ *              android:host="AAA.BBB.CCC"
  *              android:scheme="http"/&gt;
  *
  *              &lt;action android:name="android.intent.action.VIEW"/&gt;

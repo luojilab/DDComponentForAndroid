@@ -29,5 +29,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.luojilab.ddcomponent:componentlib:1.0.0'
+//    compile 'com.luojilab.ddcomponent:componentlib:1.0.0'
+    compile project(':componentlib')
 }
