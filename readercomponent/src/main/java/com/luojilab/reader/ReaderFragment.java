@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.luojilab.component.componentlib.router.ui.UIRouter;
 import com.luojilab.component.componentlib.service.JsonService;
 import com.luojilab.componentservice.share.bean.Author;
+import com.luojilab.componentservice.share.bean.AuthorKt;
 
 
 /**
@@ -68,10 +69,9 @@ public class ReaderFragment extends Fragment {
     }
 
     // UI transfer with URI
+    //user kotlin data class
     private void goToShareActivityWithUri() {
-        Author author = new Author();
-        author.setName("Barack Obama");
-        author.setCounty("New York");
+        AuthorKt author = new AuthorKt("Barack Obama", 65, "New York");
         UIRouter.getInstance().openUri(getActivity(),
                 "DDComp://kotlin/shareMagazine?bookName=NYTIME&author="
                         + JsonService.Factory.getInstance().create().toJsonString(author), null);
