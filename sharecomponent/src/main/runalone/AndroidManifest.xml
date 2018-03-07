@@ -18,5 +18,41 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".runalone.DispatcherActivity">
+
+            <intent-filter>
+                <data
+                    android:host="www.luojilab.com"
+                    android:scheme="http"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
+            <intent-filter>
+                <data
+                    android:host="share"
+                    android:scheme="ddcompo"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
+            <intent-filter>
+                <data
+                    android:path="/compodemo"
+                    android:host="www.luojilab.com"
+                    android:scheme="ddcompo"/>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+
+
+        </activity>
+
     </application>
 </manifest>

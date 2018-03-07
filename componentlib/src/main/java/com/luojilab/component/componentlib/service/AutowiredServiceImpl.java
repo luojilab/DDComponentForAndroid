@@ -50,7 +50,7 @@ public class AutowiredServiceImpl implements AutowiredService {
                 throw new NullPointerException(ex.getMessage());
             }
             ex.printStackTrace();
-            blackList.add(className);    // This instance need not autowired.
+            blackList.add(className);    // This instance don't need autowired.
         }
     }
 

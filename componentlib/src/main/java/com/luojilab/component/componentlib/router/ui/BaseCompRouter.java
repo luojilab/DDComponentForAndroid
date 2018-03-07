@@ -9,9 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.luojilab.component.componentlib.exceptions.UiRouterException;
+import com.luojilab.component.componentlib.exceptions.ParamException;
 import com.luojilab.component.componentlib.service.AutowiredService;
 import com.luojilab.component.componentlib.utils.UriUtils;
 
@@ -30,39 +31,6 @@ public abstract class BaseCompRouter implements IComponentRouter {
 
     protected void initMap() {
         hasInitMap = true;
-    }
-
-    public boolean preCondition(String url, Bundle bundle) throws UiRouterException {
-        return this.preCondition(Uri.parse(url),bundle);
-    }
-
-    public boolean preCondition(Uri uri, Bundle bundle) throws UiRouterException {
-        if (!hasInitMap) {
-            initMap();
-        }
-        if (uri == null) {
-            return false;
-        }
-        String host = uri.getHost();
-        if (!getHost().equals(host)) {
-            return false;
-        }
-        List<String> pathSegments = uri.getPathSegments();
-        String path = "/" + TextUtils.join("/", pathSegments);
-        if (routeMapper.containsKey(path)) {
-            Class target = routeMapper.get(path);
-            if (bundle == null) {
-                bundle = new Bundle();
-            }
-            Map<String, String> params = com.luojilab.component.componentlib.utils.UriUtils.parseParams(uri);
-            Map<String, Integer> paramsType = paramsMapper.get(target);
-            com.luojilab.component.componentlib.utils.UriUtils.setBundleValue(bundle, params, paramsType);
-
-            AutowiredService.Factory.getSingletonImpl().preCondition(target, bundle);
-            return true;
-        }
-
-        return false;
     }
 
     @Override
@@ -142,5 +110,50 @@ public abstract class BaseCompRouter implements IComponentRouter {
         return routeMapper.containsKey(path);
     }
 
+    @Override
+    @NonNull
+    public VerifyResult verifyUri(Uri uri, Bundle bundle,boolean checkParams) {
+        monitorLog("verify for: " + UriUtils.toSafeString(uri) +
+                    " in " + getClass().getSimpleName() + " ;host is: " + getHost());
+
+        if (uri == null)
+            return new VerifyResult(false);
+        String host = uri.getHost();
+        if (!getHost().equals(host)) {
+            return new VerifyResult(false);
+        }
+        if (!hasInitMap) {
+            initMap();
+        }
+        List<String> pathSegments = uri.getPathSegments();
+        String path = "/" + TextUtils.join("/", pathSegments);
+
+        if (!routeMapper.containsKey(path))
+            return new VerifyResult(false);
+
+        try {
+            if (checkParams) {
+                monitorLog("checking params");
+                Class target = routeMapper.get(path);
+                if (bundle == null) {
+                    bundle = new Bundle();
+                }
+                Map<String, String> params = com.luojilab.component.componentlib.utils.UriUtils.parseParams(uri);
+                Map<String, Integer> paramsType = paramsMapper.get(target);
+                com.luojilab.component.componentlib.utils.UriUtils.setBundleValue(bundle, params, paramsType);
+                AutowiredService.Factory.getSingletonImpl().preCondition(target, bundle);
+            }
+            return new VerifyResult(true);
+        } catch (ParamException e) {
+            e.printStackTrace();
+            return new VerifyResult(false,e);
+        }
+    }
+
+    private void monitorLog(String msg) {
+        if (UIRouter.getLogger().isMonitorMode()) { // monitor log for developer
+            UIRouter.getLogger().monitor(msg);
+        }
+    }
 }
 

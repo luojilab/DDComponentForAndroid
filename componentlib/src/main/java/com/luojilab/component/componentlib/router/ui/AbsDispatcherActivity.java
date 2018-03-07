@@ -7,13 +7,10 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.luojilab.component.componentlib.exceptions.ParamException;
-import com.luojilab.component.componentlib.exceptions.UiRouterException;
-
 /**
  * <p><b>Package:</b> com.luojilab.component.componentlib.router.ui </p>
  * <p><b>Project:</b> DDComponentForAndroid </p>
- * <p><b>Classname:</b> AbsRouteActivity </p>
+ * <p><b>Classname:</b> AbsDispatcherActivity </p>
  * <p><b>Description:</b> It is the basic activity to handle intent call from web.
  * <p>
  * Register your own impl each component as follow in manifest:
@@ -24,7 +21,7 @@ import com.luojilab.component.componentlib.exceptions.UiRouterException;
  *
  *       &lt;intent-filter&gt;
  *          &lt;data
- *              android:host="share"
+ *              android:host="AAA.BBB.CCC"
  *              android:scheme="http"/&gt;
  *
  *              &lt;action android:name="android.intent.action.VIEW"/&gt;
@@ -40,8 +37,7 @@ import com.luojilab.component.componentlib.exceptions.UiRouterException;
  * </p>
  * Created by leobert on 14/01/2018.
  */
-
-public abstract class AbsRouteActivity extends AppCompatActivity {
+public abstract class AbsDispatcherActivity extends AppCompatActivity {
 
     @Override
     protected final void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,32 +67,31 @@ public abstract class AbsRouteActivity extends AppCompatActivity {
             onNullUri();
             return;
         }
-        try {
-            UIRouter.getInstance().preCondition(uri);
-        } catch (UiRouterException e) {
-            e.printStackTrace();
-            if (e instanceof ParamException)
-                onParamException((ParamException) e);
-            else if (e instanceof UiRouterException.NonMatchedException)
-                onNonMatchedException((UiRouterException.NonMatchedException) e);
-            else {
-                //ignore
-            }
-        }
+        if (needTransferUri(uri))
+            uri = transferUri(uri);
 
-        try {
-            UIRouter.getInstance().openUri(this, uri, generateBasicBundle());
-        } catch (Exception e) {
-            e.printStackTrace();
-            onExceptionWhenOpenUri(uri, e);
+        VerifyResult verifyResult = UIRouter.getInstance().verifyUri(uri,null,true);
+
+        if (verifyResult.isSuccess()) {
+            try {
+                UIRouter.getInstance().openUri(this, uri, generateBasicBundle());
+            } catch (Exception e) {
+                e.printStackTrace();
+                onExceptionWhenOpenUri(uri, e);
+            }
+        } else {
+           onVerifyFailed(verifyResult.getThrowable());
         }
 
         onHandled();
     }
 
+    protected abstract boolean needTransferUri(Uri uri);
+
+    protected abstract Uri transferUri(Uri uri);
 
     /**
-     * maybe your app is just started by this call, open your splash page?
+     *
      */
     protected abstract void onBeforeHandle();
 
@@ -105,15 +100,19 @@ public abstract class AbsRouteActivity extends AppCompatActivity {
      */
     protected abstract void onNullUri();
 
-    /**
-     * missing required param on preCondition period;
-     */
-    protected abstract void onParamException(ParamException e);
+//    /**
+//     * missing required param on preCondition period;
+//     */
+//    @Deprecated
+//    protected abstract void onParamException(ParamException e);
+//
+//    /**
+//     * no one matched for the uri,may uri error or component is not mounted
+//     */
+//    @Deprecated
+//    protected abstract void onNonMatchedException(UiRouterException.NonMatchedException e);
 
-    /**
-     * no one matched for the uri,may uri error or component is not mounted
-     */
-    protected abstract void onNonMatchedException(UiRouterException.NonMatchedException e);
+    protected abstract void onVerifyFailed(@Nullable Throwable throwable);
 
     /**
      * get exception when handle openUri
