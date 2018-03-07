@@ -9,7 +9,7 @@ ext {
     artifact = bintrayName
     libraryName = 'component build lib '
     libraryDescription = 'component build lib '
-    libraryVersion = "1.2.0"
+    libraryVersion = "1.3.0"
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
@@ -44,7 +44,8 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     compile project(':router-annotation')
-    compile 'com.alibaba:fastjson:1.1.63.android'
+    compile 'com.google.code.gson:gson:2.8.2'
+
 }
 
 
