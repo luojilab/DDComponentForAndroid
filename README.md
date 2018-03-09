@@ -90,6 +90,7 @@ combuild {
 }
 -keep class com.luojilab.component.componentlib.** {*;}
 -keep class com.luojilab.router.** {*;}
+-keep class com.luojilab.gen.** {*;}
 -keep class * implements com.luojilab.component.componentlib.router.ISyringe {*;}
 -keep class * implements com.luojilab.component.componentlib.applicationlike.IApplicationLike {*;}
 ```
