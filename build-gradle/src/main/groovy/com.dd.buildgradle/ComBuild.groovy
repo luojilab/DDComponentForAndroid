@@ -51,6 +51,8 @@ class ComBuild implements Plugin<Project> {
                         manifest.srcFile 'src/main/runalone/AndroidManifest.xml'
                         java.srcDirs = ['src/main/java', 'src/main/runalone/java']
                         res.srcDirs = ['src/main/res', 'src/main/runalone/res']
+                        assets.srcDirs = ['src/main/assets', 'src/main/runalone/assets']
+                        jniLibs.srcDirs = ['src/main/jniLibs', 'src/main/runalone/jniLibs']
                     }
                 }
             }
