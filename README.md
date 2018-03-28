@@ -3,13 +3,6 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/luojilab/DDComponentForAndroid/pulls)
 [![License](https://img.shields.io/badge/License-Apache%202.0-orange.svg)](https://github.com/luojilab/DDComponentForAndroid/blob/master/LICENSE) 
 
-### 最新版本
-
-模块|build-gradle|componentlib|router-anno-compiler|router-annotation
----|---|---|---|---
-最新版本|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/build-gradle/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/build-gradle/_latestVersion)|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/componentlib/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/componentlib/_latestVersion)|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/router-anno-compiler/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/router-anno-compiler/_latestVersion)|[![Download](https://api.bintray.com/packages/zhmqq0527/compbuild/router-annotation/images/download.svg)](https://bintray.com/zhmqq0527/compbuild/router-annotation/_latestVersion)
-
-
 ### 实现功能：
 - 组件可以单独调试
 - 杜绝组件之前相互耦合，代码完全隔离，彻底解耦
@@ -19,14 +12,6 @@
 - 任意组件可以充当host，集成其他组件进行集成调试
 - 可以动态对已集成的组件进行加载和卸载
 - 支持kotlin组件
-
-
-### 原理解析
-组件化设计思路 [浅谈Android组件化](https://mp.weixin.qq.com/s/RAOjrpie214w0byRndczmg)
-
-原理解释请参考文章[Android彻底组件化方案实践](http://www.jianshu.com/p/1b1d77f58e84)
-
-demo解读请参考文章[Android彻底组件化demo发布](http://www.jianshu.com/p/59822a7b2fad)
 
 ### 使用指南
 #### 1、主项目引用编译脚本
