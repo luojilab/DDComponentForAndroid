@@ -47,6 +47,7 @@ class ConvertUtils {
                         classNames.add(className)
                     }
                 }
+                jarInputs.close()
             }
         }
 
