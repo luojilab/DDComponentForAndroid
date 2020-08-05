@@ -85,4 +85,4 @@ combuild {
 
 ### License
 
-DDComponentForAndroid 使用的 MIT 协议，详细请参考 [LICENSE](https://github.com/luojilab/DDComponentForAndroid/master/LICENSE.md)。
+DDComponentForAndroid 使用的 MIT 协议，详细请参考 [LICENSE](https://github.com/luojilab/DDComponentForAndroid/blob/master/LICENSE.md)。
